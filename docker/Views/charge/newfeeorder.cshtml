@@ -1,0 +1,200 @@
+﻿<style>
+    .el-form-item {margin-bottom:0;}
+</style>
+<div id="app" v-loading.fullscreen.lock="fullLoading" style="width:99%;height:99%;margin:0.5%">
+    <el-form ref="form" label-width="0px" style="width:100%;background-color:#f0f0f0;">
+        <el-form-item>
+            <el-col :span="2" class="label">学员所在班级&nbsp;</el-col>
+            <el-col :span="22">@Html.Raw(ViewBag.Entrance)</el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="2" class="label">缴费学员&nbsp;</el-col>
+            <el-col :span="22">
+                @if (string.IsNullOrEmpty(ViewBag.Student)){
+                <el-select v-model="students" :multiple="true" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="可输入姓名或学号查询" style="width:98%;margin-bottom:6px;">
+                    <el-option v-for="item in temprows" :label="item.label" :value="item.id">
+                        <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                        <span style="color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
+                    </el-option>
+                </el-select>}else{<font style="font-size:1.5em;color:#F44336;">@Html.Raw(ViewBag.StudentShow)</font>}
+
+            </el-col>
+        </el-form-item>
+    </el-form>
+    <el-table :data="rows" show-summary :summary-method="getSummaries" :empty-text="message" border>
+        <el-table-column width="40" align="center" type="index"></el-table-column>
+        <el-table-column width="200" align="left" label="收费项目" property="name"></el-table-column>
+        <el-table-column width="100" align="right" label="单价" property="price"></el-table-column>
+        <el-table-column width="250" align="center" label="缴费期间">
+            <template scope="scope">
+                <el-date-picker v-model="scope.row.picker" :editable="false" type="daterange" format="yyyy-MM-dd" range-separator=" - " style="width:200px"></el-date-picker>
+            </template>
+        </el-table-column>
+        <el-table-column width="100" align="center" label="数量">
+            <template scope="scope">
+                <input type="text" v-model="scope.row.count" @@change="countChange(scope.row)" style="width:96%;text-align:center;" />
+            </template>
+        </el-table-column>
+        <el-table-column width="120" align="right" label="小计" property="amount"></el-table-column>
+        <el-table-column></el-table-column>
+        <el-table-column width="100" align="center" label="操作">
+            <template scope="scope">
+                <el-button size="small" type="primary" @@click="handleRemove(scope.row)">移除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+    <div style="text-align:center;padding:6px;margin-top:15px;">
+        <el-select v-model="feescale" placeholder="请选择收费项目进行添加" @@change="feescaleChange" style="width:300px;">
+            <el-option v-for="item in feescales" :label="item.name" :value="item" :key="item.id">
+                <span style="display:inline-block;width:90px;">{{item.name}}</span>
+                <span style="color:#8492a6;font-size:12px">单价：{{item.price}}</span>
+            </el-option>
+        </el-select>
+        <el-button type="success" @@click="handleSubmit()" style="vertical-align:top;">保存清单</el-button>
+        <el-button onclick="history.back()" style="vertical-align:top;">返回</el-button>
+    </div>
+</div>
+<script type="text/javascript">
+    emptyPager.student = '@Html.Raw(ViewBag.Student)';
+    emptyPager.selectname = '@Html.Raw(ViewBag.StudentName)';
+    emptyPager.times = [new Date('@ViewBag.BeginTime'), new Date('@ViewBag.EndTime')];
+    emptyPager.students = [];
+    emptyPager.temprows = [];
+    emptyPager.feescale = {};
+    emptyPager.feescales = [];
+    emptyPager.allstudents = [];
+    emptyPager.fullLoading = false;
+    emptyPager.Loaded = true;
+    var app = new Vue({
+        el: '#app', data: emptyPager, methods: {
+            remoteQuery(query) {
+                emptyPager.temprows = emptyPager.allstudents.filter(item => {
+                    return item.label.indexOf(query) > -1 || item.studentid.indexOf(query) > -1 || item.pinying.indexOf(query.toUpperCase()) > -1;
+                })
+            },
+            handleRemove(row) {
+                for (var i = 0; i < emptyPager.rows.length; i++) {
+                    if (emptyPager.rows[i] == row) {
+                        emptyPager.rows.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            handleSubmit() {
+                if (emptyPager.Loaded) {
+                    if (emptyPager.rows.length > 0) {
+                        var data = '';
+                        for (var i = 0; i < emptyPager.rows.length; i++) {
+                            if (data) {
+                                data += '##';
+                            }
+                            data += emptyPager.rows[i].id + '#' + emptyPager.rows[i].count + '#' + emptyPager.rows[i].picker[0].pattern("yyyy-MM-dd") + ' - ' + emptyPager.rows[i].picker[1].pattern("yyyy-MM-dd");
+                        }
+                        emptyPager.Loaded = false;
+                        $.post(location.pathname + '?do=create', { organ: '@ViewBag.Organ',classes: '@ViewBag.Classes', student: '@ViewBag.Student', students: emptyPager.students.join(), data: data }, function (rlt) {
+                            emptyPager.Loaded = true;
+                            iTips(rlt.message, rlt.success);
+                            if (rlt.success) {
+                                if (rlt.data) {
+                                    app.$confirm('缴费清单创建成功，请选择下一步操作?', '提示', {
+                                        confirmButtonText: '收银台',
+                                        cancelButtonText: '返回',
+                                        type: 'warning'
+                                    }).then(() => {
+                                        emptyPager.Loaded = true;
+                                        $.getJSON('/topay', { 'from': 'feeorder', 'fromid': rlt.data }, function (rlt) {
+                                            emptyPager.Loaded = false;
+                                            if (rlt.success) {
+                                                if (rlt.ispay) {
+                                                    location.href = '/ticket?id=' + rlt.payid;
+                                                } else {
+                                                    location.href = '/pay?id=' + rlt.payid;
+                                                }
+                                            } else {
+                                                iTips(rlt.message, rlt.success);
+                                            }
+                                        })
+                                    }).catch(() => {
+                                        localStorage.setItem('reload', 'true');
+                                        history.back();
+                                    });
+                                } else {
+                                    localStorage.setItem('reload', 'true');
+                                    history.back();
+                                }
+                            }
+                        });
+                    } else {
+                        iTips('暂无收费项目，请先添加收费项目');
+                    }
+                } else {
+                    iTips('操作正在提交中，请稍候');
+                }
+            },
+            countChange(row) {
+                if (isNaN(Number(row.count))) {
+                    iTips('您输入的数量格式有误');
+                    row.count = 0;
+                } else {
+                    row.amount = (Number(row.price) * Number(row.count)).toFixed(2);
+                }
+            },
+            getSummaries(param) {
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index !== 1 && index !== 5) {
+                        sums[index] = '';
+                    } else if (index === 5) {
+                        const values = data.map(item => Number(item[column.property]));
+                        if (!values.every(value => isNaN(value))) {
+                            sums[index] = values.reduce((prev, curr) => {
+                                const value = Number(curr);
+                                if (!isNaN(value)) {
+                                    return prev + curr;
+                                } else {
+                                    return prev;
+                                }
+                            }, 0);
+                            sums[index] = '￥ ' + sums[index].toFixed(2);
+                        }
+                    } else {
+                        sums[index] = '总价';
+                    }
+                });
+
+                return sums;
+            },
+            feescaleChange(val) {
+                if (val && val.id) {
+                    for (var i = 0; i < emptyPager.rows.length; i++) {
+                        if (emptyPager.rows[i].id == val.id) {
+                            emptyPager.rows[i].count++;
+                            emptyPager.rows[i].amount = (Number(emptyPager.rows[i].price) * Number(emptyPager.rows[i].count)).toFixed(2);
+                            emptyPager.feescale = '';
+                            return;
+                        }
+                    }
+                    emptyPager.rows.push({
+                        id: val.id, name: val.name, price: val.price, count: 1, amount: val.price, picker: emptyPager.times
+                    });
+                    emptyPager.feescale = '';
+                }
+            }
+        },
+        created() {
+            emptyPager.message = '请先选择收费项目进行添加';
+            if ('@ViewBag.Student') {
+                emptyPager.students = ['@ViewBag.Student'];
+            } else {
+                $.getJSON('/ajax/students', { 'classes': '@Html.Raw(ViewBag.Classes)', 'organ': '@ViewBag.Organ' }, function (rlt) {
+                    emptyPager.allstudents = rlt.rows;
+                    emptyPager.temprows = rlt.rows;
+                })
+            }
+            $.getJSON('/feescale', { 'do': 'tree', 'organ': '@ViewBag.Organ' }, function (rlt) {
+                emptyPager.feescales = rlt;
+            })
+        }
+    })
+</script>

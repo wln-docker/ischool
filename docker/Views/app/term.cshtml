@@ -1,0 +1,197 @@
+﻿<div id="app"><router-view></router-view></div>
+<template id="app-list">
+    <div style="margin: 0px 10px;">
+        <div class="wln-subtitle">
+            <div style="float:right">
+                <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="small" type="primary" onclick="router.push('/term/add')" v-if="system">新增学期</el-button>
+            </div>
+            学期管理
+        </div>
+        <el-table :data="rows" :empty-text="message" border style="width: 100%">
+            <el-table-column width="120" align="center" label="当前学期">
+                <template scope="scope">
+                    <el-tag type="danger" v-if="scope.row.state===1">已激活</el-tag>
+                    <el-button :plain="true" type="success" size="mini" @@click="handleActive(scope.row)" v-else>未激活</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column width="80" align="center" label="学年" property="year"></el-table-column>
+            <el-table-column width="80" align="center" label="学期">
+                <template scope="scope">
+                    <p v-if="scope.row.term===1">春</p>
+                    <p v-else-if="scope.row.term===2">夏</p>
+                    <p v-else-if="scope.row.term===3">秋</p>
+                    <p v-else-if="scope.row.term===4">冬</p>
+                </template>
+            </el-table-column>
+            <el-table-column align="left" label="备注">
+                <template scope="scope">
+                    <p style="color:#999999;">{{scope.row.remarks}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column width="230" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleEditer(scope.row)" type="primary" v-if="system">编辑</el-button>
+                    <el-button size="small" @@click="handleDelete(scope.row)" :plain="true" :disabled="scope.row.state===1" v-if="system">删除</el-button>
+                    <el-button size="small" @@click="location.href='grade'" type="primary">年级管理</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div style="margin: 0px 10px;">
+        <el-form ref="form" v-model="form" label-width="0px" style="width:720px;">
+            <el-form-item>
+                <el-col :span="3" class="label">学年&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="form.year" placeholder="请选择" style="width:275px;">
+                        <el-option v-for="item in years" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">学期&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="form.term" placeholder="请选择" style="width:275px;">
+                        <el-option v-for="item in terms" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">备注&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="textarea" :rows="2" v-model="form.remarks"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="router.push('/term')">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            emptyPager.organs = [];
+            emptyPager.system = false;
+            $.getJSON('/right', { 'do': '', organ: '', code: 'School_Term' }, function (rlt) {
+                emptyPager.system = rlt.success;
+            })
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size }, function (rlt) {
+                    _self.message = rlt.message;
+                    _self.total = rlt.total;
+                    _self.index = rlt.index;
+                    _self.size = rlt.size;
+                    _self.rows = rlt.rows;
+                });
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleEditer(row) {
+                router.push('/term/edit?id=' + row.id);
+            },
+            handleActive(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'use', id: row.id }, function (rlt) {
+                    _self.refresh();
+                    iTips(rlt.message, rlt.success);
+                });
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            this.refresh();
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            var obj = {
+                form: {
+                    id: ''
+                    ,
+                    year: ''
+                    ,
+                    term: ''
+                    ,
+                    remarks: ''
+                },
+                terms: [{ "value": 1, "label": "春" }, { "value": 2, "label": "夏" }, { "value": 3, "label": "秋" }, { "value": 4, "label": "冬" }],
+                years: []
+            }
+            $.getJSON(location.pathname, { 'do': 'year' }, function (rlt) {
+                obj.years = rlt.data;
+                obj.form.year = rlt.select;
+            });
+            return obj;
+        },
+        methods: {
+            onSubmit: function () {
+                var obj = this.form;
+                $.post(location.pathname + '?do=set', obj, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    if (rlt.success) {
+                        obj.sid = rlt.data;
+                        router.push('/term');
+                    }
+                });
+            }
+        }, created() {
+            var obj = this.form;
+            obj.id = this.getParam('id');
+            if (obj.id) {
+                $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
+                    if (rlt.id) {
+                        obj.year = rlt.year;
+                        obj.term = rlt.term;
+                        obj.remarks = rlt.remarks;
+                    }
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/term', component: appList }
+            , { path: '/term/add', component: appForm }
+            , { path: '/term/edit', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router });
+</script>

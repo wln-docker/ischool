@@ -1,0 +1,193 @@
+﻿<div id="app" v-loading.fullscreen.lock="loading && term == ''" style="width:100%;height:100%;display:table;">
+    @if (string.IsNullOrEmpty(ViewBag.Student)) { 
+    <div style="display:table-cell;width:178px;background-color:#f0f0f0;">
+        <div style="text-align:center;color:#1d76b1">
+            <el-select v-model="term" placeholder="请选择要管理的学期" @@change="reloadTree" style="width:168px;margin:5px;">
+                <el-option v-for="item in terms" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
+                </el-option>
+            </el-select>
+        </div>
+        <el-tree ref="tree" :data="classes" :current-node-key="classesSelectId" :highlight-current="true" node-key="value" :default-expand-all="true" :expand-on-click-node="false" @@node-click="handleNodeClick" @@check-change="handleNodeClick" style="border:none;"></el-tree>
+    </div>}
+
+    <div style="display:table-cell;">
+        <div v-loading="loading" style="margin:0px 10px">
+            <div class="wln-subtitle">
+                <span style="float:right;">
+                    @if (!string.IsNullOrEmpty(ViewBag.Student)) {<el-button size="small" :plain="true" type="info" onclick="history.back()">返回</el-button>}
+                    <el-button size="small" :plain="true" type="info" onclick="app.refresh()">刷新</el-button>
+                    <el-button type="primary" size="small" @@click="location.href='discount?student=' + student" v-if="student">优惠管理</el-button>
+                    <el-button type="primary" size="small" @@click="location.href='newfeeorder?student=' + student" v-if="student">生成缴费清单</el-button>
+                    <el-button type="primary" size="small" @@click="location.href='newfeeorder?classes=' + classesSelectId" v-if="classesSelectId">批量生成缴费清单</el-button>
+                </span>
+                缴费清单 <span>{{classesSelectName}}</span>
+            </div>
+            <el-table :data="rows" :empty-text="message">
+                <el-table-column width="130" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
+                <el-table-column width="100" align="center" label="姓名" property="studentname"></el-table-column>
+                <el-table-column width="110" align="center" label="生成时间" property="create"></el-table-column>
+                <el-table-column width="90" align="right" label="应缴">
+                    <template scope="scope">
+                        <el-popover trigger="hover" placement="right">
+                            <p>总金额: {{ scope.row.fullprice }}</p>
+                            <p>优惠减免: {{ scope.row.discount }}</p>
+                            <p>应缴金额: {{ scope.row.amount }}</p>
+                            <div slot="reference" class="name-wrapper">{{ scope.row.amount }}</div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column width="100" align="center" label="状态">
+                    <template scope="scope">
+                        <el-tag type="success" v-if="scope.row.ispay > 0">已缴费</el-tag>
+                        <el-tag type="gray" v-else>待支付</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column width="90" align="right" label="实缴" property="paid"></el-table-column>
+                <el-table-column width="100" align="center" label="微信推送">
+                    <template scope="scope">
+                        <el-button size="small" @@click="wxpush(scope.row.id)" type="success" v-if="scope.row.ispay > 0">已缴费</el-button>
+                        <el-button size="small" @@click="wxpush(scope.row.id)" type="success" v-else-if="scope.row.pushstate===3">已推送</el-button>
+                        <el-button size="small" @@click="wxpush(scope.row.id)" type="warning" v-else-if="scope.row.pushstate===2" title="已屏蔽或取消关注等原因会造成推送失败">推送失败</el-button>
+                        <el-button size="small" @@click="wxpush(scope.row.id)" type="gray" title="点击重新推送" v-else-if="scope.row.pushstate===1">未绑定</el-button>
+                        <el-button size="small" @@click="wxpush(scope.row.id)" type="info" title="点击重新推送" v-else>未推送</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="操作">
+                    <template scope="scope">
+                        <el-button size="small" @@click="location.href='/viewer?id=' + scope.row.id" type="info">明细</el-button>
+                        <el-button size="small" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1">查看缴费单据</el-button>
+                        <el-button size="small" @@click="topay(scope.row.id)" type="success" v-if="scope.row.ispay === 0">缴费</el-button>
+                        <el-button size="small" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.ispay === 0">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var ts = 0;
+    emptyPager.term = '';
+    emptyPager.terms = [];
+    emptyPager.organ = '';
+    emptyPager.student = '@Html.Raw(ViewBag.Student)';
+    emptyPager.classes = [];
+    emptyPager.classesSelectId = '';
+    emptyPager.classesSelectName = '@Html.Raw(ViewBag.StudentName)';
+    emptyPager.Loaded = false;
+    var app = new Vue({
+        el: '#app', data: emptyPager, methods: {
+            refresh() {
+                if (emptyPager.organ || emptyPager.student || emptyPager.classesSelectId) {
+                    emptyPager.listLoading = true;
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, student: emptyPager.student, organ: emptyPager.organ, classes: emptyPager.classesSelectId }, function (rlt) {
+                        emptyPager.listLoading = false;
+                        emptyPager.message = rlt.message;
+                        emptyPager.total = rlt.total;
+                        emptyPager.index = rlt.index;
+                        emptyPager.size = rlt.size;
+                        emptyPager.rows = rlt.rows;
+                    });
+                }
+                else {
+                    emptyPager.message = '请先选择要管理的班级或学员';
+                }
+            },
+            wxpush(id) {
+                if (new Date().getTime() - ts < 15000) {
+                    iTips('请求正在处理中，请稍候');
+                } else {
+                    ts = new Date().getTime();
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'wxpush', id: id }, function (rlt) {
+                        ts = 0;
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }
+            },
+            topay(fromid) {
+                if (new Date().getTime() - ts < 15000) {
+                    iTips('请求正在处理中，请稍候');
+                } else {
+                    ts = new Date().getTime();
+                    $.getJSON('/topay', { 'from': 'feeorder', 'fromid': fromid }, function (rlt) {
+                        ts = 0;
+                        if (rlt.success) {
+                            if (rlt.ispay) {
+                                location.href = '/ticket?id=' + rlt.payid;
+                            } else {
+                                location.href = '/pay?id=' + rlt.payid;
+                            }
+                        } else {
+                            iTips(rlt.message, rlt.success);
+                        }
+                    })
+                }
+            },
+            toticket(payid) {
+                location.href = '/ticket?id=' + payid;
+            },
+            handleNodeClick(node) {
+                emptyPager.classesSelectId = '';
+                emptyPager.classesSelectName = node.selectname ? node.selectname : '';
+                emptyPager.organ = node.cascader ? node.cascader[0] : '';
+                if (node.cascader.length == 2) {
+                    emptyPager.classesSelectId = node.cascader[1];
+                    $.getJSON('/ajax/select', { 'classes': emptyPager.classesSelectId });
+                }
+                this.refresh();
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            reloadTree() {
+                var _self = this;
+                emptyPager.organ = '';
+                emptyPager.classesSelectId = '';
+                emptyPager.classesSelectName = '';
+                emptyPager.message = '请先选择要管理的班级或学员';
+                emptyPager.terms = [];
+                emptyPager.total = 0;
+                emptyPager.index = 1;
+                emptyPager.rows = [];
+                emptyPager.foading = true;
+                $.getJSON('/ajax/classes', { 'term': emptyPager.term }, function (rlt) {
+                    emptyPager.loading = false;
+                    emptyPager.term = rlt.term;
+                    emptyPager.terms = rlt.terms;
+                    emptyPager.classes = rlt.classes;
+                    emptyPager.classesSelectId = rlt.select;
+                    _self.refresh();
+                });
+            }
+        },
+        created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
+            this.reloadTree();</text>} else {<text>
+            this.refresh();</text>}
+
+        }
+    })
+</script>

@@ -1,0 +1,391 @@
+﻿<div id="app"><router-view></router-view></div>
+<template id="app-list">
+    <div style="margin:0px 10px;">
+        <div class="wln-subtitle">
+            <div style="float:right">
+                    @if (!string.IsNullOrEmpty(ViewBag.Student)) {<el-button size="small" :plain="true" type="info" onclick="history.back()">返回</el-button>}
+                <el-button size="small" type="primary" @@click="toAdd">预缴充值</el-button>
+                <el-button size="small" type="warning" @@click="refund">退款提现</el-button>
+                @*<input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />*@
+            </div>
+            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>}
+
+            预缴费用<span>{{subTitle}}</span>
+        </div>
+        <el-table :data="rows" :empty-text="message">
+            <el-table-column width="100" align="center" label="类型" property="type"></el-table-column>
+            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>}
+            <el-table-column width="110" align="right" label="金额" property="amount"></el-table-column>
+            <el-table-column width="110" align="right" label="余额" property="balance"></el-table-column>
+            <el-table-column width="90" align="center" label="状态">
+                <template scope="scope">
+                    <el-tag type="success" v-if="scope.row.ispay > 0">已支付</el-tag>
+                    <el-tag type="gray" v-else-if="scope.row.type == '预缴' || scope.row.type == '定金'">待支付</el-tag>
+                    <el-tag type="gray" v-else>待审核</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column align="left" label="备注" property="remarks">></el-table-column>
+            <el-table-column width="140" align="center" label="录入时间" property="create"></el-table-column>
+            <el-table-column width="140" align="center" label="缴费时间" property="create"></el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1 && scope.row.payid">查看缴费单据</el-button>
+                    <el-button size="small" @@click="topay(scope.row.id)" type="success" v-if="scope.row.ispay === 0 && (scope.row.type == '预缴' || scope.row.type == '定金')">缴费</el-button>
+                    <el-button size="small" @@click="handleVerify(scope.row)" type="primary" v-if="scope.row.ispay === 0 && scope.row.type != '预缴' && scope.row.type != '定金'">审核</el-button>
+                    <el-button size="small" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.ispay === 0">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div class="wln">
+        <el-form ref="form" label-width="140px">
+            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            <el-form-item>
+                <el-col :span="3" class="label">校园&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="school" placeholder="请选择" @@change="schoolChange" style="width:300px">
+                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                            <span style="float:left">{{item.name}}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">缴费学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要缴费的学员" @@change="schoolChange" style="width:300px;">
+                        <el-option v-for="item in students" :label="item.label" :value="item.id">
+                            <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                            <span style="display:inline-block;width:120px;color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
+                            <span style="color:#8492a6;font-size:12px">{{item.classname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            } else {
+            <el-form-item>
+                <el-col :span="3" class="label">缴费学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="studentname" style="width:300px;" disabled></el-input>
+                </el-col>
+            </el-form-item>
+            }
+
+            <el-form-item>
+                <el-col :span="3" class="label">缴费金额&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="amount" style="width:90px;"></el-input>&nbsp;元
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">缴费类型&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="type" placeholder="请选择">
+                        <el-option v-for="item in types" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">备注&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="textarea" :rows="2" v-model="remarks" style="width:300px;"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button @@click="goBack">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<template id="app-refund">
+    <div class="wln">
+        <el-form ref="form" label-width="140px">
+            <el-form-item>
+                <el-col :span="3" class="label">退款学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="studentname" style="width:300px;" disabled></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">退款金额&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="amount" style="width:90px;"></el-input>&nbsp;元
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">备注&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="textarea" :rows="2" v-model="remarks" style="width:300px;"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onRefund">提交</el-button>
+                    <el-button @@click="goBack">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    emptyPager.school = '@ViewBag.Organ';
+    emptyPager.organs = [];
+    emptyPager.type = 0;
+    emptyPager.types = [{ value: 1, label: '预缴充值' }, { value: 2, label: '预缴定金' }, { value: -1, label: '初始余额' }];
+    emptyPager.student = '@Html.Raw(ViewBag.Student)';
+    emptyPager.studentname = '@Html.Raw(ViewBag.StudentName)';
+    emptyPager.students = [];
+    emptyPager.allstudents = [];
+    emptyPager.amount = '';
+    emptyPager.remarks = '';
+    emptyPager.subTitle = '@Html.Raw(ViewBag.StudentShow)';
+    emptyPager.Loaded = false;
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                if (_self.school) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, school: _self.school, student: _self.student, key: _self.key }, function (rlt) {
+                        _self.message = rlt.message;
+                        _self.total = rlt.total;
+                        _self.index = rlt.index;
+                        _self.size = rlt.size;
+                        _self.rows = rlt.rows;
+                    });
+                }
+                else {
+                    _self.message = '请先选择要管理的校园';
+                    _self.total = 0;
+                    _self.index = 0;
+                    _self.rows = [];
+                }
+            },
+            getTotal() {
+                var _self = this;
+                $.getJSON(location.pathname + '?do=total', { 'school': emptyPager.school }, function (rlt) {
+                    _self.subTitle = rlt.message;
+                });
+            },
+            topay(fromid) {
+                if (emptyPager.Loaded) {
+                    iTips('操作正在提交中，请稍后');
+                } else {
+                    emptyPager.Loaded = true;
+                    $.getJSON('/topay', { 'from': 'retainer', 'fromid': fromid }, function (rlt) {
+                        emptyPager.Loaded = false;
+                        if (rlt.success) {
+                            if (rlt.ispay) {
+                                location.href = '/ticket?id=' + rlt.payid;
+                            } else {
+                                location.href = '/pay?id=' + rlt.payid;
+                            }
+                        } else {
+                            iTips(rlt.message, rlt.success);
+                        }
+                    })
+                }
+            },
+            schoolChange(val) {
+                emptyPager.rows = [];
+                $.getJSON('/organ', { 'do': val });
+                this.refresh();
+                this.getTotal();
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            toAdd() {
+                router.push('/retainer/add?organ=' + emptyPager.school + '&student=@ViewBag.Student');
+            },
+            refund() {
+                router.push('/retainer/refund?organ=' + emptyPager.school + '&student=@ViewBag.Student');
+            },
+            toticket(payid) {
+                location.href = '/ticket?id=' + payid;
+            },
+            handleVerify(row) {
+                this.$confirm('记录审核后将不可修改及删除，确定吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'verify', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('审核操作已取消');
+                });
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.school = rlt.select;
+                _self.getTotal();
+            })</text>}
+
+            this.refresh();
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            emptyPager.type = 1;
+            emptyPager.amount = '';
+            emptyPager.remarks = '';
+            return emptyPager;
+        },
+        methods: {
+            schoolChange(val) {
+                emptyPager.allstudents = [];
+                emptyPager.students = [];
+                $.getJSON('/students', { 'organ': emptyPager.school }, function (rlt) {
+                    emptyPager.allstudents = rlt.rows;
+                    emptyPager.students = rlt.rows;
+                })
+            },
+            remoteQuery(query) {
+                emptyPager.students = emptyPager.allstudents.filter(item => {
+                    return item.label.indexOf(query) > -1 || item.studentid.indexOf(query) > -1 || item.pinying.indexOf(query.toUpperCase()) > -1;
+                })
+            },
+            goBack() {
+                emptyPager.student = '@Html.Raw(ViewBag.Student)';
+                history.back();
+            },
+            onSubmit: function () {
+                if (emptyPager.Loaded) {
+                    iTips('操作正在提交中，请稍后');
+                } else {
+                    emptyPager.Loaded = true;
+                    $.post(location.pathname + '?do=set', { organ: emptyPager.school, student: emptyPager.student, type: emptyPager.type, amount: emptyPager.amount, remarks: emptyPager.remarks }, function (rlt) {
+                        emptyPager.Loaded = false;
+                        if (rlt.success) {
+                            app.$confirm('预缴订单保存成功，请选择下一步操作?', '提示', {
+                                confirmButtonText: '收银台',
+                                cancelButtonText: '返回',
+                                type: 'warning'
+                            }).then(() => {
+                                emptyPager.Loaded = true;
+                                $.getJSON('/topay', { 'from': 'retainer', 'fromid': rlt.data }, function (rlt) {
+                                    emptyPager.Loaded = false;
+                                    if (rlt.success) {
+                                        if (rlt.ispay) {
+                                            location.href = '/ticket?id=' + rlt.payid;
+                                        } else {
+                                            location.href = '/pay?id=' + rlt.payid;
+                                        }
+                                    } else {
+                                        iTips(rlt.message, rlt.success);
+                                    }
+                                })
+                            }).catch(() => {
+                                emptyPager.school = '@ViewBag.Organ';
+                                emptyPager.type = '';
+                                emptyPager.amount = '';
+                                emptyPager.remarks = '';
+                                history.back();
+                            });
+                        } else {
+                            iTips(rlt.message, false);
+                        }
+                    });
+                }
+            }
+        }, created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                emptyPager.organs = rlt.data;
+                if (emptyPager.school) {
+                    $.getJSON('/charge/students', { 'organ': emptyPager.school }, function (rlt) {
+                        emptyPager.allstudents = rlt.rows;
+                        emptyPager.students = rlt.rows;
+                    })
+                }
+            })</text>}
+        }
+    })
+    var appRefund = Vue.extend({
+        template: '#app-refund',
+        data: function () {
+            emptyPager.type = 3;
+            emptyPager.amount = '';
+            emptyPager.remarks = '';
+            return emptyPager;
+        },
+        methods: {
+            goBack() {
+                emptyPager.student = '@Html.Raw(ViewBag.Student)';
+                history.back();
+            },
+            onRefund: function () {
+                if (emptyPager.Loaded) {
+                    iTips('操作正在提交中，请稍后');
+                } else {
+                    emptyPager.Loaded = true;
+                    $.post(location.pathname + '?do=refund', { organ: emptyPager.school, student: emptyPager.student, type: emptyPager.type, amount: emptyPager.amount, remarks: emptyPager.remarks }, function (rlt) {
+                        emptyPager.Loaded = false;
+                        emptyPager.type = '';
+                        emptyPager.amount = '';
+                        emptyPager.remarks = '';
+                        emptyPager.student = '@Html.Raw(ViewBag.Student)';
+                        history.back();
+                    });
+                }
+            }
+        }, created() { }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/retainer', component: appList }
+            , { path: '/retainer/add', component: appForm }
+            , { path: '/retainer/refund', component: appRefund }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router, created() { } });
+</script>

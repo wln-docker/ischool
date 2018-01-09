@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>缴费单据打印</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Pragma" contect="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="//static.wlniao.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//static.wlniao.com/wlniao/weprint/weprint.js"></script>
+    <style>
+        body {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Chrome/Safari/Opera */
+            -khtml-user-select: none; /* Konqueror */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently not supported by any browser */
+        }
+    </style>
+</head>
+<body style="background:#bababa;text-align:center;">
+    <div style="display:inline-block;margin:30px auto;box-shadow:10px 10px 5px #888888;">
+        <div id="wedoc" style="background:#ffffff;">
+            <div style="width:750px;min-height:300px;padding:20px;">
+                <div style="width:100%;text-align:center;position:relative;">
+                    <div style="position:absolute;top:20px;left:0px;"></div>
+                    <div style="display:inline-block;font-family:微软雅黑;font-size:27px;line-height:27px;font-weight:bold;">@Html.Raw(ViewBag.OrganName)<br /><font style="font-size:18px">缴费单据</font></div>
+                    <div style="position:absolute;bottom:0;right:0px;font-family:fantasy;font-size:15px;">No.&nbsp;@ViewBag.PayId</div>
+                </div>
+                <div style="margin-top:6px;font-size:14px;font-family:微软雅黑;text-align:left;"><span style="float:right;">日期：<font style="display:inline-block;width:40px;text-align:center;">@ViewBag.Year</font>年<font style="display:inline-block;width:30px;text-align:center;">@ViewBag.Month</font>月<font style="display:inline-block;width:30px;text-align:center;">@ViewBag.Day</font>日</span>缴费学员：&nbsp;@Html.Raw(ViewBag.StudentName)</div>
+                <table border="0" cellspacing="0" cellpadding="0" style="width:100%;font-size:14px;font-family:微软雅黑;border-collapse:collapse;border-spacing:0;">
+                    <tr><td style="width:50px;border:@Html.Raw(ViewBag.Border)">序号</td><td style="width:120px;border:@Html.Raw(ViewBag.Border);border-left:none">缴费项目</td><td style="border:@Html.Raw(ViewBag.Border);border-left:none">缴费期间</td><td style="width:90px;border:@Html.Raw(ViewBag.Border);border-left:none">单价</td><td style="width:90px;border:@Html.Raw(ViewBag.Border);border-left:none">数量</td><td style="width:90px;border:@Html.Raw(ViewBag.Border);border-left:none">折扣</td><td style="width:90px;border:@Html.Raw(ViewBag.Border);border-left:none">金额</td></tr>
+                    @Html.Raw(ViewBag.HtmlList)
+                    <tr><td style="border:@Html.Raw(ViewBag.Border);border-top:none" colspan="4" align="left">&nbsp;&nbsp;合计：&nbsp;@Html.Raw(ViewBag.CHNTotalPrice)</td><td colspan="2" style="border:@Html.Raw(ViewBag.Border);border-top:none;border-left:none">收款方式：@Html.Raw(ViewBag.PayWay)</td><td style="border:@Html.Raw(ViewBag.Border);border-top:none;border-left:none">￥@ViewBag.TotalPrice</td></tr>
+                    <tr style="font-size:12px;line-height:30px;text-align:left"><td colspan="2">&nbsp;&nbsp;经办人：&nbsp;@Html.Raw(ViewBag.AccountName)</td><td colspan="4">支付流水号：@Html.Raw(ViewBag.PayOrder)</td><td>印章：</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="btns" style="position:fixed;top:35px;top:60px;right:90px;">
+        <button type="button" onclick="history.back()" style="width:60px;padding:6px 12px;cursor:pointer;margin-right:6px;">返回</button>
+        <button type="button" onclick="weprint('wedoc')" style="width:60px;padding:6px 12px;cursor:pointer;">打印</button>
+    </div>
+</body>
+</html>

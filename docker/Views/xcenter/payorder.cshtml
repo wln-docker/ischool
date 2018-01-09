@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}<!DOCTYPE html>
+<html>
+<head>
+    <title>支付单据</title>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=320,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1" />
+    <style type="text/css">
+        body {
+            background-color: #f0f0f0;
+            font-family: Microsoft Yahei;
+        }
+        .card {
+            width: 94%;
+            margin: 1%;
+            padding: 2%;
+            background: #ffffff;
+            -webkit-box-shadow: 0 2px 3px rgba(100,100,100,0.3 );
+        }
+        h3.title,table{width:96%;margin:0px auto;text-align:center;}
+        span.right{float:right}
+        tr:nth-child(2n){color:#111111;font-size:15px;border-top:3px solid #fff;}
+        tr:nth-child(2n+1){color:#999999;font-size:11px;}
+        p{font-size:14px;color:#555555;}
+    </style>
+</head>
+<body onselectstart="return false;">
+    <div class="card">
+        <h3 class="title" style="font-size:21px;line-height:30px;color:#111111;">支付单据</h3>
+        <div style="color:#999999;font-size:12px;border-bottom:3px double #999999;margin-bottom:9px;text-align:center;">@ViewBag.PayTime<span class="right"></span></div>
+        <div style="min-height:300px;">
+            <table>@Html.Raw(ViewBag.HtmlList)</table>
+            @if (ViewBag.From == "feeorder")
+            {
+                <p style="text-align:right;padding-right:2%;">合计：<font style="color:#ff6a00;font-size:18px;vertical-align:middle;">￥@ViewBag.Amount</font></p>
+                @if (!string.IsNullOrEmpty(ViewBag.Discount))
+                {<p style="text-align:right;padding-right:2%;font-size:12px;color:#00bcd4;">@Html.Raw(ViewBag.Discount)</p>}
+                @if (!string.IsNullOrEmpty(ViewBag.Payway))
+                {<p style="text-align:right;padding-right:2%;font-size:12px;color:#f44336;">@Html.Raw(ViewBag.Payway)</p>}
+            }
+        </div>
+        <div style="position:fixed;right:20px;top:27px;background:rgba(255,255,255,0.8);transform:rotate(30deg);-ms-transform:rotate(30deg);-moz-transform:rotate(30deg);-webkit-transform:rotate(30deg);">
+            <span style="display:inline-block;border-radius:3px;border:1px solid @Html.Raw(ViewBag.Color);"><span style="display:inline-block;border-radius:3px;border:3px solid #ffffff;"><span style="display:inline-block;border-radius:3px;padding:5px 12px;font-family:微软雅黑;color:@Html.Raw(ViewBag.Color);border:1px solid @Html.Raw(ViewBag.Color);">@Html.Raw(ViewBag.Step)</span></span></span>
+        </div>
+        <div style="color:#cac6c6;font-size:11px;line-height:11px;margin-top:15px;text-align:center;">@Html.Raw(ViewBag.StudentName)</div>
+    </div>
+    @if (!string.IsNullOrEmpty(ViewBag.MobileHost))
+    {<div style="text-align:center;margin-top:35px;"><a style="padding:9px 95px;color:#ffffff;background:#40b2f5;font-size:15px;border-radius:3px;text-decoration:none" href="@Html.Raw(ViewBag.MobileHost)">返回</a></div>}
+
+    <script type="text/javascript">
+        function ToPay(id) {
+            $.getJSON(location.pathname, { 'do': 'select', 'student': id }, function (rlt) {
+                if (rlt.success) {
+                    location.reload();
+                } else {
+                    wln.alert(rlt.message);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

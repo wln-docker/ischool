@@ -1,0 +1,108 @@
+﻿<div id="app" class="wln">
+    <div class="wln-title">报表查询范围</div>
+    <div style="margin-bottom:30px;width:600px;">
+        <el-form ref="form" label-width="10px">
+            <el-form-item>
+                <el-col :span="3" class="label">时间范围&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-date-picker v-model="times" :editable="false" type="daterange" format="yyyy-MM-dd" range-separator=" - " :picker-options="pickerOptions" placeholder="请选择报表统计时段" style="width:320px;"></el-date-picker>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">所属校园&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="organ" clearable placeholder="请先选择要查看的校园" @@change="schoolChange" style="width:320px;">
+                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                            <span style="float:left">{{item.name}}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+    <div class="wln-title">统计报表</div>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('yjfbb')">
+        <img class="image" src="/icons/chart-yjmx.svg">
+        <div class="bottom">预缴费报表</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('skhzb')">
+        <img class="image" src="/icons/huizong.svg">
+        <div class="bottom">收款汇总表</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('skmxb')">
+        <img class="image" src="/icons/mingxi.svg">
+        <div class="bottom">收款明细表</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('qfmxb')">
+        <img class="image" src="/icons/qianfei.svg">
+        <div class="bottom">欠费明细表</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('tfmxb')">
+        <img class="image" src="/icons/refund.svg">
+        <div class="bottom">退费明细表</div>
+    </el-card>
+    @*<el-card class="card" :body-style="{padding:'0px'}" onclick="app.openDoing('qfmxb')">
+        <img class="image" src="/icons/mingxi.svg">
+        <div class="bottom">财务对账单</div>
+    </el-card>*@
+
+
+
+
+    @*<div class="wln-title">图形报表</div>
+    <el-card class="card pic" :body-style="{padding:'0px'}">
+        <img class="image" src="/icons/chart-srhb.svg">
+        <div class="bottom">收入环比图</div>
+    </el-card>*@
+</div>
+<style>
+    .card {width:200px;margin:15px 0px 15px 20px;cursor:pointer;display:inline-block;}
+    .card:hover{opacity:0.9}
+    .image {width:60%;height:100px;display:block;background-color:#ff9800;padding:10% 20%;}
+    .card.pic .image {background-color:#2196f3;}
+    .bottom {font-size:20px;text-align:center;font-family:Microsoft YaHei;line-height:60px;}
+</style>
+<script type="text/javascript">
+    emptyPager.organ = '';
+    emptyPager.times = [new Date('@ViewBag.Today'), new Date('@ViewBag.Today')];
+    //emptyPager.times = [];
+    emptyPager.organs = [];
+    emptyPager.pickerOptions = {
+        shortcuts: [
+            { text: '昨天', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.Yeserday'), new Date('@ViewBag.Yeserday')]) } },
+            { text: '今天', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.Today'), new Date('@ViewBag.Today')]) } },
+            { text: '本月', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.MonthStart'), new Date('@ViewBag.MonthEnd')]) } },
+            { text: '本季度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.QuarterStart'), new Date('@ViewBag.QuarterEnd')]) } },
+            { text: '上月', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevMonthStart'), new Date('@ViewBag.PrevMonthEnd')]) } },
+            { text: '上季度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevQuarterStart'), new Date('@ViewBag.PrevQuarterEnd')]) } },
+            { text: '上年度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevYearStart'), new Date('@ViewBag.PrevYearEnd')]) } }]
+    }
+    var app = new Vue({
+        el: '#app', data: emptyPager, methods: {
+            schoolChange(val) {
+                $.getJSON('/ajax/select', { 'organ': val});
+            },
+            openTable(table) {
+                if (emptyPager.times.length < 2) {
+                    iTips('请先选择要查看的时间范围', false);
+                }
+                else if (!emptyPager.organ) {
+                    iTips('请先选择要查看的校园', false);
+                } else {
+                    window.open('/chart/' + table + '?organ=' + emptyPager.organ + '&start=' + emptyPager.times[0].pattern("yyyy-MM-dd") + '&end=' + emptyPager.times[1].pattern("yyyy-MM-dd"));
+                }
+            },
+            openDoing(table) {
+                iTips('报表正在开发中，暂未开放');
+            }
+        }, created() {
+            document.title = '统计报表';
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.organ = rlt.select;
+            });
+        }
+    });
+</script>

@@ -1,0 +1,209 @@
+﻿<div id="app"><router-view></router-view></div>
+<template id="app-list">
+    <div style="margin:0px 10px;">
+        <div class="wln-subtitle">
+            <div style="float:right">
+                <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="small" type="primary" onclick="router.push('/feescale/add')" v-if="editer">新增缴费项目</el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+            </div>
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>
+            缴费项目
+        </div>
+        <el-table :data="rows" :empty-text="message" border>
+            <el-table-column width="210" align="center" label="缴费项目名称" property="name"></el-table-column>
+            <el-table-column width="180" align="center" label="@Html.Raw(ViewBag.Label_feenumber)" property="feenumber"></el-table-column>
+            <el-table-column width="100" align="right" label="单价" property="price"></el-table-column>
+            <el-table-column></el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
+                    <el-button size="small" @@click="handleDelete(scope.row)" type="warning" v-if="delrow">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div class="wln">
+        <el-row :gutter="10">
+            <el-col :xs="12" :sm="10" :md="9" :lg="6">
+                <el-form ref="form" v-model="form" label-width="140px">
+                    <el-form-item label="缴费项目">
+                        <el-input v-model="form.name" style="width:275px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
+                        <el-input v-model="form.feenumber" style="width:275px;"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单价">
+                        <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
+                    </el-form-item>
+                    <el-form-item label="所属校园">
+                        <el-select v-model="form.organ" placeholder="请选择" style="width:275px;">
+                            <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                                <span style="float:left">{{item.name}}</span>
+                                <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @@click="onSubmit">提交</el-button>
+                        <el-button onclick="router.push('/feescale')">返回</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :xs="6" :sm="6" :md="6" :lg="4">
+                <div class="grid-content bg-purple-light"></div>
+            </el-col>
+            <el-col :xs="0" :sm="0" :md="1" :lg="8">
+                <div class="grid-content bg-purple"></div>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+<script type="text/javascript">
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            emptyPager.school = '';
+            emptyPager.organs = [];
+            emptyPager.editer = false;
+            emptyPager.delrow = false;
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                if (_self.school) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, school: _self.school, key: _self.key }, function (rlt) {
+                        _self.message = rlt.message;
+                        _self.total = rlt.total;
+                        _self.index = rlt.index;
+                        _self.size = rlt.size;
+                        _self.rows = rlt.rows;
+                    });
+                }
+                else {
+                    _self.message = '请先选择要管理的校园';
+                    _self.total = 0;
+                    _self.index = 0;
+                    _self.rows = [];
+                }
+            },
+            schoolChange(val) {
+                emptyPager.rows = [];
+                emptyPager.editer = false;
+                emptyPager.delrow = false;
+                $.getJSON('/organ', { 'do': val });
+                $.getJSON('/right', { 'do': 'editer', organ: val, code: 'FeeScale' }, function (rlt) {
+                    emptyPager.editer = rlt.success;
+                })
+                $.getJSON('/right', { 'do': 'delete', organ: val, code: 'FeeScale' }, function (rlt) {
+                    emptyPager.delrow = rlt.success;
+                })
+                this.refresh();
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleEditer(row) {
+                router.push('/feescale/edit?id=' + row.id);
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    app.$message({ type: 'info', message: '删除操作已取消' });
+                });
+            }
+        }, created() {
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.school = rlt.select;
+            });
+            this.refresh();
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            var obj = {
+                form: {
+                    id: ''
+                    ,
+                    name: ''
+                    ,
+                    feenumber: ''
+                    ,
+                    price: 0
+                    ,
+                    organ: ''
+                },
+                organs: []
+            }
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                obj.organs = rlt.data;
+                obj.form.organ = rlt.select;
+            });
+            return obj;
+        },
+        methods: {
+            onSubmit: function () {
+                var obj = this.form;
+                $.post(location.pathname + '?do=set', obj, function (rlt) {
+                    app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    if (rlt.success) {
+                        obj.sid = rlt.data;
+                        router.push('/feescale');
+                    }
+                });
+            }
+        }, created() {
+            var obj = this.form;
+            obj.id = this.getParam('id');
+            if (obj.id) {
+                $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
+                    if (rlt.id) {
+                        obj.name = rlt.name;
+                        obj.feenumber = rlt.feenumber;
+                        obj.price = rlt.price;
+                        obj.organ = rlt.organ;
+                    }
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/feescale', component: appList }
+            , { path: '/feescale/add', component: appForm }
+            , { path: '/feescale/edit', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router });
+</script>

@@ -1,0 +1,277 @@
+﻿<div style="width:100%;height:100%;display:table;">
+    <div style="display:table-cell;width:178px;background-color:#f0f0f0;" id="app-tree">
+        <div style="text-align:center;">
+            <el-select v-model="term" placeholder="请选择要管理的学期" @@change="refreshClasses" style="width:168px;margin:5px;">
+                <el-option v-for="item in terms" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
+                </el-option>
+            </el-select>
+        </div>
+        <el-tree ref="tree" :data="classes" :current-node-key="classesSelectId" :highlight-current="true" node-key="value" :default-expand-all="true" :expand-on-click-node="false" @@node-click="handleNodeClick" @@check-change="handleNodeClick" style="border:none;"></el-tree>
+    </div>
+    <div style="display:table-cell;" id="app"><router-view></router-view></div>
+</div>
+<template id="app-list" ref="list">
+    <div style="margin:0px 10px">
+        <div class="wln-subtitle">
+            <span style="float:right;">
+                <el-button size="small" :plain="true" type="info" onclick="history.back()">返回</el-button>
+                <el-button type="primary" size="small" onclick="router.push('/entrance/add')" v-if="classesSelectId">学员入学</el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+            </span>
+            入学记录 <span>{{classesSelectName}}</span>
+        </div>
+        <el-table :data="rows" :empty-text="message" v-loading="loading">
+            <el-table-column width="90" align="center" label="状态">
+                <template scope="scope">
+                    <el-tag type="primary" v-if="scope.row.state===0">未入学</el-tag>
+                    <el-tag type="success" v-else-if="scope.row.state===1">在读中</el-tag>
+                    <el-tag type="warning" v-else-if="scope.row.state===2">已转出</el-tag>
+                    <el-tag type="gray" v-else-if="scope.row.state===3">已毕业</el-tag>
+                    <el-tag type="gray" v-else>其它</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
+            <el-table-column width="100" align="center" label="姓名" property="name"></el-table-column>
+            <el-table-column width="270" align="center" label="就读时间" property="entertime"></el-table-column>
+            <el-table-column></el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleLocked(scope.row)" type="warning" :disabled="scope.row.islock > 0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
+                    <el-button size="small" @@click="handleRemove(scope.row)" type="danger" :disabled="scope.row.islock > 0">移除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div v-loading="loading" class="wln">
+        <el-form ref="form" label-width="0px" style="width:720px;">
+            <el-form-item>
+                <el-col :span="3" class="label">就读班级&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-cascader v-model="classesSelect" :options="classes" @@change="classesChange" style="width:300px"></el-cascader>
+                </el-col>
+            </el-form-item>
+            <el-form-item v-if="classesSelectId.length > 0">
+                <el-col :span="3" class="label">入学人员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-tooltip content="可搜索本园全部未入学及在读中学员信息" placement="right">
+                        <el-select v-model="ids" :multiple="true" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="@Html.Raw("可输入姓名或"+ViewBag.Label_studentid)查询" style="width:300px">
+                            <el-option v-for="item in students" :label="item.label" :value="item.value" :key="item.value">
+                                <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                                <span style="color:#8492a6;font-size:12px">@Html.Raw(ViewBag.Label_studentid)：{{item.studentid}}</span>
+                            </el-option>
+                        </el-select>
+                    </el-tooltip>
+                </el-col>
+            </el-form-item>
+            <el-form-item v-if="classesSelectId.length > 0">
+                <el-col :span="3" class="label">就读时间&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-date-picker v-model="entertime" :editable="false" align="right" type="daterange" format="yyyy-MM-dd" placeholder="选择日期" style="width:300px"></el-date-picker>
+                </el-col>
+            </el-form-item>
+            <el-form-item v-if="classesSelectId.length > 0">
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="router.push('/entrance')">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    emptyPager.term = '';
+    emptyPager.terms = [];
+    emptyPager.organ = '';
+    emptyPager.classes = [];
+    emptyPager.classesSelect = [];
+    emptyPager.classesSelectId = '';
+    emptyPager.classesSelectName = '';
+
+    emptyPager.ids = [];
+    emptyPager.students = [];
+    emptyPager.entertime = [];
+    var oneInit = false;
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                if (emptyPager.organ || emptyPager.classesSelectId) {
+                    emptyPager.loading = true;
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, term: emptyPager.term, organ: emptyPager.organ, classes: emptyPager.classesSelectId, key: emptyPager.key }, function (rlt) {
+                        emptyPager.message = rlt.message;
+                        emptyPager.total = rlt.total;
+                        emptyPager.index = rlt.index;
+                        emptyPager.size = rlt.size;
+                        emptyPager.rows = rlt.rows;
+                        emptyPager.loading = false;
+                    });
+                }
+                else {
+                    emptyPager.message = '请先选择要管理的班级';
+                    emptyPager.total = 0;
+                    emptyPager.index = 1;
+                    emptyPager.rows = [];
+                }
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleLocked(row) {
+                this.$confirm('上锁后此记录将无法移除和修改, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'lock', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('操作已取消');
+                });
+            },
+            handleRemove(row) {
+                this.$confirm('移除后学员可再次入学当前或其它班级, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'remove', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('操作已取消');
+                });
+            }
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            emptyPager.ids = [];
+            return emptyPager;
+        },
+        methods: {
+            classesChange: function (val) {
+                emptyPager.classesSelect = val;
+                emptyPager.classesSelectId = '';
+                emptyPager.organ = val ? val[0] : '';
+                if (val.length == 2) {
+                    emptyPager.classesSelectId = val[1];
+                    setTimeout(function () { emptyPager.classesSelectName = $('.el-cascader__label').text().replace(/[\r\n\ +]/g, ""); }, 200);
+                    changeClasses();
+                }
+            },
+            remoteQuery(query) {
+                emptyPager.students = emptyPager.list.filter(item => {
+                    return item.label.indexOf(query) > -1 || item.studentid.indexOf(query) > -1 || item.pinying.indexOf(query.toUpperCase()) > -1;
+                })
+            },
+            onSubmit: function () {
+                if (emptyPager.entertime && emptyPager.entertime.length == 2 && emptyPager.entertime[1]) {
+                    var entertime = emptyPager.entertime[0].pattern("yyyy-MM-dd") + ' 至 ' + emptyPager.entertime[1].pattern("yyyy-MM-dd");
+                    $.post(location.pathname + '?do=set', { term: emptyPager.term, classes: emptyPager.classesSelectId, ids: emptyPager.ids.join(','), entertime: entertime }, function (rlt) {
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                        if (rlt.success) {
+                            appList.options.methods.refresh();
+                            router.push('/entrance');
+                        }
+                    });
+                } else {
+                    iTips('就读时间未选择，请选择');
+                }
+            }
+        },
+        created: refreshClasses
+    })
+    var appTree = new Vue({
+        el: '#app-tree',
+        data: emptyPager,
+        methods: {
+            handleNodeClick(node) {
+                emptyPager.classesSelect = node.cascader;
+                emptyPager.classesSelectId = '';
+                emptyPager.organ = node.cascader ? node.cascader[0] : '';
+                if (node.cascader.length == 2) {
+                    emptyPager.classesSelectId = node.cascader[1];
+                    emptyPager.classesSelectName = node.selectname ? node.selectname : '';
+                    changeClasses();
+                }
+            },
+        },
+        created: refreshClasses
+    });
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/entrance', component: appList }
+            , { path: '/entrance/add', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router, data: emptyPager });
+    
+    function refreshClasses() {
+        if (oneInit) {
+            oneInit = false;
+            appList.options.methods.refresh();
+            return;
+        }
+        emptyPager.organ = '';
+        emptyPager.classesSelectId = '';
+        emptyPager.classesSelectName = '';
+        emptyPager.message = '请先选择要管理的校园或班级';
+        emptyPager.terms = [];
+        emptyPager.total = 0;
+        emptyPager.index = 1;
+        emptyPager.rows = [];
+        emptyPager.loading = true;
+        $.getJSON('/ajax/classes', { 'term': emptyPager.term }, function (rlt) {
+            if (emptyPager.term) {
+                emptyPager.term = rlt.term;
+                emptyPager.terms = rlt.terms;
+                emptyPager.classes = rlt.classes;
+                emptyPager.classesSelectId = rlt.select;
+                appList.options.methods.refresh();
+            } else {
+                oneInit = true;
+                emptyPager.loading = false;
+                emptyPager.term = rlt.term;
+                emptyPager.terms = rlt.terms;
+                emptyPager.classes = rlt.classes;
+                emptyPager.classesSelectId = rlt.select;
+            }
+        });
+    }
+    function changeClasses() {
+        if (location.pathname == '/entrance') {
+            $.getJSON('/ajax/select', { 'classes': emptyPager.classesSelectId });
+            appList.options.methods.refresh();
+        } else {
+            $.getJSON(location.pathname, { 'do': 'query', 'organ': emptyPager.organ }, function (rlt) {
+                emptyPager.list = rlt;
+                emptyPager.students = rlt;
+            });
+        }
+    }
+</script>

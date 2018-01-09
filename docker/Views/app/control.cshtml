@@ -1,0 +1,60 @@
+﻿<div id="app" class="wln">
+    <div class="wln-title">校园信息管理</div>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'classes'">
+        <img class="image" src="/icons/classes.svg">
+        <div class="bottom">班级设置</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'grade'">
+        <img class="image" src="/icons/grade.svg">
+        <div class="bottom">年级管理</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'staff'">
+        <img class="image" src="/icons/staff.svg">
+        <div class="bottom">师资管理</div>
+    </el-card>
+    <div class="wln-title">缴费功能管理</div>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'feescale'">
+        <img class="image" src="/icons/feescale.svg">
+        <div class="bottom">缴费项目</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'retainer'">
+        <img class="image" src="/icons/retainer-c.svg">
+        <div class="bottom">预缴费用</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'discount'">
+        <img class="image" src="/icons/discount.svg">
+        <div class="bottom">优惠管理</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'feeorder'">
+        <img class="image" src="/icons/order.svg">
+        <div class="bottom">缴费清单</div>
+    </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="location.href = 'refund'">
+        <img class="image" src="/icons/refund.svg">
+        <div class="bottom">退费管理</div>
+    </el-card>
+
+    <div class="wln-title">全校信息管理</div>
+    <el-card class="card all" :body-style="{padding:'0px'}" onclick="location.href = 'term'">
+        <img class="image" src="/icons/term.svg">
+        <div class="bottom">学期管理</div>
+    </el-card>
+    <el-card class="card all" :body-style="{padding:'0px'}" onclick="location.href = 'discountall'">
+        <img class="image" src="/icons/disverify.svg">
+        <div class="bottom">优惠审批</div>
+    </el-card>
+    <el-card class="card all" :body-style="{padding:'0px'}" onclick="location.href = 'refundall'">
+        <img class="image" src="/icons/refund.svg">
+        <div class="bottom">退费审批</div>
+    </el-card>
+</div>
+<style>
+    .card {width:200px;margin:15px 0px 15px 20px;cursor:pointer;display:inline-block;}
+    .card:hover{opacity:0.9}
+    .image {width:60%;height:100px;display:block;background-color:#558B2F;padding:10% 20%;}
+    .card.all .image {background-color:#880e4f;}
+    .bottom {font-size:20px;text-align:center;font-family:Microsoft YaHei;line-height:60px;}
+</style>
+<script type="text/javascript">
+    var app = new Vue({ el: '#app' });
+</script>

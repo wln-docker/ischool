@@ -1,0 +1,12 @@
+﻿
+/**************公共CSS样式*************/
+*{margin:0;padding:0;border:0;}
+a,a:link,a:visited{color:#111111;}
+.divBody{overflow-x:hidden;overflow-y:scroll;font-family:Microsoft YaHei,Helvetica,STHeiti STXihei,Microsoft JhengHei,Arial;}
+/* 底部导航 */
+.divFoot{position:absolute;bottom:0;display:table;width:100%;height:44px;background:#fafafa;border-top:1px solid #E2E2E2;text-align:center;}
+.nav{width:33%;display:inline-table;text-align:center;position:relative;font-size:0;}
+.nav svg{fill:#787878;display:inline-block;width:24px;height:24px;margin:2px;}
+.nav .title{color:#787878;font-size:12px;line-height:16px;font-family:微软雅黑;}
+.nav.active .title,.nav.active svg{color:#ff6a00;fill:#ff6a00}
+.nav-mark{position:absolute;right:33%;top:0.15rem;color:#ffffff;background-color:#1374A2;font-size:0.6rem;min-width:0.6rem;padding:0 0.2rem;text-align:center;line-height:1rem;border-radius:1rem;display:none;}
