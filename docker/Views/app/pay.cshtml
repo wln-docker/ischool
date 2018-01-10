@@ -10,6 +10,7 @@
     #payamount{border:none;border-bottom:1px solid #4CAF50;font-size:30px;width:138px;font-family:inherit;}
 </style>
 <script src="//static.wlniao.com/jquery/jquery.qrcode.min.js"></script>
+<script src="/jedate/jedate.js"></script>
 <div id="app">
     <div id="payways">
         <div style="line-height:27px;font-size:14px;text-align:center;background-color:#e0e0e0;">请选择支付方式</div>
@@ -25,11 +26,20 @@
             <span style="color:#b0b0b0">应付</span>
             <div style="color:#ff6a00;font-size:30px;margin-bottom:30px;font-family:inherit;">￥ @ViewBag.Amount</div>
             <div class="pay pay1 pay2">
-                <span style="color:#b0b0b0">实付</span>
-                <div style="color:#4CAF50;font-size:30px;">￥ <input type="text" id="payamount" value="@ViewBag.Amount" readonly="readonly" style="background:#ffffff"/></div>
-                <div style="height:20px">&nbsp;</div>
+                <div style="display:none">
+                    <span style="color:#b0b0b0">实付</span>
+                    <div style="color:#4CAF50;font-size:30px;">￥ <input type="text" id="payamount" value="@ViewBag.Amount" readonly="readonly" style="background:#ffffff" /></div>
+                    <div style="height:20px">&nbsp;</div>
+                </div>
                 <span style="color:#b0b0b0">经办人</span>
                 <div style="color:#111111;font-size:20px;padding-left:35px;">@Html.Raw(ViewBag.AccountName)</div>
+                <div style="height:20px">&nbsp;</div>
+                <div id="setday" style="display:none">
+                    <span style="color:#b0b0b0">缴费日期</span>
+                    <div style="color:#111111;font-size:20px;padding-left:35px;padding-top:8px;">
+                        <input id="paytime" type="text" placeholder="请选择" style="text-indent:12px;" readonly />
+                    </div>
+                </div>
             </div>
             <div class="pay pay3">
                 <div id="qr3"></div>
@@ -41,6 +51,7 @@
             </div>
             <div style="position:absolute;bottom:30px;right:30px;">
                 <el-button size="small" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                <el-button size="small" type="info" onclick="setday()" class="pay pay2">补单</el-button>
                 <el-button size="small" type="info" :plain="true" onclick="location.href='/retainer?student=@ViewBag.Student'" class="pay pay6">预缴充值</el-button>
                 <el-button size="small" type="primary" onclick="pay()" class="pay pay1 pay2">确认</el-button>
                 <el-button size="small" type="primary" onclick="check()" class="pay pay3">查询支付状态</el-button>
@@ -75,13 +86,17 @@
             })
         }
     }
+    function setday() {
+        $('#setday').show();
+        jeDate({ dateCell: '#paytime', isinitVal: true, isClear: true, zIndex: 999, format: 'YYYY-MM-DD', clearfun: function (val) { $('#setday').hide(); } });
+    }
     function pay() {
         if (new Date().getTime() - ts < 15000) {
             iTips('请求正在处理中，请稍候');
         }
         else {
             ts = new Date().getTime();
-            $.getJSON(location.pathname, { 'do': 'confirm', 'id': '@ViewBag.Id', 'payway': _payway, 'payamount': $('#payamount').val() }, function (rlt) {
+            $.getJSON(location.pathname, { 'do': 'confirm', 'id': '@ViewBag.Id', 'payway': _payway, 'payamount': $('#payamount').val(), 'paytime': $('#paytime').val() }, function (rlt) {
                 if (rlt.success) {
                     location.href = '/ticket?id=@ViewBag.Id';
                 } else {
