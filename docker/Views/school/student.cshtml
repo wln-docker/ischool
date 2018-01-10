@@ -242,13 +242,13 @@
                 emptyPager.delrow = false;
                 emptyPager.fullLoading = true;
                 $.getJSON('/ajax/select', { 'organ': val });
-                $.getJSON('/right', { 'do': 'editer', organ: val, code: 'Student' }, function (rlt) {
+                $.getJSON('/auth', { organ: val, code: 'School_Student_Editor' }, function (rlt) {
                     emptyPager.editer = rlt.success;
                 })
-                $.getJSON('/right', { 'do': 'verify', organ: val, code: 'Student' }, function (rlt) {
+                $.getJSON('/auth', { organ: val, code: 'School_Student_Verify' }, function (rlt) {
                     emptyPager.verify = rlt.success;
                 })
-                $.getJSON('/right', { 'do': 'delete', organ: val, code: 'Student' }, function (rlt) {
+                $.getJSON('/auth', { organ: val, code: 'School_Student_Delete' }, function (rlt) {
                     emptyPager.delrow = rlt.success;
                 })
                 $.getJSON('/ajax/classes', { 'organ': val }, function (rlt) {

@@ -81,7 +81,7 @@
         data: function () {
             emptyPager.organs = [];
             emptyPager.system = false;
-            $.getJSON('/right', { 'do': '', organ: '', code: 'School_Term' }, function (rlt) {
+            $.getJSON('/auth', { code: 'School_Term' }, function (rlt) {
                 emptyPager.system = rlt.success;
             })
             return emptyPager

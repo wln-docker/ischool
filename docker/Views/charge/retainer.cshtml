@@ -20,7 +20,8 @@
         </div>
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="100" align="center" label="类型" property="type"></el-table-column>
-            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>}
+            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>            }
+            <el-table-column width="110" align="center" label="资金用途" property="purpose"></el-table-column>
             <el-table-column width="110" align="right" label="金额" property="amount"></el-table-column>
             <el-table-column width="110" align="right" label="余额" property="balance"></el-table-column>
             <el-table-column width="90" align="center" label="状态">
@@ -90,8 +91,16 @@
             <el-form-item>
                 <el-col :span="3" class="label">缴费类型&nbsp;</el-col>
                 <el-col :span="18">
-                    <el-select v-model="type" placeholder="请选择">
+                    <el-select v-model="type" placeholder="请选择" style="width:210px;">
                         <el-option v-for="item in types" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">资金用途&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="purpose" placeholder="请选择" style="width:210px;">
+                        <el-option v-for="item in purposes" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-col>
             </el-form-item>
@@ -153,6 +162,8 @@
     emptyPager.allstudents = [];
     emptyPager.amount = '';
     emptyPager.remarks = '';
+    emptyPager.purpose = '';
+    emptyPager.purposes = [];
     emptyPager.subTitle = '@Html.Raw(ViewBag.StudentShow)';
     emptyPager.Loaded = false;
     var appList = Vue.extend({
@@ -279,13 +290,14 @@
             emptyPager.type = 1;
             emptyPager.amount = '';
             emptyPager.remarks = '';
+            emptyPager.purpose = '';
             return emptyPager;
         },
         methods: {
             schoolChange(val) {
                 emptyPager.allstudents = [];
                 emptyPager.students = [];
-                $.getJSON('/students', { 'organ': emptyPager.school }, function (rlt) {
+                $.getJSON('/ajax/students', { 'organ': emptyPager.school }, function (rlt) {
                     emptyPager.allstudents = rlt.rows;
                     emptyPager.students = rlt.rows;
                 })
@@ -304,7 +316,7 @@
                     iTips('操作正在提交中，请稍后');
                 } else {
                     emptyPager.Loaded = true;
-                    $.post(location.pathname + '?do=set', { organ: emptyPager.school, student: emptyPager.student, type: emptyPager.type, amount: emptyPager.amount, remarks: emptyPager.remarks }, function (rlt) {
+                    $.post(location.pathname + '?do=set', { organ: emptyPager.school, student: emptyPager.student, type: emptyPager.type, amount: emptyPager.amount, purpose: emptyPager.purpose, remarks: emptyPager.remarks }, function (rlt) {
                         emptyPager.Loaded = false;
                         if (rlt.success) {
                             app.$confirm('预缴订单保存成功，请选择下一步操作?', '提示', {
@@ -330,6 +342,7 @@
                                 emptyPager.type = '';
                                 emptyPager.amount = '';
                                 emptyPager.remarks = '';
+                                emptyPager.purpose = '';
                                 history.back();
                             });
                         } else {
@@ -342,12 +355,16 @@
             $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
                 emptyPager.organs = rlt.data;
                 if (emptyPager.school) {
-                    $.getJSON('/charge/students', { 'organ': emptyPager.school }, function (rlt) {
+                    $.getJSON('/ajax/students', { 'organ': emptyPager.school }, function (rlt) {
                         emptyPager.allstudents = rlt.rows;
                         emptyPager.students = rlt.rows;
                     })
                 }
             })</text>}
+
+            $.getJSON('/enums', { 'do': 'Purpose' }, function (rlt) {
+                emptyPager.purposes = rlt;
+            });
         }
     })
     var appRefund = Vue.extend({
@@ -373,6 +390,7 @@
                         emptyPager.type = '';
                         emptyPager.amount = '';
                         emptyPager.remarks = '';
+                        emptyPager.purpose = '';
                         emptyPager.student = '@Html.Raw(ViewBag.Student)';
                         history.back();
                     });
