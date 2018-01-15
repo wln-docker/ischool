@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "8d95b324bc9b491f333d3b7cf6753f25a22fa0d3"
+    "signature": "8615df053b5546c2ed4e72f61431bb0e6711833e"
   },
   "compilationOptions": {
     "defines": [
@@ -36,7 +36,7 @@
           "SharpZipLib.NETStandard": "0.86.0.1",
           "System.Linq.Expressions": "4.3.0",
           "Wlniao.XCore": "2.0.2-beta7",
-          "wlniao.i": "1.0.0-beta-71213"
+          "wlniao.i": "1.0.0-beta-71214"
         },
         "runtime": {
           "app.dll": {}
@@ -2568,7 +2568,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "wlniao.i/1.0.0-beta-71213": {
+      "wlniao.i/1.0.0-beta-71214": {
         "dependencies": {
           "Wlniao.XCore": "2.0.2-beta7"
         },
@@ -4241,12 +4241,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "wlniao.i/1.0.0-beta-71213": {
+    "wlniao.i/1.0.0-beta-71214": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9nbWt4C84giwWgpA3xFObBjq1etf12c5wgjyiXobsjoVvkPAvdESMPOq2CFI7UvqKqS6mOaWS/wStxjj+TihoA==",
-      "path": "wlniao.i/1.0.0-beta-71213",
-      "hashPath": "wlniao.i.1.0.0-beta-71213.nupkg.sha512"
+      "sha512": "sha512-aFy72GZ4NP5oC9D0NmGAEMYRiYpAEZF5fDut+rVk+QGim1iag1YTg+HTtOSowagQf/c30CkaGESPwte2IL1PIw==",
+      "path": "wlniao.i/1.0.0-beta-71214",
+      "hashPath": "wlniao.i.1.0.0-beta-71214.nupkg.sha512"
     },
     "Wlniao.XCore/2.0.2-beta7": {
       "type": "package",
