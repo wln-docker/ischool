@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "8615df053b5546c2ed4e72f61431bb0e6711833e"
+    "signature": "cc3375fceeed1b5046ad90482c5a253b46d9cf3c"
   },
   "compilationOptions": {
     "defines": [
@@ -2568,17 +2568,6 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "wlniao.i/1.0.0-beta-71214": {
-        "dependencies": {
-          "Wlniao.XCore": "2.0.2-beta7"
-        },
-        "runtime": {
-          "lib/netcoreapp2.0/wlniao.i.dll": {}
-        },
-        "compile": {
-          "lib/netcoreapp2.0/wlniao.i.dll": {}
-        }
-      },
       "Wlniao.XCore/2.0.2-beta7": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.1",
@@ -2599,6 +2588,17 @@
         },
         "compile": {
           "lib/netcoreapp2.0/Wlniao.XCore.dll": {}
+        }
+      },
+      "wlniao.i/1.0.0-beta-71214": {
+        "dependencies": {
+          "Wlniao.XCore": "2.0.2-beta7"
+        },
+        "runtime": {
+          "wlniao.i.dll": {}
+        },
+        "compile": {
+          "wlniao.i.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.0.0": {
@@ -4241,19 +4241,17 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "wlniao.i/1.0.0-beta-71214": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-aFy72GZ4NP5oC9D0NmGAEMYRiYpAEZF5fDut+rVk+QGim1iag1YTg+HTtOSowagQf/c30CkaGESPwte2IL1PIw==",
-      "path": "wlniao.i/1.0.0-beta-71214",
-      "hashPath": "wlniao.i.1.0.0-beta-71214.nupkg.sha512"
-    },
     "Wlniao.XCore/2.0.2-beta7": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-JjUI7WvfqoinRZM17i/QoGEtf+k03ozupToNM+cjY28cqsPdM7HidZ6ZErL6zlhYzqq12VG4daEIts+vEoq0Fg==",
       "path": "wlniao.xcore/2.0.2-beta7",
       "hashPath": "wlniao.xcore.2.0.2-beta7.nupkg.sha512"
+    },
+    "wlniao.i/1.0.0-beta-71214": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",

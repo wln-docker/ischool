@@ -69,14 +69,15 @@
                         </div>
                     </el-popover>
                     <el-button size="small" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
-                    <el-button size="small" v-popover:fee type="warning">更多操作</el-button>
+                    <el-button size="small" @@click="handleEditer(scope.row)" v-popover:fee type="primary" v-else>查看</el-button>
+                    <el-button size="small" v-popover:fee type="warning" v-if="editer">更多操作</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div style="text-align:center;padding:6px;background:#eef1f6;border:1px solid #e0e0e0;">
-            <el-cascader v-model="classesSelect" :options="classes" placeholder="入学班级" style="width:200px"></el-cascader>
-            <el-date-picker v-model="entertime" :editable="false" align="right" type="daterange" format="yyyy-MM-dd" placeholder="就读时间" style="width:200px"></el-date-picker>
-            <el-button type="success" @@click="rowsEntrance()" style="vertical-align:top;">批量入学</el-button>
+            <el-cascader v-model="classesSelect" :options="classes" placeholder="入学班级" style="width:200px" v-if="entrance"></el-cascader>
+            <el-date-picker v-model="entertime" :editable="false" align="right" type="daterange" format="yyyy-MM-dd" placeholder="就读时间" v-if="entrance" style="width:200px"></el-date-picker>
+            <el-button type="success" @@click="rowsEntrance()" style="vertical-align:top;" v-if="entrance">批量入学</el-button>
             <el-button type="primary" @@click="location.href='entrance'" style="vertical-align:top;">查看入学记录</el-button>
         </div>
         <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
@@ -173,6 +174,7 @@
     emptyPager.editer = false;
     emptyPager.verify = false;
     emptyPager.delrow = false;
+    emptyPager.entrance = false;
     emptyPager.fullLoading = true;
     emptyPager.multipleSelection = [];
     emptyPager.classes = [];
@@ -240,6 +242,7 @@
                 emptyPager.editer = false;
                 emptyPager.verify = false;
                 emptyPager.delrow = false;
+                emptyPager.entrance = false;
                 emptyPager.fullLoading = true;
                 $.getJSON('/ajax/select', { 'organ': val });
                 $.getJSON('/auth', { organ: val, code: 'School_Student_Editor' }, function (rlt) {
@@ -250,6 +253,9 @@
                 })
                 $.getJSON('/auth', { organ: val, code: 'School_Student_Delete' }, function (rlt) {
                     emptyPager.delrow = rlt.success;
+                })
+                $.getJSON('/auth', { organ: val, code: 'School_Student_Entrance' }, function (rlt) {
+                    emptyPager.entrance = rlt.success;
                 })
                 $.getJSON('/ajax/classes', { 'organ': val }, function (rlt) {
                     emptyPager.classes = rlt.classes;
