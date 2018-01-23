@@ -74,7 +74,8 @@
 }
 @section body{
     <div class="tabs">
-        <a onclick="change(0)" class="active">待支付</a>
+        <a onclick="change(-1)" class="active">全部</a>
+        <a onclick="change(0)">待支付</a>
         <a onclick="change(1)">已支付</a>
     </div>
     <div id="orderlist" class="list">
@@ -86,7 +87,7 @@
         document.title = '缴费清单';
         $('.nav:nth-child(2)').addClass('active');
         var page = 1;
-        var state = 0;
+        var state = -1;
         function getdata() {
             wln.get(location.pathname + '?do=list', { "page": page, "state": state }, function (json) {
                 wln.closeDialog();
@@ -115,7 +116,7 @@
         function change(s) {
             $('.list li').remove();
             $('.tabs a').removeClass('active');
-            $('.tabs a:nth-child(' + (s+1) + ')').addClass('active');
+            $('.tabs a:nth-child(' + (s + 2) + ')').addClass('active');
             page = 1;
             state = s;
             getdata();
