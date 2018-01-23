@@ -17,7 +17,10 @@
             @if (string.IsNullOrEmpty(ViewBag.SuccessMessage))
             {
                 <span>
-                    <input type="text" id="ihost" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请输入Wlniao.i服务器地址" />
+                    <input type="text" id="ihost" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请输入XCenter服务器地址" />
+                </span>
+                <span id="dToken" style="display:none">
+                    <input type="text" id="itoken" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请填写服务端Token密钥" />
                 </span>
                 <div style="margin-top:20px;">
                     <a id="go" onclick="Check()">注册</a>
@@ -32,6 +35,7 @@
     <script type="text/javascript">
         var idle = true;
         var eHost = document.getElementById('ihost');
+        var eToken = document.getElementById('itoken');
         function ToCheck(e) {
             if (e.keyCode == 13) {
                 Check();
@@ -55,14 +59,22 @@
                     if (XMLHttp.readyState == 4 && XMLHttp.status) {
                         var json = eval("(" + XMLHttp.responseText + ")");
                         if (json.success) {
-                            window.location.href = '/enroll?ihost=' + json.data;
+                            if (eToken.value) {
+                                window.location.href = '/enroll?token=' + eToken.value + '&ihost=' + json.data;
+                            } else {
+                                window.location.href = '/enroll?ihost=' + json.data;
+                            }
                         } else {
                             alert(json.message);
                             eHost.focus();
+                            if (json.message[0] == 'T') {
+                                document.getElementById('dToken').style.display = '';
+                                eToken.focus();
+                            }
                         }
                     }
                 }
-                XMLHttp.open('GET', '/install?do=check&ihost=' + eHost.value, true);
+                XMLHttp.open('GET', '/install?do=check&ihost=' + eHost.value + '&token=' + eToken.value, true);
                 XMLHttp.send();
             } else {
                 alert("请求正在处理中，请不要频繁点击按钮");
