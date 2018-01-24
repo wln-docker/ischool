@@ -89,7 +89,8 @@
         var page = 1;
         var state = -1;
         function getdata() {
-            wln.get(location.pathname + '?do=list', { "page": page, "state": state }, function (json) {
+            wln.loading();
+            $.getJSON(location.pathname + '?do=list', { "page": page, "state": state }, function (json) {
                 wln.closeDialog();
                 $('#tempdiv').find('a').html('');
                 if (json && json.rows && json.rows.length > 0) {
@@ -121,15 +122,12 @@
             state = s;
             getdata();
         }
-        wln(function () {
-            wln.loading();
-            getdata();
-            $('#body').height($(document).height() - 46);
-            $('#body').scroll(function () {
-                if (($(window).height() + $(window).scrollTop()) > $(document).height() - 20) {
-                    getdata();
-                }
-            });
-        })
+        getdata();
+        $('#body').height($(document).height() - 46);
+        $('#body').scroll(function () {
+            if (($(window).height() + $(window).scrollTop()) > $(document).height() - 20) {
+                getdata();
+            }
+        });
     </script>
 }
