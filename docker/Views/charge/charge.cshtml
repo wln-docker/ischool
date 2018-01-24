@@ -14,29 +14,27 @@
         <div v-loading="loading" style="margin:0px 10px">
             <div class="wln-subtitle">
                 <span style="float:right;">
-                    <el-button size="small" :plain="true" type="info" onclick="app.refresh()">刷新</el-button>
-                    <el-button type="primary" size="small" onclick="location.href='entrance'" v-if="classesSelectId">查看入学记录</el-button>
-                    <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+                    <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                    <el-button size="mini" type="primary" onclick="location.href='retainer'" v-if="classesSelectId">预缴费用管理<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
                 </span>
                 缴费管理 <span>{{classesSelectName}}</span>
             </div>
             <el-table :data="list" :empty-text="message">
                 <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
                 <el-table-column width="100" align="center" label="姓名" property="name"></el-table-column>
-                <el-table-column width="90" align="center" label="年级" property="gradename"></el-table-column>
                 <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
                 <el-table-column width="90" align="right" label="余额" property="balance"></el-table-column>
                 <el-table-column></el-table-column>
                 <el-table-column width="400" align="center" label="操作">
                     <template scope="scope">
-                        <el-button size="small" type="primary" @@click="location.href='retainer?student=' + scope.row.id">预缴费用</el-button>
-                        <el-button size="small" type="primary" @@click="location.href='discount?student=' + scope.row.id">优惠管理</el-button>
-                        <el-button size="small" type="primary" @@click="location.href='feeorder?student=' + scope.row.id">缴费清单</el-button>
+                        <el-button size="mini" type="primary" @@click="location.href='retainer?student=' + scope.row.id">预缴费用</el-button>
+                        <el-button size="mini" type="primary" @@click="location.href='discount?student=' + scope.row.id">优惠管理</el-button>
+                        <el-button size="mini" type="primary" @@click="location.href='feeorder?student=' + scope.row.id">缴费清单</el-button>
                         <el-tooltip content="将费用退至预缴费用余额" placement="bottom">
-                            <el-button size="small" type="primary" @@click="location.href='refund?student=' + scope.row.id">退费</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='refund?student=' + scope.row.id">退费</el-button>
                         </el-tooltip>
                         <el-tooltip content="预缴余额退款提现" placement="bottom">
-                            <el-button size="small" type="primary" @@click="location.href='retainer/refund?student=' + scope.row.id">退款</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='retainer/refund?student=' + scope.row.id">退款</el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>

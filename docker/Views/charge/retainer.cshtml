@@ -3,43 +3,44 @@
     <div style="margin:0px 10px;">
         <div class="wln-subtitle">
             <div style="float:right">
-                    @if (!string.IsNullOrEmpty(ViewBag.Student)) {<el-button size="small" :plain="true" type="info" onclick="history.back()">返回</el-button>}
-                <el-button size="small" type="primary" @@click="toAdd">预缴充值</el-button>
-                <el-button size="small" type="warning" @@click="refund">退款提现</el-button>
-                @*<input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />*@
+                <el-button size="mini" :plain="true" type="info" onclick="history.back()">返回</el-button>
+                <el-button size="mini" type="primary" @@click="toAdd">预缴充值</el-button>
+                <el-button size="mini" type="warning" @@click="refund">退款提现</el-button>
             </div>
-            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            预缴费用<span>{{subTitle}}</span>
+        </div>
+        @if (string.IsNullOrEmpty(ViewBag.Student)){<div class="wln-line" style="padding-top:0px;"></div>
+        <div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
-            </el-select>}
-
-            预缴费用<span>{{subTitle}}</span>
+            </el-select>
         </div>
+        <div class="wln-line"></div>}else{<div class="wln-line" style="padding-top:0px;"></div>}
         <el-table :data="rows" :empty-text="message">
+            <el-table-column width="140" align="center" label="状态">
+                <template scope="scope">
+                    <font style="color:#67C23A;" v-if="scope.row.ispay > 0">已支付</font>
+                    <font style="color:#909399;" v-else-if="scope.row.type == '预缴' || scope.row.type == '定金'">待支付</font>
+                    <font style="color:#409EFF;" v-else>待审核</font>
+                </template>
+            </el-table-column>
             <el-table-column width="100" align="center" label="类型" property="type"></el-table-column>
             @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>            }
             <el-table-column width="110" align="center" label="资金用途" property="purpose"></el-table-column>
             <el-table-column width="110" align="right" label="金额" property="amount"></el-table-column>
             <el-table-column width="110" align="right" label="余额" property="balance"></el-table-column>
-            <el-table-column width="90" align="center" label="状态">
-                <template scope="scope">
-                    <el-tag type="success" v-if="scope.row.ispay > 0">已支付</el-tag>
-                    <el-tag type="gray" v-else-if="scope.row.type == '预缴' || scope.row.type == '定金'">待支付</el-tag>
-                    <el-tag type="gray" v-else>待审核</el-tag>
-                </template>
-            </el-table-column>
             <el-table-column align="left" label="备注" property="remarks">></el-table-column>
             <el-table-column width="140" align="center" label="缴费时间" property="paytime"></el-table-column>
             <el-table-column width="140" align="center" label="录入时间" property="create"></el-table-column>
             <el-table-column width="150" align="center" label="操作">
                 <template scope="scope">
-                    <el-button size="small" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1 && scope.row.payid">查看缴费单据</el-button>
-                    <el-button size="small" @@click="topay(scope.row.id)" type="success" v-if="scope.row.ispay === 0 && (scope.row.type == '预缴' || scope.row.type == '定金')">缴费</el-button>
-                    <el-button size="small" @@click="handleVerify(scope.row)" type="primary" v-if="scope.row.ispay === 0 && scope.row.type != '预缴' && scope.row.type != '定金'">审核</el-button>
-                    <el-button size="small" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.ispay === 0">删除</el-button>
+                    <el-button size="mini" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1 && scope.row.payid">查看缴费单据</el-button>
+                    <el-button size="mini" @@click="topay(scope.row.id)" type="success" v-if="scope.row.ispay === 0 && (scope.row.type == '预缴' || scope.row.type == '定金')">缴费</el-button>
+                    <el-button size="mini" @@click="handleVerify(scope.row)" type="primary" v-if="scope.row.ispay === 0 && scope.row.type != '预缴' && scope.row.type != '定金'">审核</el-button>
+                    <el-button size="mini" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.ispay === 0">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -279,9 +280,11 @@
                 _self.organs = rlt.data;
                 _self.school = rlt.select;
                 _self.getTotal();
-            })</text>}
+                _self.refresh();
+            })</text>}else{<text>
+            this.getTotal();
+            this.refresh();</text>}
 
-            this.refresh();
         }
     })
     var appForm = Vue.extend({
