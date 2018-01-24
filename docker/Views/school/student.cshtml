@@ -68,9 +68,9 @@
                             </el-tooltip>
                         </div>
                     </el-popover>
-                    <el-button size="small" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
-                    <el-button size="small" @@click="handleEditer(scope.row)" v-popover:fee type="primary" v-else>查看</el-button>
-                    <el-button size="small" v-popover:fee type="warning" v-if="editer">更多操作</el-button>
+                    <el-button size="mini" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
+                    <el-button size="mini" @@click="handleEditer(scope.row)" v-popover:fee type="primary" v-else>查看</el-button>
+                    <el-button size="mini" v-popover:fee type="warning" v-if="editer">更多操作</el-button>
                 </template>
             </el-table-column>
         </el-table>
