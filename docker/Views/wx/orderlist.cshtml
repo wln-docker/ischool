@@ -90,7 +90,7 @@
         var state = -1;
         function getdata() {
             wln.loading();
-            $.getJSON(location.pathname + '?do=list', { "page": page, "state": state }, function (json) {
+            wln.get(location.pathname + '?do=list', { "page": page, "state": state }, function (json) {
                 wln.closeDialog();
                 $('#tempdiv').find('a').html('');
                 if (json && json.rows && json.rows.length > 0) {
@@ -106,7 +106,10 @@
                 } else if (page > 1) {
                     $('#tempdiv').find('a').html('- 到底了 -');
                 } else {
-                    if (state > 0) {
+                    if (state < 0) {
+                        $('#tempdiv').find('a').html('<span style="line-height:128px;color:#999999;">亲,您暂未收到缴费清单！</span>');
+                    }
+                    else if (state > 0) {
                         $('#tempdiv').find('a').html('<span style="line-height:128px;color:#999999;">亲,您还没有已支付的缴费清单！</span>');
                     } else {
                         $('#tempdiv').find('a').html('<span style="line-height:128px;color:#999999;">亲,您还没有待支付的缴费清单！</span>');
