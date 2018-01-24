@@ -3,16 +3,17 @@
     <div style="margin: 0px 10px;">
         <div class="wln-subtitle">
             <div style="float:right">
-                <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
-                <el-button size="small" type="primary" onclick="router.push('/term/add')" v-if="system">新增学期</el-button>
+                <el-button size="mini" type="info" :plain="true" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="mini" type="primary" onclick="router.push('/term/add')" v-if="system">新增学期</el-button>
             </div>
             学期管理
         </div>
-        <el-table :data="rows" :empty-text="message" border style="width: 100%">
+        <div class="wln-line"></div>
+        <el-table :data="rows" :empty-text="message">
             <el-table-column width="120" align="center" label="当前学期">
                 <template scope="scope">
-                    <el-tag type="danger" v-if="scope.row.state===1">已激活</el-tag>
-                    <el-button :plain="true" type="success" size="mini" @@click="handleActive(scope.row)" v-else>未激活</el-button>
+                    <el-button size="mini" :plain="true" type="danger" v-if="scope.row.state===1">已激活</el-button>
+                    <el-button size="mini" :plain="true" type="success" @@click="handleActive(scope.row)" v-else>未激活</el-button>
                 </template>
             </el-table-column>
             <el-table-column width="80" align="center" label="学年" property="year"></el-table-column>
@@ -31,9 +32,9 @@
             </el-table-column>
             <el-table-column width="230" align="center" label="操作">
                 <template scope="scope">
-                    <el-button size="small" @@click="handleEditer(scope.row)" type="primary" v-if="system">编辑</el-button>
-                    <el-button size="small" @@click="handleDelete(scope.row)" :plain="true" :disabled="scope.row.state===1" v-if="system">删除</el-button>
-                    <el-button size="small" @@click="location.href='grade'" type="primary">年级管理</el-button>
+                    <el-button size="mini" @@click="handleEditer(scope.row)" type="primary" v-if="system">编辑</el-button>
+                    <el-button size="mini" @@click="handleDelete(scope.row)" :plain="true" :disabled="scope.row.state===1" v-if="system">删除</el-button>
+                    <el-button size="mini" @@click="location.href='grade'" type="primary">年级管理</el-button>
                 </template>
             </el-table-column>
         </el-table>

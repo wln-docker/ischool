@@ -22,24 +22,25 @@
             </span>
             入学记录 <span>{{classesSelectName}}</span>
         </div>
+        <div class="wln-line"></div>
         <el-table :data="rows" :empty-text="message" v-loading="loading">
             <el-table-column width="90" align="center" label="状态">
                 <template scope="scope">
-                    <el-tag type="primary" v-if="scope.row.state===0">未入学</el-tag>
-                    <el-tag type="success" v-else-if="scope.row.state===1">在读中</el-tag>
-                    <el-tag type="warning" v-else-if="scope.row.state===2">已转出</el-tag>
-                    <el-tag type="gray" v-else-if="scope.row.state===3">已毕业</el-tag>
-                    <el-tag type="gray" v-else>其它</el-tag>
+                    <font style="color:#409EFF;" v-if="scope.row.state===0">未入学</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state===1">在读中</font>
+                    <font style="color:#E6A23C;" v-else-if="scope.row.state===2">已转出</font>
+                    <font style="color:#F56C6C;" v-else-if="scope.row.state===3">已毕业</font>
+                    <font style="color:#909399;" v-else>其它</font>
                 </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
             <el-table-column width="100" align="center" label="姓名" property="name"></el-table-column>
             <el-table-column width="270" align="center" label="就读时间" property="entertime"></el-table-column>
             <el-table-column></el-table-column>
-            <el-table-column width="150" align="center" label="操作">
+            <el-table-column width="180" align="center" label="操作">
                 <template scope="scope">
-                    <el-button size="small" @@click="handleLocked(scope.row)" type="warning" :disabled="scope.row.islock > 0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
-                    <el-button size="small" @@click="handleRemove(scope.row)" type="danger" :disabled="scope.row.islock > 0">移除</el-button>
+                    <el-button size="mini" @@click="handleLocked(scope.row)" type="warning" icon="el-icon-time" :disabled="scope.row.islock > 0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
+                    <el-button size="mini" @@click="handleRemove(scope.row)" type="danger" icon="el-icon-delete" :disabled="scope.row.islock > 0">移除</el-button>
                 </template>
             </el-table-column>
         </el-table>

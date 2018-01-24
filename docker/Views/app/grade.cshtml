@@ -4,10 +4,10 @@
 <div id="app">
     <div style="margin: 0px 10px;">
         <div class="wln-subtitle">
-            <div style="float:right">
-                <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
-            </div>
-            年级管理
+            年级管理 <el-button size="mini" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
+        </div>
+        <div class="wln-line" style="padding-top:8px;"></div>
+        <div>
             <el-select v-model="school" clearable placeholder="请选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
@@ -21,7 +21,8 @@
                 </el-option>
             </el-select>
         </div>
-        <el-table :data="rows" :empty-text="message" border style="width:100%">
+        <div class="wln-line"></div>
+        <el-table :data="rows" :empty-text="message">
             <el-table-column width="120" align="center" label="班级" property="name"></el-table-column>
             <el-table-column width="120" align="center" label="学期" property="term"></el-table-column>
             <el-table-column width="200" align="center" label="年级">

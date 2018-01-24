@@ -33,6 +33,7 @@
         margin-bottom: 0;
         width: 25%;
     }
+    .el-textarea__inner{height:90px}
 </style>
 <div id="app" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
 <template id="app-list">
@@ -58,7 +59,6 @@
             </el-select>
         </div>
         <div class="wln-line"></div>
-
         <el-table :data="rows" :empty-text="message" style="width:100%" @@selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template scope="scope">
