@@ -1,9 +1,53 @@
-﻿<div id="app" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
+﻿<style>
+    .wln-table-expand {
+        width: 600px;
+        font-size: 0;
+        padding: 20px 10px;
+        margin: -12px -30px;
+        background: #f1f4f9;
+    }
+    .wln-table-expand:hover {
+        background: #f5f7fa;
+    }
+    .wln-table-expand .wln-expand-title {
+        display: block;
+        font-size: 14px;
+        margin-left: 22px;
+        border-left: 3px solid #009688;
+        padding-left: 3px;
+        line-height: 14px;
+        margin-top: 10px;
+        font-weight: bolder;
+    }
+    .wln-table-expand .wln-expand-remark {
+        font-size: 13px;
+        padding: 6px 22px;
+        text-indent: 26px;
+    }
+    .wln-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .wln-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 25%;
+    }
+</style>
+<div id="app" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
 <template id="app-list">
     <div style="margin:0px 10px">
         <div class="wln-subtitle">
             <div style="float:right">
-                <el-button type="primary" size="small" onclick="router.push('/student/add')" v-if="editer">新增学员</el-button>
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-plus" @@click="router.push('/student/add')" v-if="editer">新增学员</el-button>
+                <el-button size="mini" type="primary" @@click="location.href='entrance'">学员入学记录<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
+            </div>
+            学员管理
+        </div>
+        <div class="wln-line" style="padding-top:8px;"></div>
+        <div>
+            <div style="float:right">
                 <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
             </div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
@@ -12,73 +56,105 @@
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
             </el-select>
-            学员管理
         </div>
+        <div class="wln-line"></div>
+
         <el-table :data="rows" :empty-text="message" style="width:100%" @@selection-change="handleSelectionChange">
+            <el-table-column type="expand">
+                <template scope="scope">
+                    <el-form label-position="right" inline class="wln-table-expand">
+                        <div>
+                            <div class="wln-expand-title">学员信息</div>
+                            <el-form-item label="学员姓名">
+                                <span>{{scope.row.name}}</span>
+                            </el-form-item>
+                            <el-form-item label="@Html.Raw(ViewBag.Label_studentid)">
+                                <span>{{scope.row.studentid}}</span>
+                            </el-form-item>
+                            <el-form-item label="证件号" style="width:40%;">
+                                <span>{{scope.row.idnumber}}</span>
+                            </el-form-item>
+                        </div>
+                        <div v-if="scope.row.parentname1 || scope.row.relationship1 || scope.row.telnumber1">
+                            <div class="wln-expand-title">家长一</div>
+                            <el-form-item label="姓名">
+                                <span>{{scope.row.parentname1}}</span>
+                            </el-form-item>
+                            <el-form-item label="关系">
+                                <span>{{scope.row.relationship1}}</span>
+                            </el-form-item>
+                            <el-form-item label="电话号码" style="width:40%;">
+                                <span>{{scope.row.telnumber1}}</span>
+                            </el-form-item>
+                        </div>
+                        <div v-if="scope.row.parentname2 || scope.row.relationship2 || scope.row.telnumber2">
+                            <div class="wln-expand-title">家长二</div>
+                            <el-form-item label="家长姓名">
+                                <span>{{scope.row.parentname2}}</span>
+                            </el-form-item>
+                            <el-form-item label="关系">
+                                <span>{{scope.row.relationship2}}</span>
+                            </el-form-item>
+                            <el-form-item label="电话号码" style="width:40%;">
+                                <span>{{scope.row.telnumber2}}</span>
+                            </el-form-item>
+                        </div>
+                        <div v-if="scope.row.remarks">
+                            <div class="wln-expand-title">学员备注</div>
+                            <div class="wln-expand-remark">{{scope.row.remarks}}</div>
+                        </div>
+                    </el-form>
+                </template>
+            </el-table-column>
             <el-table-column width="55" type="selection"></el-table-column>
             <el-table-column width="90" align="center" label="状态">
                 <template scope="scope">
-                    <el-tag type="primary" v-if="scope.row.state===0">未入学</el-tag>
-                    <el-tag type="success" v-else-if="scope.row.state===1">在读中</el-tag>
-                    <el-tag type="warning" v-else-if="scope.row.state===2">已转出</el-tag>
-                    <el-tag type="gray" v-else-if="scope.row.state===3">已毕业</el-tag>
-                    <el-tag type="gray" v-else>其它</el-tag>
+                    <font style="color:#409EFF;" v-if="scope.row.state===0">未入学</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state===1">在读中</font>
+                    <font style="color:#E6A23C;" v-else-if="scope.row.state===2">已转出</font>
+                    <font style="color:#F56C6C;" v-else-if="scope.row.state===3">已毕业</font>
+                    <font style="color:#909399;" v-else>其它</font>
                 </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
-            <el-table-column width="120" align="center" label="姓名">
-                <template scope="scope">
-                    <el-popover trigger="hover" placement="right">
-                        <p v-if="scope.row.relationship1 && scope.row.parentname1">{{scope.row.relationship1}}姓名: {{ scope.row.parentname1 }}</p>
-                        <p v-if="scope.row.telnumber1">电话号码: {{ scope.row.telnumber1 }}</p>
-                        <p v-if="scope.row.relationship1">&nbsp;</p>
-                        <p v-if="scope.row.relationship2 && scope.row.parentname2">{{scope.row.relationship2}}姓名: {{ scope.row.parentname2 }}</p>
-                        <p v-if="scope.row.telnumber2">电话号码: {{ scope.row.telnumber2 }}</p>
-                        <p v-if="scope.row.relationship2">&nbsp;</p>
-                        <p v-if="scope.row.idnumber">证件号码: {{ scope.row.idnumber }}</p>
-                        <div slot="reference" class="name-wrapper">{{ scope.row.name }}</div>
-                    </el-popover>
-                </template>
-            </el-table-column>
+            <el-table-column width="120" align="center" label="姓名" property="name"></el-table-column>
             <el-table-column width="70" align="center" label="性别" property="sex"></el-table-column>
             <el-table-column width="90" align="center" label="年级" property="gradename"></el-table-column>
             <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
-            <el-table-column label="备注" property="remarks"></el-table-column>
-            <el-table-column width="270" align="center" label="操作">
+            <el-table-column></el-table-column>
+            <el-table-column width="180" align="center" label="操作">
                 <template scope="scope">
-                    <el-popover ref="fee" placement="left" width="360">
+                    <el-popover ref="fee" placement="left" width="400">
                         <p>请为<font style="color:#FF5722;padding:0px 3px;">{{ scope.row.name }}</font>选择要执行的操作：</p>
                         <div class="popover-btns">
-                            <el-button size="small" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">预缴费用</el-button>
-                            <el-button size="small" type="primary" @@click="location.href='/discount?organ=' + school + '&student=' + scope.row.id">优惠管理</el-button>
-                            <el-button size="small" type="primary" @@click="location.href='/feeorder?organ=' + school + '&student=' + scope.row.id">缴费清单</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">预缴费用</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='/discount?organ=' + school + '&student=' + scope.row.id">优惠管理</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='/feeorder?organ=' + school + '&student=' + scope.row.id">缴费清单</el-button>
                             <el-tooltip content="将费用退至预缴费用余额" placement="bottom">
-                                <el-button size="small" type="primary" @@click="location.href='/refund?organ=' + school + '&student=' + scope.row.id">退费</el-button>
+                                <el-button size="mini" type="primary" @@click="location.href='/refund?organ=' + school + '&student=' + scope.row.id">退费</el-button>
                             </el-tooltip>
                             <el-tooltip content="预缴余额退款提现" placement="bottom">
-                                <el-button size="small" type="primary" @@click="location.href='/retainer/refund?organ=' + school + '&student=' + scope.row.id">退款</el-button>
+                                <el-button size="mini" type="primary" @@click="location.href='/retainer/refund?organ=' + school + '&student=' + scope.row.id">退款</el-button>
                             </el-tooltip>
                         </div>
                         <div class="popover-btns">
                             <el-tooltip content="上锁后将禁止编辑和删除学员资料" placement="bottom">
-                                <el-button size="small" @@click="handleLocked(scope.row)" type="warning" v-if="verify" :disabled="scope.row.islock>0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
+                                <el-button size="mini" icon="el-icon-time" @@click="handleLocked(scope.row)" type="warning" v-if="verify" :disabled="scope.row.islock>0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
                             </el-tooltip>
                             <el-tooltip content="直接删除学员信息（谨慎操作）" placement="bottom">
-                                <el-button size="small" @@click="handleDelete(scope.row)" type="danger" v-if="delrow" :disabled="scope.row.islock>0">删除</el-button>
+                                <el-button size="mini" icon="el-icon-delete" @@click="handleDelete(scope.row)" type="danger" v-if="delrow" :disabled="scope.row.islock>0">删除</el-button>
                             </el-tooltip>
                         </div>
                     </el-popover>
-                    <el-button size="mini" @@click="handleEditer(scope.row)">查看</el-button>
-                    <el-button size="mini" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
-                    <el-button size="mini" v-popover:fee type="warning">更多</el-button>
+                    <el-button size="mini" icon="el-icon-edit" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
+                    <el-button size="mini" v-popover:fee type="warning">更多操作</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <div style="text-align:center;padding:6px;background:#eef1f6;border:1px solid #e0e0e0;">
-            <el-cascader v-model="classesSelect" :options="classes" placeholder="入学班级" style="width:200px" v-if="entrance"></el-cascader>
-            <el-date-picker v-model="entertime" :editable="false" align="right" type="daterange" format="yyyy-MM-dd" placeholder="就读时间" v-if="entrance" style="width:200px"></el-date-picker>
-            <el-button type="success" @@click="rowsEntrance()" style="vertical-align:top;" v-if="entrance">批量入学</el-button>
-            <el-button type="primary" @@click="location.href='entrance'" style="vertical-align:top;">查看入学记录</el-button>
+        <div style="text-align:center;padding:6px;background:#eef1f6;border:1px solid #e0e0e0;" v-if="entrance">
+            <el-cascader v-model="classesSelect" :options="classes" placeholder="入学班级" style="width:200px"></el-cascader>
+            <el-date-picker v-model="entertime" :editable="false" align="right" type="daterange" format="yyyy-MM-dd" placeholder="就读时间" style="width:200px"></el-date-picker>
+            <el-button type="success" @@click="rowsEntrance()" style="vertical-align:top;">批量入学</el-button>
         </div>
         <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
 
@@ -319,6 +395,23 @@
                 }
                 emptyPager.organs = rlt.data;
                 emptyPager.school = rlt.select;
+                if (rlt.select) {
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Student_Editor' }, function (rlt) {
+                        emptyPager.editer = rlt.success;
+                    })
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Student_Verify' }, function (rlt) {
+                        emptyPager.verify = rlt.success;
+                    })
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Student_Delete' }, function (rlt) {
+                        emptyPager.delrow = rlt.success;
+                    })
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Student_Entrance' }, function (rlt) {
+                        emptyPager.entrance = rlt.success;
+                    })
+                    $.getJSON('/ajax/classes', { 'organ': rlt.select }, function (rlt) {
+                        emptyPager.classes = rlt.classes;
+                    })
+                }
                 _self.refresh();
             });
         }

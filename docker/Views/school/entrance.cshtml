@@ -16,8 +16,8 @@
     <div style="margin:0px 10px">
         <div class="wln-subtitle">
             <span style="float:right;">
-                <el-button size="small" :plain="true" type="info" onclick="history.back()">返回</el-button>
-                <el-button type="primary" size="small" onclick="router.push('/entrance/add')" v-if="classesSelectId">学员入学</el-button>
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                <el-button size="mini" type="primary" onclick="router.push('/entrance/add')" v-if="classesSelectId">学员入学</el-button>
                 <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
             </span>
             入学记录 <span>{{classesSelectName}}</span>
