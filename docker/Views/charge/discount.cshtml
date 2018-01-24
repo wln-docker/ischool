@@ -3,21 +3,27 @@
     <div style="margin:0px 10px;">
         <div class="wln-subtitle">
             <div style="float:right">
-                <el-button size="small" :plain="true" @@click="location.href='feeorder?student=' + student" v-if="student">学员缴费单</el-button>
-                <el-button size="small" :plain="true" onclick="location.href = 'control'" v-else>返回</el-button>
-                <el-button size="small" type="primary" @@click="toAdd">新增优惠</el-button>
-                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+                <el-button size="mini" type="info" :plain="true" @@click="history.back()" v-if="student">返回</el-button>
+                <el-button size="mini" type="info" :plain="true" @@click="location.href = 'control'" v-else>返回</el-button>
+                <el-button size="mini" type="primary" @@click="location.href='feeorder?student=' + student" v-if="student">学员缴费单</el-button>
+                <el-button size="mini" type="primary" @@click="toAdd" icon="el-icon-plus">新增优惠</el-button>
             </div>
-            @if (string.IsNullOrEmpty(ViewBag.Student)){
+
+            优惠管理<span>@Html.Raw(ViewBag.StudentShow)</span>
+        </div>
+        @if (string.IsNullOrEmpty(ViewBag.Student)){<div class="wln-line" style="padding-top:0px;"></div>
+        <div>
+            <div style="float:right">
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="line-height:38px" />
+            </div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
-            </el-select>}
-
-            优惠管理<span>@Html.Raw(ViewBag.StudentShow)</span>
+            </el-select>
         </div>
+        <div class="wln-line"></div>}else{<div class="wln-line" style="padding-top:0px;"></div>}
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
             <el-table-column width="150" align="center" label="优惠项目" property="feescalename"></el-table-column>
@@ -27,19 +33,21 @@
             <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
             <el-table-column width="90" align="center" label="状态">
                 <template scope="scope">
-                    <el-tag type="gray" v-if="scope.row.state === 0">未送审</el-tag>
-                    <el-tag type="danger" v-if="scope.row.state === 1">未通过</el-tag>
-                    <el-tag type="warning" v-if="scope.row.state === 2">待审核</el-tag>
-                    <el-tag type="success" v-if="scope.row.state === 3 && scope.row.state !== 0">已审核</el-tag>
-                    <el-tag type="info" v-if="scope.row.state === 3 && scope.row.state === 0">已使用</el-tag>
+                    <font style="color:#409EFF;" v-if="scope.row.state===0">未送审</font>
+                    <font style="color:#F56C6C;" v-else-if="scope.row.state===1">未通过</font>
+                    <font style="color:#E6A23C;" v-else-if="scope.row.state===2">待审核</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state !== 0">已审核</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state === 0">已使用</font>
+                    <font style="color:#909399;" v-else>其它</font>
                 </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="操作">
                 <template scope="scope">
-                    <el-button size="small" @@click="handleSendTo(scope.row)" type="info" v-if="scope.row.state < 2">送审</el-button>
-                    <el-button size="small" @@click="handleDelete(scope.row)" v-if="scope.row.state < 2">删除</el-button>
-                    <el-button size="small" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
-                    <el-button size="small" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                    <el-button size="mini" @@click="handleSendTo(scope.row)" type="primary" v-if="scope.row.state < 2">送审</el-button>
+                    <el-button size="mini" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.state < 2">删除</el-button>
+                    <el-button size="mini" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
+                    <el-button size="mini" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                    <el-button size="mini" type="danger" icon="el-icon-delete" @@click="handleDeleteVerify(scope.row)" v-if="scope.row.state === 3 && delverify">强制删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -141,6 +149,7 @@
     emptyPager.quotiety = '';
     emptyPager.tips = '请先选择优惠方式';
     emptyPager.Loaded = true;
+    emptyPager.delverify = false;
     var appList = Vue.extend({
         template: '#app-list',
         data: function () {
@@ -229,15 +238,34 @@
                 }).catch(() => {
                     iTips('删除操作已取消');
                 });
+            },
+            handleDeleteVerify(row) {
+                this.$confirm('您正在执行危险操作, 是否继续?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'deleteverify', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
             }
         }, created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
             var _self = this;
             $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
                 _self.organs = rlt.data;
                 _self.school = rlt.select;
-            })</text>}
+                _self.refresh();
+            })</text>}else{<text>
+            this.refresh();</text>}
 
-            this.refresh();
+            $.getJSON('/auth', { code: 'School_Discount_DeleteVerify' }, function (rlt) {
+                emptyPager.delverify = rlt.success;
+            })
         }
     })
     var appForm = Vue.extend({

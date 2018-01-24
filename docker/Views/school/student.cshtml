@@ -46,10 +46,10 @@
             </div>
             学员管理
         </div>
-        <div class="wln-line" style="padding-top:8px;"></div>
+        <div class="wln-line" style="padding-top:0px;"></div>
         <div>
             <div style="float:right">
-                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="line-height:38px" />
             </div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
