@@ -2,7 +2,7 @@
     @if (string.IsNullOrEmpty(ViewBag.Student)) { 
     <div style="display:table-cell;width:178px;background-color:#f0f0f0;">
         <div style="text-align:center;color:#1d76b1">
-            <el-select v-model="term" placeholder="请选择要管理的学期" @@change="reloadTree" style="width:168px;margin:5px;">
+            <el-select v-model="term" placeholder="选择要管理的学期" @@change="reloadTree" style="width:168px;margin:5px;">
                 <el-option v-for="item in terms" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
@@ -24,11 +24,12 @@
                 </span>
                 缴费清单 <span>{{classesSelectName}}</span>
             </div>
-            <el-table :data="rows" :empty-text="message">
+            <div class="wln-line" style="padding-top:0px;"></div>
+            <el-table :data="rows" :empty-text="message" @@filter-change="filterChange">
                 <el-table-column width="130" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
-                <el-table-column width="100" align="center" label="姓名" property="studentname"></el-table-column>
-                <el-table-column width="110" align="center" label="生成时间" property="create"></el-table-column>
-                <el-table-column width="100" align="right" label="应缴">
+                <el-table-column width="98" align="center" label="姓名" property="studentname"></el-table-column>
+                <el-table-column width="98" align="center" label="生成时间" property="create"></el-table-column>
+                <el-table-column width="90" align="right" label="应缴">
                     <template scope="scope">
                         <el-popover trigger="hover" placement="right">
                             <p>总金额: {{ scope.row.fullprice }}</p>
@@ -38,17 +39,16 @@
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="right" label="实缴" property="paid"></el-table-column>
-                <el-table-column width="140" align="center" label="状态">
+                <el-table-column width="90" align="right" label="实缴" property="paid"></el-table-column>
+                <el-table-column width="90" align="center" label="状态" property="ispay" column-key="ispay" :filters="[{ text: '已支付', value: 1 }, { text: '未支付', value: 0 }]" :filter-multiple="false">
                     <template scope="scope">
-                        <font style="color:#67C23A;" v-if="scope.row.ispay > 0">已缴费</font>
-                        <font style="color:#409EFF;" v-else>待支付</font>
+                        <font style="color:#67C23A;" v-if="scope.row.ispay > 0">已支付</font>
+                        <font style="color:#409EFF;" v-else>未支付</font>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="right" label="已扣费用" property="monthly"></el-table-column>
-                <el-table-column width="100" align="right" label="待扣余额" property="balance"></el-table-column>
-                <el-table-column></el-table-column>
-                <el-table-column width="100" align="center" label="微信推送">
+                <el-table-column width="80" align="right" label="已扣费用" property="monthly"></el-table-column>
+                <el-table-column width="80" align="right" label="待扣余额" property="balance"></el-table-column>
+                <el-table-column align="center" label="微信推送">
                     <template scope="scope">
                         <el-button size="mini" @@click="wxpush(scope.row.id)" type="success" plain v-if="scope.row.ispay > 0">已缴费</el-button>
                         <el-button size="mini" @@click="wxpush(scope.row.id)" type="success" plain v-else-if="scope.row.pushstate===3">已推送</el-button>
@@ -57,7 +57,7 @@
                         <el-button size="mini" @@click="wxpush(scope.row.id)" type="primary" title="点击重新推送" v-else>未推送</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column width="240" align="center" label="操作">
+                <el-table-column width="230" align="center" label="操作">
                     <template scope="scope">
                         <el-button size="mini" type="primary" @@click="location.href='/viewer?id=' + scope.row.id" v-if="scope.row.ispay === 0">明细</el-button>
                         <el-button size="mini" type="success" @@click="topay(scope.row.id)" v-if="scope.row.ispay === 0">缴费</el-button>
@@ -81,12 +81,14 @@
     emptyPager.classesSelectId = '';
     emptyPager.classesSelectName = '@Html.Raw(ViewBag.StudentName)';
     emptyPager.Loaded = false;
+    emptyPager.filter_ispay = -1;
     var app = new Vue({
         el: '#app', data: emptyPager, methods: {
             refresh() {
                 if (emptyPager.organ || emptyPager.student || emptyPager.classesSelectId) {
                     emptyPager.listLoading = true;
-                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, student: emptyPager.student, organ: emptyPager.organ, classes: emptyPager.classesSelectId }, function (rlt) {
+                    emptyPager.message = '数据正在加载中';
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, student: emptyPager.student, organ: emptyPager.organ, classes: emptyPager.classesSelectId, ispay: emptyPager.filter_ispay }, function (rlt) {
                         emptyPager.listLoading = false;
                         emptyPager.message = rlt.message;
                         emptyPager.total = rlt.total;
@@ -136,6 +138,17 @@
             },
             toticket(payid) {
                 location.href = '/ticket?id=' + payid;
+            },
+            filterChange(filters) {
+                if (filters.ispay && filters.ispay.length > 0) {
+                    emptyPager.filter_ispay = filters.ispay[0];
+                } else {
+                    emptyPager.filter_ispay = -1;
+                }
+                emptyPager.total = 0;
+                emptyPager.index = 1;
+                emptyPager.rows = [];
+                this.refresh();
             },
             handleNodeClick(node) {
                 emptyPager.classesSelectId = '';

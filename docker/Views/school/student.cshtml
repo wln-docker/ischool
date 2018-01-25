@@ -59,7 +59,7 @@
             </el-select>
         </div>
         <div class="wln-line"></div>
-        <el-table :data="rows" :empty-text="message" style="width:100%" @@selection-change="handleSelectionChange">
+        <el-table :data="rows" :empty-text="message" @@filter-change="filterChange" @@selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template scope="scope">
                     <el-form label-position="right" inline class="wln-table-expand">
@@ -107,7 +107,7 @@
                 </template>
             </el-table-column>
             <el-table-column width="55" type="selection"></el-table-column>
-            <el-table-column width="90" align="center" label="状态">
+            <el-table-column width="90" align="center" label="状态" property="state" column-key="state" :filters="[{value:0,text:'未入学'},{value:1,text:'在读中'},{value:2,text:'已转出'},{value:3,text:'已毕业'}]" :filter-multiple="false">
                 <template scope="scope">
                     <font style="color:#409EFF;" v-if="scope.row.state===0">未入学</font>
                     <font style="color:#67C23A;" v-else-if="scope.row.state===1">在读中</font>
@@ -119,16 +119,16 @@
             <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
             <el-table-column width="120" align="center" label="姓名" property="name"></el-table-column>
             <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
-            <el-table-column width="70" align="center" label="性别" property="sex"></el-table-column>
+            <el-table-column width="70" align="center" label="性别" property="sex" column-key="sex" :filters="[{value:1,text:'男孩'},{value:2,text:'女孩'},{value:0,text:'未选择'}]" :filter-multiple="false"></el-table-column>
             <el-table-column></el-table-column>
             <el-table-column width="180" align="center" label="操作">
                 <template scope="scope">
                     <el-popover ref="fee" placement="left" width="400">
                         <p>请为<font style="color:#FF5722;padding:0px 3px;">{{ scope.row.name }}</font>选择要执行的操作：</p>
                         <div class="popover-btns">
-                            <el-button size="mini" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">预缴费用</el-button>
-                            <el-button size="mini" type="primary" @@click="location.href='/discount?organ=' + school + '&student=' + scope.row.id">优惠管理</el-button>
                             <el-button size="mini" type="primary" @@click="location.href='/feeorder?organ=' + school + '&student=' + scope.row.id">缴费清单</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='/discount?organ=' + school + '&student=' + scope.row.id">优惠管理</el-button>
+                            <el-button size="mini" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">预缴费用</el-button>
                             <el-tooltip content="将费用退至预缴费用余额" placement="bottom">
                                 <el-button size="mini" type="primary" @@click="location.href='/refund?organ=' + school + '&student=' + scope.row.id">退费</el-button>
                             </el-tooltip>
@@ -255,6 +255,8 @@
     emptyPager.classes = [];
     emptyPager.classesSelect = [];
     emptyPager.entertime = [];
+    emptyPager.filter_state = -1;
+    emptyPager.filter_sex = -1;
 
     var appList = Vue.extend({
         template: '#app-list',
@@ -265,7 +267,7 @@
             refresh() {
                 if (emptyPager.school) {
                     emptyPager.fullLoading = true;
-                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, school: emptyPager.school, key: emptyPager.key }, function (rlt) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, school: emptyPager.school, key: emptyPager.key, state: emptyPager.filter_state, sex: emptyPager.filter_sex }, function (rlt) {
                         emptyPager.message = rlt.message;
                         emptyPager.total = rlt.total;
                         emptyPager.index = rlt.index;
@@ -283,6 +285,22 @@
                     emptyPager.rows = [];
                     emptyPager.multipleSelection = [];
                  }
+            },
+            filterChange(filters) {
+                if (filters.state && filters.state.length > 0) {
+                    emptyPager.filter_state = filters.state[0];
+                } else {
+                    emptyPager.filter_state = -1;
+                }
+                if (filters.sex && filters.sex.length > 0) {
+                    emptyPager.filter_sex = filters.sex[0];
+                } else {
+                    emptyPager.filter_sex = -1;
+                }
+                emptyPager.total = 0;
+                emptyPager.index = 1;
+                emptyPager.rows = [];
+                this.refresh();
             },
             rowsEntrance() {
                 var _self = this;
