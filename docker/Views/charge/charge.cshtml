@@ -27,9 +27,15 @@
                 <el-table-column></el-table-column>
                 <el-table-column width="400" align="center" label="操作">
                     <template scope="scope">
-                        <el-button size="mini" type="primary" @@click="location.href='retainer?student=' + scope.row.id">预缴费用</el-button>
-                        <el-button size="mini" type="primary" @@click="location.href='discount?student=' + scope.row.id">优惠管理</el-button>
-                        <el-button size="mini" type="primary" @@click="location.href='feeorder?student=' + scope.row.id">缴费清单</el-button>
+                        <el-tooltip content="生成和发送缴费清单及按月扣费" placement="bottom">
+                            <el-button size="mini" type="primary" @@click="location.href='feeorder?student=' + scope.row.id">缴费清单</el-button>
+                        </el-tooltip>
+                        <el-tooltip content="管理学员的优惠信息" placement="bottom">
+                            <el-button size="mini" type="primary" @@click="location.href='discount?student=' + scope.row.id">优惠管理</el-button>
+                        </el-tooltip>
+                        <el-tooltip content="余额充值、预缴定金等" placement="bottom">
+                            <el-button size="mini" type="primary" @@click="location.href='retainer?student=' + scope.row.id">预缴费用</el-button>
+                        </el-tooltip>
                         <el-tooltip content="将费用退至预缴费用余额" placement="bottom">
                             <el-button size="mini" type="primary" @@click="location.href='refund?student=' + scope.row.id">退费</el-button>
                         </el-tooltip>

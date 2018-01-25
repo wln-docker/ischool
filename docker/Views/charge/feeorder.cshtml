@@ -45,6 +45,8 @@
                         <font style="color:#409EFF;" v-else>待支付</font>
                     </template>
                 </el-table-column>
+                <el-table-column width="100" align="right" label="已扣费用" property="monthly"></el-table-column>
+                <el-table-column width="100" align="right" label="待扣余额" property="balance"></el-table-column>
                 <el-table-column></el-table-column>
                 <el-table-column width="100" align="center" label="微信推送">
                     <template scope="scope">
@@ -60,7 +62,7 @@
                         <el-button size="mini" type="primary" @@click="location.href='/viewer?id=' + scope.row.id" v-if="scope.row.ispay === 0">明细</el-button>
                         <el-button size="mini" type="success" @@click="topay(scope.row.id)" v-if="scope.row.ispay === 0">缴费</el-button>
                         <el-button size="mini" type="warning" @@click="handleDelete(scope.row)" v-if="scope.row.ispay === 0">删除</el-button>
-                        <el-button size="mini" type="primary" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1">按月扣款</el-button>
+                        <el-button size="mini" type="primary" @@click="tomonthly(scope.row.id)" v-if="scope.row.ispay === 1">按月扣费</el-button>
                         <el-button size="mini" type="warning" @@click="toticket(scope.row.payid)" v-if="scope.row.ispay === 1">缴费单据</el-button>
                     </template>
                 </el-table-column>
@@ -128,6 +130,9 @@
                         }
                     })
                 }
+            },
+            tomonthly(orderid) {
+                location.href = '/monthly?id=' + orderid;
             },
             toticket(payid) {
                 location.href = '/ticket?id=' + payid;

@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column width="100" align="center" label="数量">
             <template scope="scope">
-                <input type="text" v-model="scope.row.count" @@change="countChange(scope.row)" style="width:96%;text-align:center;" />
+                <input type="text" v-model="scope.row.count" @@change="countChange(scope.row)" style="width:96%;text-align:center;line-height:38px;border-radius:5px;" />
             </template>
         </el-table-column>
         <el-table-column width="120" align="right" label="小计" property="amount"></el-table-column>
