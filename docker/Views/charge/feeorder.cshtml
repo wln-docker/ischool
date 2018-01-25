@@ -35,7 +35,7 @@
                             <p>总金额: {{ scope.row.fullprice }}</p>
                             <p>优惠减免: {{ scope.row.discount }}</p>
                             <p>应缴金额: {{ scope.row.amount }}</p>
-                            <p>应缴金额: {{ scope.row.paid }}</p>
+                            <p>实缴金额: {{ scope.row.paid }}</p>
                             <div slot="reference" class="name-wrapper">{{ scope.row.amount }}</div>
                         </el-popover>
                     </template>
@@ -46,8 +46,8 @@
                         <font style="color:#409EFF;" v-else>未支付</font>
                     </template>
                 </el-table-column>
-                <el-table-column width="80" align="right" label="已扣费用" property="monthly"></el-table-column>
-                <el-table-column width="80" align="right" label="待扣余额" property="balance"></el-table-column>
+                <el-table-column width="90" align="right" label="已扣费用" property="monthly"></el-table-column>
+                <el-table-column width="90" align="right" label="待扣余额" property="balance"></el-table-column>
                 <el-table-column align="center" label="微信推送">
                     <template scope="scope">
                         <el-button size="mini" @@click="wxpush(scope.row.id)" type="success" plain v-if="scope.row.ispay > 0">已缴费</el-button>

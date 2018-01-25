@@ -106,7 +106,7 @@
                     </el-form>
                 </template>
             </el-table-column>
-            <el-table-column width="55" type="selection"></el-table-column>
+            <el-table-column width="30" type="selection"></el-table-column>
             <el-table-column width="90" align="center" label="状态" property="state" column-key="state" :filters="[{value:0,text:'未入学'},{value:1,text:'在读中'},{value:2,text:'已转出'},{value:3,text:'已毕业'}]" :filter-multiple="false">
                 <template scope="scope">
                     <font style="color:#409EFF;" v-if="scope.row.state===0">未入学</font>
@@ -121,7 +121,7 @@
             <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
             <el-table-column width="70" align="center" label="性别" property="sex" column-key="sex" :filters="[{value:1,text:'男孩'},{value:2,text:'女孩'},{value:0,text:'未选择'}]" :filter-multiple="false"></el-table-column>
             <el-table-column></el-table-column>
-            <el-table-column width="180" align="center" label="操作">
+            <el-table-column width="210" align="center" label="操作">
                 <template scope="scope">
                     <el-popover ref="fee" placement="left" width="400">
                         <p>请为<font style="color:#FF5722;padding:0px 3px;">{{ scope.row.name }}</font>选择要执行的操作：</p>
