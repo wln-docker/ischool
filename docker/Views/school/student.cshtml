@@ -43,14 +43,9 @@
                 <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
                 <el-button size="mini" type="primary" icon="el-icon-plus" @@click="router.push('/student/add')" v-if="editer">新增学员</el-button>
                 <el-button size="mini" type="primary" @@click="location.href='entrance'">学员入学记录<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
             </div>
             学员管理
-        </div>
-        <div class="wln-line" style="padding-top:0px;"></div>
-        <div>
-            <div style="float:right">
-                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="line-height:38px" />
-            </div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
@@ -58,7 +53,7 @@
                 </el-option>
             </el-select>
         </div>
-        <div class="wln-line"></div>
+        <div class="wln-line" style="padding-top:0px;"></div>
         <el-table :data="rows" :empty-text="message" @@filter-change="filterChange" @@selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template scope="scope">
