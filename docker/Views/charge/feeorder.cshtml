@@ -1,8 +1,8 @@
 ﻿<div id="app" v-loading.fullscreen.lock="loading && term == ''" style="width:100%;height:100%;display:table;">
     @if (string.IsNullOrEmpty(ViewBag.Student)) { 
-    <div style="display:table-cell;width:178px;background-color:#f0f0f0;">
+    <div style="display:table-cell;width:158px;background-color:#f0f0f0;">
         <div style="text-align:center;color:#1d76b1">
-            <el-select v-model="term" placeholder="选择要管理的学期" @@change="reloadTree" style="width:168px;margin:5px;">
+            <el-select v-model="term" placeholder="请选择当前学期" @@change="reloadTree" style="width:148px;margin:5px;">
                 <el-option v-for="item in terms" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
@@ -28,18 +28,18 @@
             <el-table :data="rows" :empty-text="message" @@filter-change="filterChange">
                 <el-table-column width="130" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
                 <el-table-column width="98" align="center" label="姓名" property="studentname"></el-table-column>
-                <el-table-column width="98" align="center" label="生成时间" property="create"></el-table-column>
-                <el-table-column width="90" align="right" label="应缴">
+                <el-table-column width="108" align="center" label="生成时间" property="create"></el-table-column>
+                <el-table-column width="90" align="right" label="金额">
                     <template scope="scope">
                         <el-popover trigger="hover" placement="right">
                             <p>总金额: {{ scope.row.fullprice }}</p>
                             <p>优惠减免: {{ scope.row.discount }}</p>
                             <p>应缴金额: {{ scope.row.amount }}</p>
+                            <p>应缴金额: {{ scope.row.paid }}</p>
                             <div slot="reference" class="name-wrapper">{{ scope.row.amount }}</div>
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column width="90" align="right" label="实缴" property="paid"></el-table-column>
                 <el-table-column width="90" align="center" label="状态" property="ispay" column-key="ispay" :filters="[{ text: '已支付', value: 1 }, { text: '未支付', value: 0 }]" :filter-multiple="false">
                     <template scope="scope">
                         <font style="color:#67C23A;" v-if="scope.row.ispay > 0">已支付</font>
@@ -57,7 +57,7 @@
                         <el-button size="mini" @@click="wxpush(scope.row.id)" type="primary" title="点击重新推送" v-else>未推送</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column width="230" align="center" label="操作">
+                <el-table-column width="240" align="center" label="操作">
                     <template scope="scope">
                         <el-button size="mini" type="primary" @@click="location.href='/viewer?id=' + scope.row.id" v-if="scope.row.ispay === 0">明细</el-button>
                         <el-button size="mini" type="success" @@click="topay(scope.row.id)" v-if="scope.row.ispay === 0">缴费</el-button>

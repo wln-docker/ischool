@@ -1,7 +1,7 @@
 ﻿<div id="app" v-loading.fullscreen.lock="loading && term == ''" style="width:100%;height:100%;display:table;">
-    <div style="display:table-cell;width:178px;background-color:#f0f0f0;">
+    <div style="display:table-cell;width:158px;background-color:#f0f0f0;">
         <div style="text-align:center;">
-            <el-select v-model="term" placeholder="请选择要管理的学期" @@change="reloadTree" style="width:168px;margin:5px;">
+            <el-select v-model="term" placeholder="请选择当前学期" @@change="reloadTree" style="width:148px;margin:5px;">
                 <el-option v-for="item in terms" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
