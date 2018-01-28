@@ -10,9 +10,8 @@
         </div>
         <el-tree ref="tree" :data="classes" :current-node-key="classesSelectId" :highlight-current="true" node-key="value" :default-expand-all="true" :expand-on-click-node="false" @@node-click="handleNodeClick" @@check-change="handleNodeClick" style="border:none;"></el-tree>
     </div>
-    <div class="wln-line"></div>
     <div style="display:table-cell;">
-        <div v-loading="loading" style="margin:0px 10px">
+        <div class="wln" v-loading="loading">
             <div class="wln-title">
                 <span style="float:right;">
                     <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>

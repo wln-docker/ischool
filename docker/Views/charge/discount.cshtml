@@ -1,6 +1,6 @@
-﻿<div id="app"><router-view></router-view></div>
+﻿<div id="app" class="wln"><router-view></router-view></div>
 <template id="app-list">
-    <div style="margin:0px 10px;">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="mini" type="info" :plain="true" @@click="history.back()" v-if="student">返回</el-button>
@@ -11,7 +11,7 @@
 
             优惠管理<span>@Html.Raw(ViewBag.StudentShow)</span>
         </div>
-        @if (string.IsNullOrEmpty(ViewBag.Student)){<div class="wln-line" style="padding-top:0px;"></div>
+        @if (string.IsNullOrEmpty(ViewBag.Student)){
         <div>
             <div style="float:right">
                 <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="line-height:38px" />
@@ -23,7 +23,7 @@
                 </el-option>
             </el-select>
         </div>
-        <div class="wln-line"></div>}else{<div class="wln-line" style="padding-top:0px;"></div>}
+        <div class="wln-line"></div>}
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
             <el-table-column width="150" align="center" label="优惠项目" property="feescalename"></el-table-column>
@@ -55,9 +55,9 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
-        <el-form ref="form" label-width="140px">
-            @if (string.IsNullOrEmpty(ViewBag.Student)){
+    <el-form ref="form" label-width="140px">
+        @if (string.IsNullOrEmpty(ViewBag.Student))
+        {
             <el-form-item>
                 <el-col :span="3" class="label">校园&nbsp;</el-col>
                 <el-col :span="18">
@@ -81,58 +81,59 @@
                     </el-select>
                 </el-col>
             </el-form-item>
-            } else {
+        }
+        else
+        {
             <el-form-item>
                 <el-col :span="3" class="label">优惠学员&nbsp;</el-col>
                 <el-col :span="18">
                     <el-input v-model="studentname" style="width:300px;" disabled></el-input>
                 </el-col>
             </el-form-item>
-            }
+        }
 
-            <el-form-item>
-                <el-col :span="3" class="label">优惠项目&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-select v-model="feescale" placeholder="请选择要申请优惠的收费项目" style="width:300px;">
-                        <el-option v-for="item in feescales" :label="item.name" :value="item.id">
-                            <span style="display:inline-block;width:90px;">{{item.name}}</span>
-                            <span style="color:#8492a6;font-size:12px">单价：{{item.price}}</span>
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">优惠方式&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-select v-model="mode" placeholder="请选择优惠方式" @@change="modeChange" style="width:300px;">
-                        <el-option v-for="item in modes" :label="item.label" :value="item.value">
-                            <span style="display:inline-block;width:90px;">{{item.label}}</span>
-                            <span style="color:#8492a6;font-size:12px">{{item.tips}}</span>
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">折扣/优惠价&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-input type="text" :rows="2" v-model="quotiety" style="width:60px;"></el-input> <font style="color:#999">{{tips}}</font>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">申请原因&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-input type="textarea" :rows="2" v-model="reasons" style="width:300px;"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3">&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-button type="primary" @@click="onSubmit">提交</el-button>
-                    <el-button onclick="history.back()">返回</el-button>
-                </el-col>
-            </el-form-item>
-        </el-form>
-    </div>
+        <el-form-item>
+            <el-col :span="3" class="label">优惠项目&nbsp;</el-col>
+            <el-col :span="18">
+                <el-select v-model="feescale" placeholder="请选择要申请优惠的收费项目" style="width:300px;">
+                    <el-option v-for="item in feescales" :label="item.name" :value="item.id">
+                        <span style="display:inline-block;width:90px;">{{item.name}}</span>
+                        <span style="color:#8492a6;font-size:12px">单价：{{item.price}}</span>
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">优惠方式&nbsp;</el-col>
+            <el-col :span="18">
+                <el-select v-model="mode" placeholder="请选择优惠方式" @@change="modeChange" style="width:300px;">
+                    <el-option v-for="item in modes" :label="item.label" :value="item.value">
+                        <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                        <span style="color:#8492a6;font-size:12px">{{item.tips}}</span>
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">折扣/优惠价&nbsp;</el-col>
+            <el-col :span="18">
+                <el-input type="text" :rows="2" v-model="quotiety" style="width:60px;"></el-input> <font style="color:#999">{{tips}}</font>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">申请原因&nbsp;</el-col>
+            <el-col :span="18">
+                <el-input type="textarea" :rows="2" v-model="reasons" style="width:300px;"></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3">&nbsp;</el-col>
+            <el-col :span="18">
+                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                <el-button onclick="history.back()">返回</el-button>
+            </el-col>
+        </el-form-item>
+    </el-form>
 </template>
 <script type="text/javascript">
     emptyPager.school = '@ViewBag.Organ';
