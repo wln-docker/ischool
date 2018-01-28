@@ -1,6 +1,6 @@
-﻿<div id="app"><router-view></router-view></div>
+﻿<div id="app" class="wln"><router-view></router-view></div>
 <template id="app-list">
-    <div style="margin:0px 10px;">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
@@ -31,41 +31,29 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
-        <el-row :gutter="10">
-            <el-col :xs="12" :sm="10" :md="9" :lg="6">
-                <el-form ref="form" v-model="form" label-width="140px">
-                    <el-form-item label="缴费项目">
-                        <el-input v-model="form.name" style="width:275px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
-                        <el-input v-model="form.feenumber" style="width:275px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="单价">
-                        <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
-                    </el-form-item>
-                    <el-form-item label="所属校园">
-                        <el-select v-model="form.organ" placeholder="请选择" style="width:275px;">
-                            <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                                <span style="float:left">{{item.name}}</span>
-                                <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @@click="onSubmit">提交</el-button>
-                        <el-button onclick="router.push('/feescale')">返回</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="6" :lg="4">
-                <div class="grid-content bg-purple-light"></div>
-            </el-col>
-            <el-col :xs="0" :sm="0" :md="1" :lg="8">
-                <div class="grid-content bg-purple"></div>
-            </el-col>
-        </el-row>
-    </div>
+    <el-form ref="form" v-model="form" label-width="140px">
+        <el-form-item label="缴费项目">
+            <el-input v-model="form.name" style="width:275px;"></el-input>
+        </el-form-item>
+        <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
+            <el-input v-model="form.feenumber" style="width:275px;"></el-input>
+        </el-form-item>
+        <el-form-item label="单价">
+            <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
+        </el-form-item>
+        <el-form-item label="所属校园">
+            <el-select v-model="form.organ" placeholder="请选择" style="width:275px;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @@click="onSubmit">提交</el-button>
+            <el-button onclick="router.push('/feescale')">返回</el-button>
+        </el-form-item>
+    </el-form>
 </template>
 <script type="text/javascript">
     var appList = Vue.extend({

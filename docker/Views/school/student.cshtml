@@ -35,9 +35,9 @@
     }
     .el-textarea__inner{height:90px}
 </style>
-<div id="app" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
+<div id="app" class="wln" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
 <template id="app-list">
-    <div style="margin:0px 10px">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
@@ -53,7 +53,6 @@
                 </el-option>
             </el-select>
         </div>
-        <div class="wln-line" style="padding-top:0px;"></div>
         <el-table :data="rows" :empty-text="message" @@filter-change="filterChange" @@selection-change="handleSelectionChange">
             <el-table-column type="expand">
                 <template scope="scope">
@@ -155,7 +154,7 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
+    <div>
         <div class="wln-title" style="margin:30px;">学员资料</div>
         <el-form ref="form" v-model="form" label-width="0px" style="width:720px;">
             <el-form-item>

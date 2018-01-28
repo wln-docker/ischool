@@ -24,7 +24,6 @@
                 </span>
                 缴费清单 <span>{{classesSelectName}}</span>
             </div>
-            <div class="wln-line" style="padding-top:0px;"></div>
             <el-table :data="rows" :empty-text="message" @@filter-change="filterChange">
                 <el-table-column width="130" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
                 <el-table-column width="98" align="center" label="姓名" property="studentname"></el-table-column>

@@ -1,6 +1,6 @@
-﻿<div id="app"><router-view></router-view></div>
+﻿<div id="app" class="wln"><router-view></router-view></div>
 <template id="app-list">
-    <div style="margin: 0px 10px;">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
@@ -43,55 +43,53 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
-        <el-form ref="form" v-model="form" label-width="140px">
-            <el-form-item>
-                <el-col :span="3" class="label">班级&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-input v-model="form.name" style="width:275px;"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">校园&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-select v-model="form.organ" placeholder="请选择" :disabled="form.id!==''" style="width:275px;">
-                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                            <span style="float:left">{{item.name}}</span>
-                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">状态&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-select v-model="form.state" placeholder="请选择" style="width:275px;">
-                        <el-option v-for="item in states" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">权重&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-input v-model="form.sort" style="width:60px;text-align:center;"></el-input>
-                    <span style="color:#999999;">数值越大越靠前</span>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">备注&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-input type="textarea" :rows="2" v-model="form.remarks"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item>
-                <el-col :span="3" class="label">&nbsp;</el-col>
-                <el-col :span="18">
-                    <el-button type="primary" @@click="onSubmit">提交</el-button>
-                    <el-button onclick="router.push('/classes')">返回</el-button>
-                </el-col>
-            </el-form-item>
-        </el-form>
-    </div>
+    <el-form ref="form" v-model="form" label-width="140px">
+        <el-form-item>
+            <el-col :span="3" class="label">班级&nbsp;</el-col>
+            <el-col :span="18">
+                <el-input v-model="form.name" style="width:275px;"></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">校园&nbsp;</el-col>
+            <el-col :span="18">
+                <el-select v-model="form.organ" placeholder="请选择" :disabled="form.id!==''" style="width:275px;">
+                    <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                        <span style="float:left">{{item.name}}</span>
+                        <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">状态&nbsp;</el-col>
+            <el-col :span="18">
+                <el-select v-model="form.state" placeholder="请选择" style="width:275px;">
+                    <el-option v-for="item in states" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">权重&nbsp;</el-col>
+            <el-col :span="18">
+                <el-input v-model="form.sort" style="width:60px;text-align:center;"></el-input>
+                <span style="color:#999999;">数值越大越靠前</span>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">备注&nbsp;</el-col>
+            <el-col :span="18">
+                <el-input type="textarea" :rows="2" v-model="form.remarks"></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="3" class="label">&nbsp;</el-col>
+            <el-col :span="18">
+                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                <el-button onclick="router.push('/classes')">返回</el-button>
+            </el-col>
+        </el-form-item>
+    </el-form>
 </template>
 <script type="text/javascript">
     var appList = Vue.extend({
