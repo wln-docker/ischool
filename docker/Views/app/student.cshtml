@@ -1,6 +1,6 @@
-﻿<div id="app"><router-view></router-view></div>
+﻿<div id="app" class="wln"><router-view></router-view></div>
 <template id="app-list">
-    <div class="wln">
+    <div>
         <div class="wln-title">学员列表</div>
         <div class="wln-menu">
             <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="float:right" />
@@ -43,110 +43,108 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
-        <el-row :gutter="5">
-            <el-col :xs="18" :sm="16" :md="15" :lg="18">
-                <el-form ref="form" v-model="form" label-width="80px">
-                    <el-form-item label="学号">
-                        <el-col :span="6">
-                            <el-input v-model="form.studentid" ></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">姓名</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.name" ></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">性别</el-col>
-                        <el-col :span="6">
-                            <el-select v-model="form.sex" placeholder="请选择">
-                                <el-option v-for="item in sexs" :label="item.label" :value="item.value"></el-option>
-                            </el-select>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="身份证号">
-                        <el-col :span="15">
-                            <el-input v-model="form.idnumber"></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">入学年度</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.enrollmentyear"></el-input>
-                        </el-col>
-                    </el-form-item>
+    <el-row :gutter="5">
+        <el-col :xs="18" :sm="16" :md="15" :lg="18">
+            <el-form ref="form" v-model="form" label-width="80px">
+                <el-form-item label="学号">
+                    <el-col :span="6">
+                        <el-input v-model="form.studentid"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">姓名</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.name"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">性别</el-col>
+                    <el-col :span="6">
+                        <el-select v-model="form.sex" placeholder="请选择">
+                            <el-option v-for="item in sexs" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="身份证号">
+                    <el-col :span="15">
+                        <el-input v-model="form.idnumber"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">入学年度</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.enrollmentyear"></el-input>
+                    </el-col>
+                </el-form-item>
 
-                    <el-form-item label="生日年份">
-                        <el-col :span="6">
-                            <el-input v-model="form.birthdayyear" ></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">生日月份</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.birthdaymonth"></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">生日日期</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.birthdayday"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="家长一">
-                        <el-col :span="6">
-                            <el-select v-model="form.relationship1" placeholder="请选择">
-                                <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
-                            </el-select>
-                        </el-col>
-                        <el-col :span="3" class="label">家长姓名一</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.parentname1"></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">家长电话一</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.telnumber1"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="家长二">
-                        <el-col :span="6">
-                            <el-select v-model="form.relationship2" placeholder="请选择">
-                                <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
-                            </el-select>
-                        </el-col>
-                        <el-col :span="3" class="label">家长姓名二</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.parentname2"></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">家长电话二</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.telnumber2"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="所属校园">
-                        <el-col :span="6">
-                            <el-select v-model="form.organ" placeholder="请选择">
-                                <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                                    <span style="float:left">{{item.name}}</span>
-                                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                                </el-option>
-                            </el-select>
-                        </el-col>
-                        <el-col :span="3" class="label">照片</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.avatar"></el-input>
-                        </el-col>
-                        <el-col :span="3" class="label">备注</el-col>
-                        <el-col :span="6">
-                            <el-input v-model="form.remarks"></el-input>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @@click="onSubmit">提交</el-button>
-                        <el-button onclick="router.push('/student')">返回</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="6" :lg="4">
-                <div class="grid-content bg-purple-light"></div>
-            </el-col>
-            <el-col :xs="0" :sm="0" :md="1" :lg="8">
-                <div class="grid-content bg-purple"></div>
-            </el-col>
-        </el-row>
-    </div>
+                <el-form-item label="生日年份">
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdayyear"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">生日月份</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdaymonth"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">生日日期</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdayday"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="家长一">
+                    <el-col :span="6">
+                        <el-select v-model="form.relationship1" placeholder="请选择">
+                            <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">家长姓名一</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.parentname1"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">家长电话一</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.telnumber1"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="家长二">
+                    <el-col :span="6">
+                        <el-select v-model="form.relationship2" placeholder="请选择">
+                            <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">家长姓名二</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.parentname2"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">家长电话二</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.telnumber2"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="所属校园">
+                    <el-col :span="6">
+                        <el-select v-model="form.organ" placeholder="请选择">
+                            <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                                <span style="float:left">{{item.name}}</span>
+                                <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">照片</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.avatar"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">备注</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.remarks"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="router.push('/student')">返回</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="6" :lg="4">
+            <div class="grid-content bg-purple-light"></div>
+        </el-col>
+        <el-col :xs="0" :sm="0" :md="1" :lg="8">
+            <div class="grid-content bg-purple"></div>
+        </el-col>
+    </el-row>
 </template>
 <script type="text/javascript">
     var appList = Vue.extend({

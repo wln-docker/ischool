@@ -38,7 +38,7 @@
 <div id="app" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
 <template id="app-list">
     <div style="margin:0px 10px">
-        <div class="wln-subtitle">
+        <div class="wln-title">
             <div style="float:right">
                 <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
                 <el-button size="mini" type="primary" icon="el-icon-plus" @@click="router.push('/student/add')" v-if="editer">新增学员</el-button>
