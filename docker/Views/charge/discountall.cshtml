@@ -1,5 +1,5 @@
-﻿<div id="app">
-    <div style="margin:0px 10px;">
+﻿<div id="app" class="wln">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="mini" type="info" :plain="true" onclick="location.href = 'control'">返回</el-button>
@@ -9,7 +9,6 @@
             </div>
             优惠审批
         </div>
-        <div class="wln-line"></div>
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="150" align="center" label="校园" property="organ"></el-table-column>
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>

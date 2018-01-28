@@ -1,19 +1,19 @@
 ﻿<style>
     .cell .el-input__inner{border:none}
 </style>
-<div id="app">
-    <div style="margin: 0px 10px;">
+<div id="app" class="wln">
+    <div>
         <div class="wln-title">
             年级管理 <el-button size="mini" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
         </div>
         <div>
-            <el-select v-model="school" clearable placeholder="请选择要管理的校园" @@change="schoolChange" style="width:320px;">
+            <el-select v-model="school" clearable placeholder="请选择要管理的校园" @@change="schoolChange" style="width:320px;vertical-align:middle;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
             </el-select>
-            <el-select v-model="term" clearable placeholder="请选择要管理的学期" @@change="termChange" style="width:180px;">
+            <el-select v-model="term" clearable placeholder="请选择要管理的学期" @@change="termChange" style="width:180px;vertical-align:middle;">
                 <el-option v-for="item in terms" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>

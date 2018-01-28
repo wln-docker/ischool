@@ -16,7 +16,7 @@
             <div style="float:right">
                 <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="line-height:38px" />
             </div>
-            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;vertical-align:middle;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
