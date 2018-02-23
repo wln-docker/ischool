@@ -17,7 +17,7 @@
             @if (string.IsNullOrEmpty(ViewBag.SuccessMessage))
             {
                 <span>
-                    <input type="text" id="ihost" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请输入XCenter服务器地址" />
+                    <input type="text" id="ihost" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请输入iCenter服务器地址" />
                 </span>
                 <span id="dToken" style="display:none">
                     <input type="text" id="itoken" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请填写服务端Token密钥" />
@@ -43,7 +43,7 @@
         }
         function Check() {
             if (!eHost.value) {
-                alert("请输入Wlniao.i服务器地址");
+                alert("请输入iCenter服务器地址");
                 eHost.focus();
                 return false;
             } else if (idle) {

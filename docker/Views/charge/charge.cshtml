@@ -79,6 +79,8 @@
                 }
             },
             handleNodeClick(node) {
+                emptyPager.total = 0;
+                emptyPager.index = 1;
                 emptyPager.classesSelectId = '';
                 emptyPager.classesSelectName = node.selectname ? node.selectname : '';
                 emptyPager.organ = node.cascader ? node.cascader[0] : '';
