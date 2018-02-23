@@ -19,7 +19,7 @@
         <a class="payway" id="payway3" onclick="show(3)"><img src="/icons/payway3.svg" />微信支付</a>
         @*<a class="payway" id="payway4" onclick="show(4)"><img src="/icons/payway4.svg" />支付宝支付</a>*@
         @*<a class="payway" id="payway5" onclick="show(5)"><img src="/icons/payway5.svg" />转账代扣</a>*@
-        @if (ViewBag.Retainer){<a class="payway" id="payway6" onclick="show(6)"><img src="/icons/payway6.svg" />预缴抵扣</a>}
+        @if (ViewBag.Retainer){<a class="payway" id="payway6" onclick="show(6)"><img src="/icons/payway6.svg" />余额支付</a>}
     </div>
     <div id="payment">
         <div style="padding:30px;">
@@ -51,11 +51,11 @@
             </div>
             <div style="position:absolute;bottom:30px;right:30px;">
                 <el-button size="small" type="info" :plain="true" onclick="history.back()">返回</el-button>
-                <el-button size="small" type="info" onclick="setday()" class="pay pay2">补单</el-button>
+                <el-button size="small" type="info" onclick="setday()" class="pay pay2 pay6">补单</el-button>
                 <el-button size="small" type="info" :plain="true" onclick="location.href='/retainer?student=@ViewBag.Student'" class="pay pay6">预缴充值</el-button>
                 <el-button size="small" type="primary" onclick="pay()" class="pay pay1 pay2">确认</el-button>
                 <el-button size="small" type="primary" onclick="check()" class="pay pay3">查询支付状态</el-button>
-                <el-button size="small" type="primary" onclick="pay()" class="pay pay6">使用余额抵扣</el-button>
+                <el-button size="small" type="primary" onclick="pay()" class="pay pay6">使用余额支付</el-button>
             </div>
         </div>
     </div>
