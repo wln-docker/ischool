@@ -25,15 +25,23 @@
         <div style="padding:30px;">
             <span style="color:#b0b0b0">应付</span>
             <div style="color:#ff6a00;font-size:30px;margin-bottom:30px;font-family:inherit;">￥ @ViewBag.Amount</div>
-            <div class="pay pay1 pay2">
-                <div style="display:none">
-                    <span style="color:#b0b0b0">实付</span>
-                    <div style="color:#4CAF50;font-size:30px;">￥ <input type="text" id="payamount" value="@ViewBag.Amount" readonly="readonly" style="background:#ffffff" /></div>
+            <div class="pay pay1 pay2 pay6">
+                <div class="pay1 pay2">
+                    <div style="display:none">
+                        <span style="color:#b0b0b0">实付</span>
+                        <div style="color:#4CAF50;font-size:30px;">￥ <input type="text" id="payamount" value="@ViewBag.Amount" readonly="readonly" style="background:#ffffff" /></div>
+                        <div style="height:20px">&nbsp;</div>
+                    </div>
+                    <span style="color:#b0b0b0">经办人</span>
+                    <div style="color:#111111;font-size:20px;padding-left:35px;">@Html.Raw(ViewBag.AccountName)</div>
                     <div style="height:20px">&nbsp;</div>
                 </div>
-                <span style="color:#b0b0b0">经办人</span>
-                <div style="color:#111111;font-size:20px;padding-left:35px;">@Html.Raw(ViewBag.AccountName)</div>
-                <div style="height:20px">&nbsp;</div>
+
+                <div class="pay6">
+                    <span style="color:#b0b0b0">预缴余额</span>
+                    <div style="color:#4CAF50;font-size:30px;margin-bottom:30px;font-family:inherit;">￥ @ViewBag.Balance</div>
+                </div>
+
                 <div id="setday" style="display:none">
                     <span style="color:#b0b0b0">缴费日期</span>
                     <div style="color:#111111;font-size:20px;padding-left:35px;padding-top:8px;">
@@ -45,14 +53,10 @@
                 <div id="qr3"></div>
                 <span style="color:#b0b0b0;display:none;">请使用微信扫描此二维码完成付款！</span>
             </div>
-            <div class="pay pay6">
-                <span style="color:#b0b0b0">预缴余额</span>
-                <div style="color:#4CAF50;font-size:30px;margin-bottom:30px;font-family:inherit;">￥ @ViewBag.Balance</div>
-            </div>
             <div style="position:absolute;bottom:30px;right:30px;">
                 <el-button size="small" type="info" :plain="true" onclick="history.back()">返回</el-button>
-                <el-button size="small" type="info" onclick="setday()" class="pay pay2 pay6">补单</el-button>
                 <el-button size="small" type="info" :plain="true" onclick="location.href='/retainer?student=@ViewBag.Student'" class="pay pay6">预缴充值</el-button>
+                <el-button size="small" type="info" onclick="setday()" class="pay pay2 pay6">补单</el-button>
                 <el-button size="small" type="primary" onclick="pay()" class="pay pay1 pay2">确认</el-button>
                 <el-button size="small" type="primary" onclick="check()" class="pay pay3">查询支付状态</el-button>
                 <el-button size="small" type="primary" onclick="pay()" class="pay pay6">使用余额支付</el-button>
