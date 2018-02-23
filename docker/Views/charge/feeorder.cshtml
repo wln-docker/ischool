@@ -21,6 +21,7 @@
                     <el-button size="mini" type="primary" @@click="location.href='discount?student=' + student" v-if="student">优惠管理</el-button>
                     <el-button size="mini" type="primary" @@click="location.href='newfeeorder?student=' + student" v-if="student">生成缴费清单</el-button>
                     <el-button size="mini" type="primary" @@click="location.href='newfeeorder?classes=' + classesSelectId" v-if="classesSelectId">批量生成缴费清单</el-button>
+                    <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
                 </span>
                 缴费清单 <span>{{classesSelectName}}</span>
             </div>
@@ -87,7 +88,7 @@
                 if (emptyPager.organ || emptyPager.student || emptyPager.classesSelectId) {
                     emptyPager.listLoading = true;
                     emptyPager.message = '数据正在加载中';
-                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, student: emptyPager.student, organ: emptyPager.organ, classes: emptyPager.classesSelectId, ispay: emptyPager.filter_ispay }, function (rlt) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, student: emptyPager.student, key: emptyPager.key, organ: emptyPager.organ, classes: emptyPager.classesSelectId, ispay: emptyPager.filter_ispay }, function (rlt) {
                         emptyPager.listLoading = false;
                         emptyPager.message = rlt.message;
                         emptyPager.total = rlt.total;
@@ -150,12 +151,16 @@
                 this.refresh();
             },
             handleNodeClick(node) {
+                emptyPager.total = 0;
+                emptyPager.index = 1;
                 emptyPager.classesSelectId = '';
                 emptyPager.classesSelectName = node.selectname ? node.selectname : '';
                 emptyPager.organ = node.cascader ? node.cascader[0] : '';
                 if (node.cascader.length == 2) {
                     emptyPager.classesSelectId = node.cascader[1];
                     $.getJSON('/ajax/select', { 'classes': emptyPager.classesSelectId });
+                } else {
+                    $.getJSON('/ajax/select', { 'classes': '' });
                 }
                 this.refresh();
             },
@@ -196,11 +201,17 @@
                 $.getJSON('/ajax/classes', { 'term': emptyPager.term }, function (rlt) {
                     emptyPager.loading = false;
                     emptyPager.term = rlt.term;
+                    emptyPager.organ = rlt.organ;
                     emptyPager.terms = rlt.terms;
                     emptyPager.classes = rlt.classes;
                     emptyPager.classesSelectId = rlt.select;
                     _self.refresh();
                 });
+            },
+            search() {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
             }
         },
         created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>

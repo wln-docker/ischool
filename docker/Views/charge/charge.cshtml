@@ -16,16 +16,18 @@
                 <span style="float:right;">
                     <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
                     <el-button size="mini" type="primary" onclick="location.href='retainer'" v-if="classesSelectId">预缴费用管理<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
+                    <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
                 </span>
                 缴费管理 <span>{{classesSelectName}}</span>
             </div>
             <el-table :data="list" :empty-text="message">
-                <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
-                <el-table-column width="100" align="center" label="姓名" property="name"></el-table-column>
-                <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
-                <el-table-column width="90" align="right" label="余额" property="balance"></el-table-column>
-                <el-table-column></el-table-column>
-                <el-table-column width="420" align="center" label="操作">
+                <el-table-column width="140" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
+                <el-table-column width="90" align="center" label="姓名" property="name"></el-table-column>
+                <el-table-column width="110" align="center" label="班级" property="classname"></el-table-column>
+                <el-table-column width="90" align="right" label="已扣金额" property="monthly"></el-table-column>
+                <el-table-column width="90" align="right" label="待扣余额" property="amount"></el-table-column>
+                <el-table-column width="90" align="right" label="预缴费用" property="balance"></el-table-column>
+                <el-table-column align="right">
                     <template scope="scope">
                         <el-tooltip content="生成和发送缴费清单及按月扣费" placement="bottom">
                             <el-button size="mini" type="primary" @@click="location.href='feeorder?student=' + scope.row.id">缴费清单</el-button>
@@ -61,7 +63,7 @@
             refresh() {
                 if (emptyPager.organ || emptyPager.classesSelectId) {
                     emptyPager.loading = true;
-                    $.getJSON('/ajax/students', { 'balance': 'true', 'organ': emptyPager.organ, 'classes': emptyPager.classesSelectId, page: emptyPager.index, rows: emptyPager.size }, function (rlt) {
+                    $.getJSON(location.pathname, { 'do': 'pager', 'balance': 'true', 'organ': emptyPager.organ, 'classes': emptyPager.classesSelectId, key: emptyPager.key, page: emptyPager.index, rows: emptyPager.size }, function (rlt) {
                         emptyPager.loading = false;
                         emptyPager.message = rlt.message;
                         emptyPager.total = rlt.total;
@@ -87,6 +89,8 @@
                 if (node.cascader.length == 2) {
                     emptyPager.classesSelectId = node.cascader[1];
                     $.getJSON('/ajax/select', { 'classes': emptyPager.classesSelectId });
+                } else {
+                    $.getJSON('/ajax/select', { 'classes': '' });
                 }
                 this.refresh();
             },
@@ -113,6 +117,7 @@
                 $.getJSON('/ajax/classes', { 'term': emptyPager.term }, function (rlt) {
                     emptyPager.loading = false;
                     emptyPager.term = rlt.term;
+                    emptyPager.organ = rlt.organ;
                     emptyPager.terms = rlt.terms;
                     emptyPager.classes = rlt.classes;
                     emptyPager.classesSelectId = rlt.select;
@@ -120,11 +125,8 @@
                 });
             },
             search() {
-                emptyPager.list = emptyPager.rows.filter(item => {
-                    return item.name.indexOf(emptyPager.key) > -1 || item.studentid.indexOf(emptyPager.key) > -1 || item.pinying.indexOf(emptyPager.key.toUpperCase()) > -1;
-                })
-                if (emptyPager.list.length == 0) {
-                    emptyPager.message = '暂无符合条件的学员';
+                if (event.keyCode == 13) {
+                    this.refresh()
                 }
             }
         },
