@@ -3,25 +3,25 @@
     <div>
         <div class="wln-title">
             <div style="float:right">
-                <el-button size="small" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
-                <el-button size="small" type="primary" onclick="location.href = 'grade'" v-if="editer">年级管理</el-button>
-                <el-button size="small" type="primary" onclick="router.push('/classes/add')" v-if="editer">新增班级</el-button>
+                <el-button size="mini" type="info" :plain="true" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="mini" type="primary" onclick="location.href = 'grade'" v-if="editer">年级管理</el-button>
+                <el-button size="mini" type="primary" onclick="router.push('/classes/add')" v-if="editer">新增班级</el-button>
             </div>
-            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
+            班级管理
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;vertical-align:middle;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
                     <span style="float:left">{{item.name}}</span>
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
             </el-select>
-            班级管理
         </div>
-        <el-table :data="rows" :empty-text="message" border>
+        <el-table :data="rows" :empty-text="message">
             <el-table-column width="90" align="center" label="状态">
                 <template scope="scope">
-                    <el-tag type="warning" v-if="scope.row.state===0">待开班</el-tag>
-                    <el-tag type="primary" v-else-if="scope.row.state===1">已开班</el-tag>
-                    <el-tag type="success" v-else-if="scope.row.state===2">已毕业</el-tag>
-                    <el-tag type="gray" v-else>无效</el-tag>
+                    <font style="color:#eb9e05" v-if="scope.row.state===0">待开班</font>
+                    <font style="color:#409EFF" v-else-if="scope.row.state===1">已开班</font>
+                    <font style="color:#67c23a" v-else-if="scope.row.state===2">已毕业</font>
+                    <font style="color:#808080" v-else>无效</font>
                 </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="班级" property="name"></el-table-column>
@@ -32,10 +32,10 @@
                 </template>
             </el-table-column>
             <el-table-column width="70" align="center" label="权重" property="sort"></el-table-column>
-            <el-table-column width="150" align="center" label="操作">
+            <el-table-column width="150" align="center" label="操作" v-if="editer">
                 <template scope="scope">
-                    <el-button size="small" @@click="handleEditer(scope.row)" type="success" v-if="editer">编辑</el-button>
-                    <el-button size="small" @@click="handleDelete(scope.row)" type="warning" v-if="delrow">删除</el-button>
+                    <el-button size="mini" type="warning" icon="el-icon-edit" @@click="handleEditer(scope.row)">编辑</el-button>
+                    <el-button size="mini" type="danger" icon="el-icon-delete" @@click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -43,53 +43,61 @@
     </div>
 </template>
 <template id="app-form">
-    <el-form ref="form" v-model="form" label-width="140px">
-        <el-form-item>
-            <el-col :span="3" class="label">班级&nbsp;</el-col>
-            <el-col :span="18">
-                <el-input v-model="form.name" style="width:275px;"></el-input>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">校园&nbsp;</el-col>
-            <el-col :span="18">
-                <el-select v-model="form.organ" placeholder="请选择" :disabled="form.id!==''" style="width:275px;">
-                    <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                        <span style="float:left">{{item.name}}</span>
-                        <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                    </el-option>
-                </el-select>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">状态&nbsp;</el-col>
-            <el-col :span="18">
-                <el-select v-model="form.state" placeholder="请选择" style="width:275px;">
-                    <el-option v-for="item in states" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">权重&nbsp;</el-col>
-            <el-col :span="18">
-                <el-input v-model="form.sort" style="width:60px;text-align:center;"></el-input>
-                <span style="color:#999999;">数值越大越靠前</span>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">备注&nbsp;</el-col>
-            <el-col :span="18">
-                <el-input type="textarea" :rows="2" v-model="form.remarks"></el-input>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">&nbsp;</el-col>
-            <el-col :span="18">
-                <el-button type="primary" @@click="onSubmit">提交</el-button>
-                <el-button onclick="router.push('/classes')">返回</el-button>
-            </el-col>
-        </el-form-item>
-    </el-form>
+    <div>
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+            </div>
+            班级信息
+        </div>
+        <el-form ref="form" v-model="form" label-width="140px">
+            <el-form-item>
+                <el-col :span="3" class="label">班级&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="form.name" style="width:275px;"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">校园&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="form.organ" placeholder="请选择" :disabled="form.id!==''" style="width:275px;">
+                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                            <span style="float:left">{{item.name}}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">状态&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="form.state" placeholder="请选择" style="width:275px;">
+                        <el-option v-for="item in states" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">权重&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="form.sort" style="width:60px;text-align:center;"></el-input>
+                    <span style="color:#999999;">数值越大越靠前</span>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">备注&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="textarea" :rows="2" v-model="form.remarks"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="router.push('/classes')">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 <script type="text/javascript">
     var appList = Vue.extend({
@@ -98,7 +106,6 @@
             emptyPager.school = '';
             emptyPager.organs = [];
             emptyPager.editer = false;
-            emptyPager.delrow = false;
             return emptyPager
         },
         methods: {
@@ -124,11 +131,8 @@
                 emptyPager.editer = false;
                 emptyPager.delrow = false;
                 $.getJSON('/ajax/select', { 'organ': val });
-                $.getJSON('/right', { 'do': 'editer', organ: val, code: 'Classes' }, function (rlt) {
+                $.getJSON('/auth', { organ: val, code: 'School_Class_Grade' }, function (rlt) {
                     emptyPager.editer = rlt.success;
-                })
-                $.getJSON('/right', { 'do': 'delete', organ: val, code: 'Classes' }, function (rlt) {
-                    emptyPager.delrow = rlt.success;
                 })
                 this.refresh();
             },
@@ -168,8 +172,13 @@
             $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
                 _self.organs = rlt.data;
                 _self.school = rlt.select;
+                _self.refresh();
+                if (rlt.select) {
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Class_Grade' }, function (rlt) {
+                        emptyPager.editer = rlt.success;
+                    })
+                }
             });
-            _self.refresh();
         }
     })
     var appForm = Vue.extend({
@@ -217,6 +226,7 @@
                     if (rlt.id) {
                         obj.name = rlt.name;
                         obj.organ = rlt.organ;
+                        obj.state = rlt.state;
                         obj.sort = rlt.sort;
                         obj.remarks = rlt.remarks;
                     }

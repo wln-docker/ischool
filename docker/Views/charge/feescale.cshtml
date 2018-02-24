@@ -3,7 +3,7 @@
     <div>
         <div class="wln-title">
             <div style="float:right">
-                <el-button size="mini" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="mini" type="info" :plain="true" onclick="location.href = 'control'">返回</el-button>
                 <el-button size="mini" type="primary" onclick="router.push('/feescale/add')" v-if="editer">新增缴费项目</el-button>
                 <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
             </div>
@@ -31,29 +31,32 @@
     </div>
 </template>
 <template id="app-form">
-    <el-form ref="form" v-model="form" label-width="140px">
-        <el-form-item label="缴费项目">
-            <el-input v-model="form.name" style="width:275px;"></el-input>
-        </el-form-item>
-        <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
-            <el-input v-model="form.feenumber" style="width:275px;"></el-input>
-        </el-form-item>
-        <el-form-item label="单价">
-            <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
-        </el-form-item>
-        <el-form-item label="所属校园">
-            <el-select v-model="form.organ" placeholder="请选择" style="width:275px;">
-                <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                    <span style="float:left">{{item.name}}</span>
-                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                </el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @@click="onSubmit">提交</el-button>
-            <el-button onclick="router.push('/feescale')">返回</el-button>
-        </el-form-item>
-    </el-form>
+    <div>
+        <div class="wln-title">缴费项目</div>
+        <el-form ref="form" v-model="form" label-width="140px">
+            <el-form-item label="项目名称">
+                <el-input v-model="form.name" style="width:275px;"></el-input>
+            </el-form-item>
+            <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
+                <el-input v-model="form.feenumber" style="width:275px;"></el-input>
+            </el-form-item>
+            <el-form-item label="单价">
+                <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
+            </el-form-item>
+            <el-form-item label="所属校园">
+                <el-select v-model="form.organ" placeholder="请选择" style="width:275px;">
+                    <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                        <span style="float:left">{{item.name}}</span>
+                        <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                <el-button onclick="router.push('/feescale')">返回</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 <script type="text/javascript">
     var appList = Vue.extend({
