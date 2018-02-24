@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "cc3375fceeed1b5046ad90482c5a253b46d9cf3c"
+    "signature": "c680d1cccb12c9826acdbbd9c3bcf414fde776cf"
   },
   "compilationOptions": {
     "defines": [
@@ -23,19 +23,11 @@
     ".NETCoreApp,Version=v2.0": {
       "app/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore": "2.0.1",
-          "Microsoft.AspNetCore.Diagnostics": "2.0.1",
-          "Microsoft.AspNetCore.Mvc": "2.0.1",
-          "Microsoft.AspNetCore.Server.Kestrel": "2.0.1",
-          "Microsoft.AspNetCore.StaticFiles": "2.0.1",
           "Microsoft.EntityFrameworkCore": "2.0.1",
-          "Microsoft.EntityFrameworkCore.Design": "2.0.1",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.1",
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
           "SharpZipLib.NETStandard": "0.86.0.1",
-          "System.Linq.Expressions": "4.3.0",
-          "Wlniao.XCore": "2.0.2-beta7",
           "wlniao.i": "1.0.0-beta-71215"
         },
         "runtime": {
@@ -2568,7 +2560,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "Wlniao.XCore/2.0.2-beta7": {
+      "Wlniao.XCore/2.0.3-bate5": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.1",
           "Microsoft.AspNetCore.Hosting": "2.0.1",
@@ -2577,11 +2569,15 @@
           "Microsoft.AspNetCore.Mvc": "2.0.1",
           "Microsoft.AspNetCore.Mvc.Core": "2.0.1",
           "Microsoft.AspNetCore.Routing": "2.0.1",
+          "Microsoft.AspNetCore.Server.Kestrel": "2.0.1",
+          "Microsoft.AspNetCore.StaticFiles": "2.0.1",
           "RestSharp": "106.1.0",
+          "System.Linq.Expressions": "4.3.0",
           "System.Linq.Queryable": "4.3.0",
           "System.Net.NameResolution": "4.3.0",
           "System.Net.Security": "4.3.2",
-          "System.Text.Encoding.CodePages": "4.4.0"
+          "System.Text.Encoding.CodePages": "4.4.0",
+          "System.Xml.XmlDocument": "4.3.0"
         },
         "runtime": {
           "lib/netcoreapp2.0/Wlniao.XCore.dll": {}
@@ -2592,7 +2588,7 @@
       },
       "wlniao.i/1.0.0-beta-71215": {
         "dependencies": {
-          "Wlniao.XCore": "2.0.2-beta7"
+          "Wlniao.XCore": "2.0.3-bate5"
         },
         "runtime": {
           "wlniao.i.dll": {}
@@ -4241,12 +4237,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "Wlniao.XCore/2.0.2-beta7": {
+    "Wlniao.XCore/2.0.3-bate5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-JjUI7WvfqoinRZM17i/QoGEtf+k03ozupToNM+cjY28cqsPdM7HidZ6ZErL6zlhYzqq12VG4daEIts+vEoq0Fg==",
-      "path": "wlniao.xcore/2.0.2-beta7",
-      "hashPath": "wlniao.xcore.2.0.2-beta7.nupkg.sha512"
+      "sha512": "sha512-L1fdGk5YU31oS8imdN+KGyghGwF9k3wnuxYxC4jWk6k7aHD2p7tCSH78NbmxGwJNCeHwREU/rh9CgvuWkmBWnA==",
+      "path": "wlniao.xcore/2.0.3-bate5",
+      "hashPath": "wlniao.xcore.2.0.3-bate5.nupkg.sha512"
     },
     "wlniao.i/1.0.0-beta-71215": {
       "type": "project",
