@@ -108,7 +108,7 @@
                 emptyPager.editer = false;
                 emptyPager.delrow = false;
                 $.getJSON('/organ', { 'do': val });
-                $.getJSON('/auth', { organ: val, code: 'School_Class_Grade' }, function (rlt) {
+                $.getJSON('/auth', { organ: val, code: 'School_Control_School' }, function (rlt) {
                     emptyPager.editer = rlt.success;
                 })
                 this.refresh();
@@ -151,7 +151,7 @@
                 _self.school = rlt.select;
                 _self.refresh();
                 if (rlt.select) {
-                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Class_Grade' }, function (rlt) {
+                    $.getJSON('/auth', { organ: rlt.select, code: 'School_Control_School' }, function (rlt) {
                         emptyPager.editer = rlt.success;
                     })
                 }
