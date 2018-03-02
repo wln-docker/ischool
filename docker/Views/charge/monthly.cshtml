@@ -1,0 +1,176 @@
+﻿<style>
+    .el-form-item {margin-bottom:0;}
+    .el-input-group--prepend input[type=text]{text-align:center}
+    .el-input.is-disabled .el-input__inner {
+        background-color: #f7eeee;
+        border-color: #dddddd;
+        color: #505256;
+        cursor: not-allowed;
+    }
+    .el-input-group__append, .el-input-group__prepend{padding:0 5px}
+</style>
+<div id="app" class="wln">
+    <el-form ref="form" label-width="0px" style="width:100%;background-color:#f0f0f0;">
+        <div style="position:absolute;right:30px;top:30px;z-index:9999;">
+            <el-button size="mini" onclick="history.back()">返回</el-button>
+            <el-button size="mini" type="primary" @@click="handleMonthly()" v-if="monthly==1">已启用按月扣费</el-button>
+            <el-button size="mini" type="primary" plain @@click="handleMonthly()" v-else>未启用按月扣费</el-button>
+        </div>
+        <el-form-item>
+            <el-col :span="2" class="label">缴费学员&nbsp;</el-col>
+            <el-col :span="22"><font style="font-size:1.5em;color:#F44336;">@Html.Raw(ViewBag.StudentName)</font></el-col>
+        </el-form-item>
+        <el-form-item>
+            <el-col :span="2" class="label">@Html.Raw(ViewBag.Label_StudentId)&nbsp;</el-col>
+            <el-col :span="22">@Html.Raw(ViewBag.StudentId)</el-col>
+        </el-form-item>
+    </el-form>
+    <el-table v-loading="Loaded" :data="rows" :empty-text="message">
+        <el-table-column width="80" align="center" label="月份" property="yearmonth"></el-table-column>
+        <el-table-column width="200" align="left" label="扣费项目" property="scalename"></el-table-column>
+        <el-table-column width="120" align="right" label="待扣金额" property="balance"></el-table-column>
+        <el-table-column width="150" align="center" label="单价×扣费数量" property="remark"></el-table-column>
+        <el-table-column width="120" align="right" label="实扣金额" property="amount"></el-table-column>
+        <el-table-column width="120" align="right" label="余额" property="total"></el-table-column>
+        <el-table-column></el-table-column>
+        <el-table-column width="120" align="center" label="扣费日期" property="create"></el-table-column>
+        <el-table-column width="150" align="center" label="操作">
+            <template scope="scope">
+                <div v-if="scope.row.id">
+                    <el-button size="mini" type="success" @@click="handleLock(scope.row)" v-if="scope.row.islock > 0">已审核</el-button>
+                    <el-button size="mini" type="warning" @@click="handleLock(scope.row)"v-if="scope.row.islock == 0">审核</el-button>
+                    <el-button size="mini" type="primary" @@click="handleRemove(scope.row)" v-if="scope.row.islock == 0">删除</el-button>
+                </div>
+            </template>
+        </el-table-column>
+    </el-table>
+    <div style="background-color:#d0d9e6;padding:3px;margin-top:15px;"></div>
+    <div style="text-align:center;padding:6px;margin-top:15px;">
+        <el-date-picker v-model="yearmonth" type="month" value-format="yyyy-MM" placeholder="扣费月份" style="width:120px;"></el-date-picker>
+        <el-select v-model="detail" placeholder="请选择扣费项目" @@change="feescaleChange" style="width:270px;">
+            <el-option v-for="item in details" :value="item" :key="item.id" :label="item.scalename + '　　月扣：'+item.scaleprice">
+                <span style="display:inline-block;width:90px;">{{item.scalename}}</span>
+                <span style="color:#8492a6;font-size:12px">月扣金额：{{item.scaleprice}}</span>
+            </el-option>
+        </el-select>
+        <el-input v-model="scaletotal" :disabled="true" style="width:130px">
+            <template slot="prepend">总缴费</template>
+            <template slot="append">月</template>
+        </el-input>
+        <el-input v-model="scalecount" @@change="countChange()" @@keydown="countChange()" style="width:120px">
+            <template slot="prepend">扣费数量</template>
+        </el-input>
+        <el-input v-model="scaleamount" style="width:180px">
+            <template slot="prepend">扣费金额</template>
+            <template slot="append">元</template>
+        </el-input>
+        <el-button @@click="handleAppend()" type="primary" style="vertical-align:top;">扣费</el-button>
+    </div>
+</div>
+<script type="text/javascript">
+    emptyPager.orderid = '@Html.Raw(ViewBag.OrderId)';
+    emptyPager.monthly = @ViewBag.Monthly;
+    emptyPager.yearmonth = '@Html.Raw(ViewBag.YearMonth)';
+    emptyPager.scaleprice = '0.00';
+    emptyPager.scaletotal = '0.00';
+    emptyPager.scalecount = '0.00';
+    emptyPager.scaleamount = '0.00';
+    emptyPager.rows = [];
+    emptyPager.detail = { id: '' };
+    emptyPager.details = [];
+    emptyPager.Loaded = false;
+    var app = new Vue({
+        el: '#app', data: emptyPager, methods: {
+            refresh() {
+                emptyPager.Loaded = true;
+                $.getJSON(location.pathname, { 'do': 'list', 'id': emptyPager.orderid }, function (rlt) {
+                    emptyPager.Loaded = false;
+                    emptyPager.rows = rlt;
+                    emptyPager.message = rlt.length == 0 ? '当前缴费暂无按月扣费记录' : '加载完成';
+                })
+            },
+            countChange() {
+                if (isNaN(Number(emptyPager.scalecount))) {
+                    iTips('您输入的扣分数量格式有误');
+                    emptyPager.scalecount = '1.00';
+                    emptyPager.scaleamount = emptyPager.scaleprice.toFixed(2);
+                } else {
+                    emptyPager.scaleamount = (emptyPager.scaleprice * parseFloat(emptyPager.scalecount)).toFixed(2);
+                }
+            },
+            feescaleChange(obj) {
+                if (obj && obj.id) {
+                    emptyPager.scaletotal = obj.scaletotal;
+                    emptyPager.scaleprice = obj.scaleprice;
+                    emptyPager.scalecount = obj.scalecount;
+                    emptyPager.scaleamount = (parseFloat(emptyPager.scaleprice) * parseFloat(emptyPager.scalecount)).toFixed(2);
+                }
+            },
+            handleMonthly() {
+                emptyPager.Loaded = true;
+                $.getJSON(location.pathname, { 'do': 'monthly', 'id': emptyPager.orderid }, function (rlt) {
+                    emptyPager.Loaded = false;
+                    iTips(rlt.message, rlt.success);
+                    if (rlt.success) {
+                        if (emptyPager.monthly == 1) {
+                            emptyPager.monthly = 0;
+                        } else {
+                            emptyPager.monthly = 1;
+                        }
+                    }
+                })
+            },
+            handleAppend() {
+                emptyPager.Loaded = true;
+                $.getJSON(location.pathname, {
+                    'do': 'append'
+                    , 'id': emptyPager.orderid
+                    , 'detail': emptyPager.detail.id
+                    , 'yearmonth': emptyPager.yearmonth
+                    , 'scalecount': emptyPager.scalecount
+                    , 'scaleamount': emptyPager.scaleamount
+                }, function (rlt) {
+                    emptyPager.Loaded = false;
+                    iTips(rlt.message, rlt.success);
+                    if (rlt.success) {
+                        app.refresh();
+                        emptyPager.monthly = 1;
+                        localStorage.setItem('reload', 'true');
+                    }
+                })
+            },
+            handleRemove(row) {
+                emptyPager.Loaded = true;
+                $.getJSON(location.pathname, { 'do': 'remove', 'id': emptyPager.orderid, rowid: row.id }, function (rlt) {
+                    emptyPager.Loaded = false;
+                    iTips(rlt.message, rlt.success);
+                    if (rlt.success) {
+                        app.refresh();
+                        localStorage.setItem('reload', 'true');
+                    }
+                })
+            },
+            handleLock(row) {
+                emptyPager.Loaded = true;
+                $.getJSON(location.pathname, { 'do': 'lock', 'id': emptyPager.orderid, rowid: row.id }, function (rlt) {
+                    emptyPager.Loaded = false;
+                    iTips(rlt.message, rlt.success);
+                    if (rlt.success) {
+                        app.refresh();
+                    }
+                })
+            }
+        },
+        created() {
+            this.refresh();
+            $.getJSON(location.pathname, { 'do': 'details', 'id': emptyPager.orderid }, function (rlt) {
+                emptyPager.details = rlt;
+                emptyPager.detail = rlt[0];
+                emptyPager.scaletotal = rlt[0].scaletotal;
+                emptyPager.scaleprice = rlt[0].scaleprice;
+                emptyPager.scalecount = rlt[0].scalecount;
+                emptyPager.scaleamount = (parseFloat(emptyPager.scaleprice) * parseFloat(emptyPager.scalecount)).toFixed(2);
+            })
+        }
+    })
+</script>

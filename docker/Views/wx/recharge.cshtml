@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "_master.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-color: #f0f0f0;
+            font-family: Microsoft Yahei;
+        }
+    </style>
+}
+@section body{
+    <div style="padding:12px;">
+        <div style="line-height:30px;color:#666666;">充值金额：</div>
+        <div><input id="amount" type="number" placeholder="请输入要充值的金额" style="line-height:40px;font-size:16px;border-radius:3px;border:1px solid #9E9E9E;text-indent:10px;width:100%;" /></div>
+        <div style="text-align:center;margin-top:15px;"><a style="color:#ffffff;background:#4CAF50;font-size:15px;border-radius:3px;width:100%;line-height:36px;display:block;" href="javascript:Recharge()">立即充值</a></div>
+    </div>
+}
+@section script{
+    <script type="text/javascript">
+        document.title = '预缴充值';
+        $('.nav:nth-child(3)').addClass('active');
+        var loadRecharge = false;
+        function Recharge(id) {
+            if (loadRecharge) {
+                wln.alert('操作正在处理中，请稍候');
+            } else {
+                loadRecharge = true;
+                wln.loading();
+                $.getJSON(location.pathname, { 'do': 'recharge', 'amount': $('#amount').val() }, function (rlt) {
+                    loadRecharge = false;
+                    if (rlt.success) {
+                        location.href = rlt.data;
+                    } else {
+                        wln.closeDialog();
+                        wln.alert(rlt.message);
+                    }
+                });
+            }
+        }
+    </script>
+}

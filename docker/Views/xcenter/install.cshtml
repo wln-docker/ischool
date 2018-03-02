@@ -1,0 +1,85 @@
+﻿@{
+    Layout = null;
+}<!DOCTYPE html>
+<html>
+<head>
+    <title>应用安装</title>
+    <meta charset="utf-8" />
+    <style>
+        body {background-color: #f9f9f9;}
+        #go {width:96px;height:96px;line-height:96px;display:inline-block;border-radius:100px;background:#00adee;color:#ffffff;font-size:32px;}
+        #go:hover{background-color:#048ec1;}
+    </style>
+</head>
+<body>
+    <div class="wln" style="padding-top:15%;">
+        <div style="text-align:center;">
+            @if (string.IsNullOrEmpty(ViewBag.SuccessMessage))
+            {
+                <span>
+                    <input type="text" id="ihost" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请输入iCenter服务器地址" />
+                </span>
+                <span id="dToken" style="display:none">
+                    <input type="text" id="itoken" onkeydown="ToCheck(event)" style="width:360px;height:48px;border-radius:3px;padding-left:1rem;font-size:18px;" placeholder="请填写服务端Token密钥" />
+                </span>
+                <div style="margin-top:20px;">
+                    <a id="go" onclick="Check()">注册</a>
+                </div>
+            }
+            else
+            {
+                <span>@Html.Raw(ViewBag.SuccessMessage)</span>
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+        var idle = true;
+        var eHost = document.getElementById('ihost');
+        var eToken = document.getElementById('itoken');
+        function ToCheck(e) {
+            if (e.keyCode == 13) {
+                Check();
+            }
+        }
+        function Check() {
+            if (!eHost.value) {
+                alert("请输入iCenter服务器地址");
+                eHost.focus();
+                return false;
+            } else if (idle) {
+                idle = false;
+                var XMLHttp = null;
+                if (window.XMLHttpRequest) {
+                    XMLHttp = new XMLHttpRequest();
+                } else if (window.ActiveXObject) {
+                    XMLHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                XMLHttp.onreadystatechange = function () {
+                    idle = true;
+                    if (XMLHttp.readyState == 4 && XMLHttp.status) {
+                        var json = eval("(" + XMLHttp.responseText + ")");
+                        if (json.success) {
+                            if (eToken.value) {
+                                window.location.href = '/enroll?token=' + eToken.value + '&ihost=' + json.data;
+                            } else {
+                                window.location.href = '/enroll?ihost=' + json.data;
+                            }
+                        } else {
+                            alert(json.message);
+                            eHost.focus();
+                            if (json.message[0] == 'T') {
+                                document.getElementById('dToken').style.display = '';
+                                eToken.focus();
+                            }
+                        }
+                    }
+                }
+                XMLHttp.open('GET', '/install?do=check&ihost=' + eHost.value + '&token=' + eToken.value, true);
+                XMLHttp.send();
+            } else {
+                alert("请求正在处理中，请不要频繁点击按钮");
+            }
+        }
+    </script>
+</body>
+</html>

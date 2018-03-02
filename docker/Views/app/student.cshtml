@@ -1,0 +1,322 @@
+﻿<div id="app" class="wln"><router-view></router-view></div>
+<template id="app-list">
+    <div>
+        <div class="wln-title">学员列表</div>
+        <div class="wln-menu">
+            <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" style="float:right" />
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:286px;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>
+            <el-button type="primary" size="small" onclick="router.push('/student/add')">新增学员</el-button>
+        </div>
+        <el-table :data="rows" :empty-text="message" border style="width: 100%">
+            <el-table-column width="40" align="center" type="index"></el-table-column>
+            <el-table-column width="80" align="center" label="照片" property="avatar"></el-table-column>
+            <el-table-column width="80" align="center" label="学号" property="studentid"></el-table-column>
+            <el-table-column width="90" align="center" label="姓名" property="name"></el-table-column>
+            <el-table-column width="70" align="center" label="性别" property="sex"></el-table-column>
+            @*<el-table-column width="120" align="center" label="身份证号" property="idnumber"></el-table-column>
+            <el-table-column width="70" align="center" label="生日年份" property="birthdayyear"></el-table-column>
+            <el-table-column width="70" align="center" label="生日月份" property="birthdaymonth"></el-table-column>
+            <el-table-column width="70" align="center" label="生日日期" property="birthdayday"></el-table-column>
+            <el-table-column width="70" align="center" label="入学年度" property="enrollmentyear"></el-table-column>
+            <el-table-column width="90" align="center" label="家长一" property="relationship1"></el-table-column>
+            <el-table-column width="90" align="center" label="家长姓名一" property="parentname1"></el-table-column>
+            <el-table-column width="120" align="center" label="家长电话一" property="telnumber1"></el-table-column>
+            <el-table-column width="90" align="center" label="家长二" property="relationship2"></el-table-column>
+            <el-table-column width="90" align="center" label="家长姓名二" property="parentname2"></el-table-column>
+            <el-table-column width="120" align="center" label="家长电话二" property="telnumber2"></el-table-column>*@
+            <el-table-column width="160" align="center" label="校园" property="organ"></el-table-column>
+            <el-table-column width="120" align="center" label="备注" property="remarks"></el-table-column>
+            <el-table-column></el-table-column>
+            <el-table-column width="150" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleEdit(scope.row)">编辑</el-button>
+                    <el-button size="small" type="danger" @@click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <el-row :gutter="5">
+        <el-col :xs="18" :sm="16" :md="15" :lg="18">
+            <el-form ref="form" v-model="form" label-width="80px">
+                <el-form-item label="学号">
+                    <el-col :span="6">
+                        <el-input v-model="form.studentid"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">姓名</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.name"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">性别</el-col>
+                    <el-col :span="6">
+                        <el-select v-model="form.sex" placeholder="请选择">
+                            <el-option v-for="item in sexs" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="身份证号">
+                    <el-col :span="15">
+                        <el-input v-model="form.idnumber"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">入学年度</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.enrollmentyear"></el-input>
+                    </el-col>
+                </el-form-item>
+
+                <el-form-item label="生日年份">
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdayyear"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">生日月份</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdaymonth"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">生日日期</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.birthdayday"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="家长一">
+                    <el-col :span="6">
+                        <el-select v-model="form.relationship1" placeholder="请选择">
+                            <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">家长姓名一</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.parentname1"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">家长电话一</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.telnumber1"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="家长二">
+                    <el-col :span="6">
+                        <el-select v-model="form.relationship2" placeholder="请选择">
+                            <el-option v-for="item in relationships" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">家长姓名二</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.parentname2"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">家长电话二</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.telnumber2"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="所属校园">
+                    <el-col :span="6">
+                        <el-select v-model="form.organ" placeholder="请选择">
+                            <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                                <span style="float:left">{{item.name}}</span>
+                                <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="label">照片</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.avatar"></el-input>
+                    </el-col>
+                    <el-col :span="3" class="label">备注</el-col>
+                    <el-col :span="6">
+                        <el-input v-model="form.remarks"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="router.push('/student')">返回</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="6" :lg="4">
+            <div class="grid-content bg-purple-light"></div>
+        </el-col>
+        <el-col :xs="0" :sm="0" :md="1" :lg="8">
+            <div class="grid-content bg-purple"></div>
+        </el-col>
+    </el-row>
+</template>
+<script type="text/javascript">
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            emptyPager.school = '';
+            emptyPager.organs = [];
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                if (_self.school) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, school: _self.school, key: _self.key }, function (rlt) {
+                        _self.message = rlt.message;
+                        _self.total = rlt.total;
+                        _self.index = rlt.index;
+                        _self.size = rlt.size;
+                        _self.rows = rlt.rows;
+                    });
+                }
+                else{
+                    _self.message = '请先选择要管理的校园（';
+                    _self.total = 0;
+                    _self.index = 0;
+                    _self.rows = [];
+                 }
+            },
+            schoolChange(val) {
+                $.getJSON('/organ', { 'do': val });
+                this.refresh();
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleEdit(row) {
+                router.push('/student/edit?id=' + row.id);
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    app.$message({ type: 'info', message: '删除操作已取消' });
+                });
+            }
+        }, created() {
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.school = rlt.select;
+            });
+            this.refresh();
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            var obj = {
+                form: {
+                    id: ''
+                    ,
+                    name: ''
+                    ,
+                    organ: ''
+                    ,
+                    avatar:''
+                    ,
+                    sex:0
+                    ,
+                    studentid: ''
+                    ,
+                    idnumber: ''
+                    ,
+                    birthdayyear: ''
+                    ,
+                    birthdaymonth: ''
+                    ,
+                    birthdayday: ''
+                    ,
+                    enrollmentyear: ''
+                    ,
+                    relationship1: ''
+                    ,
+                    parentname1: ''
+                    ,
+                    telnumber1: ''
+                    ,
+                    relationship2: ''
+                    ,
+                    parentname2: ''
+                    ,
+                    telnumber2: ''
+                    ,
+                    remarks: ''
+
+                },
+                sexs: [{ "value": 0, "label": "未选择" }, { "value": 1, "label": "男" }, { "value": 2, "label": "女" }],
+                relationships: [],
+                organs: []
+            }
+            $.getJSON('/enums', { 'do': 'Relationship' }, function (data) {
+                obj.relationships = data;
+            });
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                obj.organs = rlt.data;
+                obj.form.organ = rlt.select;
+            });
+            return obj;
+        },
+        methods: {
+            onSubmit: function () {
+                var obj = this.form;
+                $.post(location.pathname + '?do=set', obj, function (rlt) {
+                    app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    if (rlt.success) {
+                        obj.sid = rlt.data;
+                        router.push('/student');
+                    }
+                });
+            }
+        }, created() {
+            var obj = this.form;
+            obj.id = this.getParam('id');
+            if (obj.id) {
+                $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
+                    if (rlt.id) {
+                        obj.name = rlt.name;
+                        obj.organ = rlt.organ;
+                        obj.avatar = rlt.avatar;
+                        obj.sex = rlt.sex;
+                        obj.studentid = rlt.studentid;
+                        obj.idnumber = rlt.idnumber;
+                        obj.birthdayyear = rlt.birthdayyear;
+                        obj.birthdaymonth = rlt.birthdaymonth;
+                        obj.birthdayday = rlt.birthdayday;
+                        obj.enrollmentyear = rlt.enrollmentyear;
+                        obj.relationship1 = rlt.relationship1;
+                        obj.parentname1 = rlt.parentname1;
+                        obj.telnumber1 = rlt.telnumber1;
+                        obj.relationship2 = rlt.relationship2;
+                        obj.parentname2 = rlt.parentname2;
+                        obj.telnumber2 = rlt.telnumber2;
+                        obj.remarks = rlt.remarks;
+                    }
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/student', component: appList }
+            , { path: '/student/add', component: appForm }
+            , { path: '/student/edit', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router });
+</script>

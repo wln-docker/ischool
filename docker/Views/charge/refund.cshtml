@@ -1,0 +1,303 @@
+﻿<div id="app"><router-view></router-view></div>
+<template id="app-list">
+    <div style="margin:0px 10px;">
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="small" :plain="true" @@click="history.back()">返回</el-button>
+                <el-button size="small" type="primary" @@click="toAdd">新增退费</el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+            </div>
+            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>}
+
+            退费管理<span>@Html.Raw(ViewBag.StudentShow)</span>
+        </div>
+        <el-table :data="rows" :empty-text="message">
+            <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
+            <el-table-column width="150" align="center" label="退费项目" property="feescalename"></el-table-column>
+            <el-table-column width="100" align="center" label="退费数量" property="count"></el-table-column>
+            <el-table-column width="120" align="right" label="退费金额" property="amount"></el-table-column>
+            <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
+            <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
+            <el-table-column width="90" align="center" label="状态">
+                <template scope="scope">
+                    <el-tag type="gray" v-if="scope.row.state === 0">未送审</el-tag>
+                    <el-tag type="danger" v-if="scope.row.state === 1">未通过</el-tag>
+                    <el-tag type="warning" v-if="scope.row.state === 2">待审核</el-tag>
+                    <el-tag type="success" v-if="scope.row.state === 3 && scope.row.state !== 0">已审核</el-tag>
+                    <el-tag type="info" v-if="scope.row.state === 3 && scope.row.state === 0">已使用</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleSendTo(scope.row)" type="info" v-if="scope.row.state < 2">送审</el-button>
+                    <el-button size="small" @@click="handleDelete(scope.row)" v-if="scope.row.state < 2">删除</el-button>
+                    <el-button size="small" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
+                    <el-button size="small" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div class="wln">
+        <el-form ref="form" label-width="140px">
+            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            <el-form-item>
+                <el-col :span="3" class="label">校园&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="school" placeholder="请选择" @@change="schoolChange" style="width:300px">
+                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                            <span style="float:left">{{item.name}}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要申请退费的学员" style="width:300px;">
+                        <el-option v-for="item in students" :label="item.label" :value="item.id">
+                            <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                            <span style="display:inline-block;width:120px;color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
+                            <span style="color:#8492a6;font-size:12px">{{item.classname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            } else {
+            <el-form-item>
+                <el-col :span="3" class="label">退费学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="studentname" style="width:300px;" disabled></el-input>
+                </el-col>
+            </el-form-item>
+            }
+
+            <el-form-item>
+                <el-col :span="3" class="label">退费项目&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="feescale" placeholder="请选择要申请退费的收费项目" style="width:300px;">
+                        <el-option v-for="item in feescales" :label="item.name" :value="item.id">
+                            <span style="display:inline-block;width:90px;">{{item.name}}</span>
+                            <span style="color:#8492a6;font-size:12px">单价：{{item.price}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">退费数量&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="text" :rows="2" v-model="count" placeholder="可不填" style="width:60px;"></el-input>&nbsp;<font color="#999999">支持小数，如：0.15</font> 
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">退费金额&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="text" :rows="2" v-model="amount" placeholder="必填" style="width:60px;"></el-input>&nbsp;<font color="#999999">退费金额必须大于零</font> 
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">申请原因&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="textarea" :rows="2" v-model="reasons" style="width:300px;"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-button type="primary" @@click="onSubmit">提交</el-button>
+                    <el-button onclick="history.back()">返回</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    emptyPager.school = '@ViewBag.Organ';
+    emptyPager.organs = [];
+    emptyPager.student = '@Html.Raw(ViewBag.Student)';
+    emptyPager.studentname = '@Html.Raw(ViewBag.StudentName)';
+    emptyPager.students = [];
+    emptyPager.allstudents = [];
+    emptyPager.feescale = '';
+    emptyPager.feescales = [];
+    emptyPager.reasons = '';
+    emptyPager.count = '';
+    emptyPager.amount = '';
+    emptyPager.Loaded = true;
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                if (_self.school) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, school: _self.school, student: _self.student, key: _self.key }, function (rlt) {
+                        _self.message = rlt.message;
+                        _self.total = rlt.total;
+                        _self.index = rlt.index;
+                        _self.size = rlt.size;
+                        _self.rows = rlt.rows;
+                    });
+                }
+                else {
+                    _self.message = '请先选择要管理的校园';
+                    _self.total = 0;
+                    _self.index = 0;
+                    _self.rows = [];
+                }
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            schoolChange(val) {
+                emptyPager.rows = [];
+                $.getJSON('/organ', { 'do': val });
+                this.refresh();
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            toAdd() {
+                router.push('/refund/add?organ=' + emptyPager.school + '&student=@ViewBag.Student');
+            },
+            handleSendTo(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'sendto', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleVerify(row) {
+                this.$confirm('审核通过后此退费将生效, 确定要通过审核吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'verify', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('审核操作已取消');
+                });
+            },
+            handleReback(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'reback', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'delete', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.school = rlt.select;
+            })</text>}
+
+            this.refresh();
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            return emptyPager;
+        },
+        methods: {
+            schoolChange(val) {
+                emptyPager.allstudents = [];
+                emptyPager.students = [];
+                emptyPager.feescales = [];
+                $.getJSON('/students', { 'organ': emptyPager.school }, function (rlt) {
+                    emptyPager.allstudents = rlt.rows;
+                    emptyPager.students = rlt.rows;
+                })
+                $.getJSON('/feescale', { 'do': 'tree', 'organ': emptyPager.school }, function (rlt) {
+                    emptyPager.feescales = rlt;
+                });
+            },
+            remoteQuery(query) {
+                emptyPager.students = emptyPager.allstudents.filter(item => {
+                    return item.label.indexOf(query) > -1 || item.studentid.indexOf(query) > -1 || item.pinying.indexOf(query.toUpperCase()) > -1;
+                })
+            },
+            onSubmit: function () {
+                if (emptyPager.Loaded) {
+                    emptyPager.Loaded = false;
+                    $.post(location.pathname + '?do=set', {
+                        organ: emptyPager.school, student: emptyPager.student, feescale: emptyPager.feescale
+                        , count: emptyPager.count, amount: emptyPager.amount, reasons: emptyPager.reasons
+                    }, function (rlt) {
+                        emptyPager.Loaded = true;
+                        iTips(rlt.message, rlt.success);
+                        if (rlt.success) {
+                            emptyPager.student = '@Html.Raw(ViewBag.Student)';
+                            emptyPager.mode = '';
+                            emptyPager.quotiety = '';
+                            history.back();
+                        }
+                    });
+                } else {
+                    iTips('操作正在提交中，请稍候');
+                }
+            }
+        }, created() {@if (string.IsNullOrEmpty(ViewBag.Student)){<text>
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                emptyPager.organs = rlt.data;
+                if (emptyPager.school) {
+                    $.getJSON('/students', { 'organ': emptyPager.school }, function (rlt) {
+                        emptyPager.allstudents = rlt.rows;
+                        emptyPager.students = rlt.rows;
+                    });
+                }
+            })</text>}
+
+            if (emptyPager.school) {
+                $.getJSON('/feescale', { 'do': 'tree', 'organ': emptyPager.school }, function (rlt) {
+                    emptyPager.feescales = rlt;
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: '/refund', component: appList }
+            , { path: '/refund/add', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router });
+</script>

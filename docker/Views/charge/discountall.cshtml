@@ -1,0 +1,150 @@
+﻿<div id="app" class="wln">
+    <div>
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="mini" type="info" :plain="true" onclick="location.href = 'control'">返回</el-button>
+                <el-button size="mini" type="success" @@click="stopVerify()" v-if="DiscountVerify">已启用审核</el-button>
+                <el-button size="mini" type="info" @@click="openVerify()" v-else="DiscountVerify">未启用审核</el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+            </div>
+            优惠审批
+        </div>
+        <el-table :data="rows" :empty-text="message">
+            <el-table-column width="150" align="center" label="校园" property="organ"></el-table-column>
+            <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
+            <el-table-column width="150" align="center" label="优惠项目" property="feescalename"></el-table-column>
+            <el-table-column width="100" align="center" label="优惠方式" property="mode"></el-table-column>
+            <el-table-column width="150" align="right" label="折扣/优惠价" property="quotiety"></el-table-column>
+            <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
+            <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
+            <el-table-column width="90" align="center" label="状态">
+                <template scope="scope">
+                    <font style="color:#409EFF;" v-if="scope.row.state===0">未送审</font>
+                    <font style="color:#F56C6C;" v-else-if="scope.row.state===1">未通过</font>
+                    <font style="color:#E6A23C;" v-else-if="scope.row.state===2">待审核</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state !== 0">已审核</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state === 0">已使用</font>
+                    <font style="color:#909399;" v-else>其它</font>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="mini" @@click="handleSendTo(scope.row)" type="primary" v-if="scope.row.state < 2">送审</el-button>
+                    <el-button size="mini" @@click="handleDelete(scope.row)" type="warning" v-if="scope.row.state < 2">删除</el-button>
+                    <el-button size="mini" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
+                    <el-button size="mini" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                    <el-button size="mini" type="danger" icon="el-icon-delete" @@click="handleDeleteVerify(scope.row)" v-if="scope.row.state === 3 && delverify">强制删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</div>
+<script type="text/javascript">
+    emptyPager.Loaded = true;
+    emptyPager.delverify = false;
+    emptyPager.DiscountVerify = '@ViewBag.DiscountVerify' == 'True';
+    var app = new Vue({
+        el: '#app',
+        data: emptyPager,
+        methods: {
+            refresh() {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, key: _self.key }, function (rlt) {
+                    _self.message = rlt.message;
+                    _self.total = rlt.total;
+                    _self.index = rlt.index;
+                    _self.size = rlt.size;
+                    _self.rows = rlt.rows;
+                });
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            openVerify() {
+                $.getJSON(location.pathname, { 'do': 'open' }, function (rlt) {
+                    location.reload();
+                });
+            },
+            stopVerify() {
+                $.getJSON(location.pathname, { 'do': 'stop' }, function (rlt) {
+                    location.reload();
+                });
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleSendTo(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'sendto', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleVerify(row) {
+                this.$confirm('审核通过后此优惠将生效, 确定要通过审核吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'verify', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('审核操作已取消');
+                });
+            },
+            handleReback(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'reback', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'delete', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            },
+            handleDeleteVerify(row) {
+                this.$confirm('您正在执行危险操作, 是否继续?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'deleteverify', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            this.refresh();
+            $.getJSON('/auth', { code: 'School_Discount_DeleteVerify' }, function (rlt) {
+                emptyPager.delverify = rlt.success;
+            })
+        }
+    });
+</script>

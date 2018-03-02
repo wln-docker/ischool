@@ -1,0 +1,116 @@
+﻿<div id="app">
+    <div style="margin:0px 10px;">
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="small" :plain="true" onclick="location.href = 'control'">返回</el-button>
+                <input type="text" v-model="key" :value="key" @@keydown="search($event)" placeholder="按回车键进行查找" />
+            </div>
+            退费审批
+        </div>
+        <el-table :data="rows" :empty-text="message" border>
+            <el-table-column width="150" align="center" label="校园" property="organ"></el-table-column>
+            <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
+            <el-table-column width="150" align="center" label="退费项目" property="feescalename"></el-table-column>
+            <el-table-column width="100" align="center" label="退费数量" property="count"></el-table-column>
+            <el-table-column width="120" align="right" label="退费金额" property="amount"></el-table-column>
+            <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
+            <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
+            <el-table-column width="90" align="center" label="状态">
+                <template scope="scope">
+                    <el-tag type="gray" v-if="scope.row.state === 0">未送审</el-tag>
+                    <el-tag type="danger" v-if="scope.row.state === 1">未通过</el-tag>
+                    <el-tag type="warning" v-if="scope.row.state === 2">待审核</el-tag>
+                    <el-tag type="success" v-if="scope.row.state === 3 && scope.row.state !== 0">已审核</el-tag>
+                    <el-tag type="info" v-if="scope.row.state === 3 && scope.row.state === 0">已使用</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" align="center" label="操作">
+                <template scope="scope">
+                    <el-button size="small" @@click="handleSendTo(scope.row)" type="info" v-if="scope.row.state < 2">送审</el-button>
+                    <el-button size="small" @@click="handleDelete(scope.row)" v-if="scope.row.state < 2">删除</el-button>
+                    <el-button size="small" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
+                    <el-button size="small" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="index" :page-size="size" :total="total"></el-pagination>
+    </div>
+</div>
+<script type="text/javascript">
+    emptyPager.Loaded = true;
+    var app = new Vue({
+        el: '#app',
+        data: emptyPager,
+        methods: {
+            refresh() {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: _self.size, key: _self.key }, function (rlt) {
+                    _self.message = rlt.message;
+                    _self.total = rlt.total;
+                    _self.index = rlt.index;
+                    _self.size = rlt.size;
+                    _self.rows = rlt.rows;
+                });
+            },
+            search(event) {
+                if (event.keyCode == 13) {
+                    this.refresh()
+                }
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.index = val;
+                this.refresh();
+            },
+            handleSendTo(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'sendto', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleVerify(row) {
+                this.$confirm('审核通过后此退费将生效, 确定要通过审核吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'verify', id: row.id }, function (rlt) {
+                        iTips(rlt.message, rlt.success);
+                        _self.refresh();
+                    });
+                }).catch(() => {
+                    iTips('审核操作已取消');
+                });
+            },
+            handleReback(row) {
+                var _self = this;
+                $.getJSON(location.pathname, { 'do': 'reback', id: row.id }, function (rlt) {
+                    iTips(rlt.message, rlt.success);
+                    _self.refresh();
+                });
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'delete', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            this.refresh();
+        }
+    });
+</script>

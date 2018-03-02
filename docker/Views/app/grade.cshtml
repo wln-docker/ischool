@@ -1,0 +1,134 @@
+﻿<style>
+    .cell .el-input__inner{border:none}
+</style>
+<div id="app" class="wln">
+    <div>
+        <div class="wln-title">
+            年级管理 <el-button size="mini" :plain="true" type="info" onclick="location.href = 'control'">返回</el-button>
+        </div>
+        <div>
+            <el-select v-model="school" clearable placeholder="请选择要管理的校园" @@change="schoolChange" style="width:320px;vertical-align:middle;">
+                <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                </el-option>
+            </el-select>
+            <el-select v-model="term" clearable placeholder="请选择要管理的学期" @@change="termChange" style="width:180px;vertical-align:middle;">
+                <el-option v-for="item in terms" :label="item.name" :value="item.id">
+                    <span style="float:left">{{item.name}}</span>
+                    <span style="float:right;color:#8492a6;font-size:13px">{{item.remarks}}</span>
+                </el-option>
+            </el-select>
+        </div>
+        <div class="wln-line"></div>
+        <el-table :data="rows" :empty-text="message">
+            <el-table-column width="120" align="center" label="班级" property="name"></el-table-column>
+            <el-table-column width="120" align="center" label="学期" property="term"></el-table-column>
+            <el-table-column width="200" align="center" label="年级">
+                <template scope="scope">
+                    <el-select v-model="scope.row.value" placeholder="请选择" @@change="gradeChange" style="width:100%;">
+                        <el-option v-for="item in scope.row.grades" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </template>
+            </el-table-column>
+            <el-table-column width="120" align="center" label="上期学员">
+                <template scope="scope">
+                    <p v-if="scope.row.prev > 0">{{scope.row.prev}} 人</p>
+                </template>
+            </el-table-column>
+            <el-table-column width="120" align="center" label="本期学员">
+                <template scope="scope">
+                    <p v-if="scope.row.self > 0">{{scope.row.self}} 人</p>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" align="center">
+                <template scope="scope">
+                    <el-button v-if="scope.row.prev > 0" type="warning" size="small" @@click="updateAll(scope.row.selfid,scope.row.previd)">批量升班</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column align="left">
+                <template scope="scope">
+                    <p style="color:#999999;">{{scope.row.remarks}}</p>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: function () {
+            emptyPager.school = '';
+            emptyPager.term = '';
+            emptyPager.organs = [];
+            emptyPager.terms = [];
+            emptyPager.editer = false;
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                var _self = this;
+                if (_self.school && _self.term) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: _self.index, rows: 1000, school: _self.school, term: _self.term }, function (rlt) {
+                        _self.message = rlt.message;
+                        _self.rows = rlt.rows;
+                    });
+                } else {
+                    _self.message = '请先选择要管理的校园及学期';
+                    _self.rows = [];
+                }
+            },
+            termChange(val) {
+                emptyPager.rows = [];
+                emptyPager.editer = false;
+                emptyPager.message = '数据加载中';
+                this.refresh();
+            },
+            schoolChange(val) {
+                emptyPager.rows = [];
+                emptyPager.editer = false;
+                emptyPager.message = '数据加载中';
+                $.getJSON('/organ', { 'do': val });
+                $.getJSON('/right', { 'do': 'editer', organ: val, code: 'Grade' }, function (rlt) {
+                    emptyPager.editer = rlt.success;
+                })
+                this.refresh();
+            },
+            gradeChange(val) {
+                var _self = this;
+                var vals = val.split(':');
+                $.ajax({
+                    async: true
+                    , url: location.pathname
+                    , data: { 'do': 'set', term: emptyPager.term, classes: vals[0], grade: vals[1] ? vals[1] : '' }
+                    , dataType: 'json'
+                    , success: function (rlt) {
+                        if (rlt.success) {
+                            setTimeout(function () { _self.refresh(); }, 1000);
+                        }
+                        iTips(rlt.message, rlt.success);
+                    }
+                    , error: function () { 
+                        _self.refresh();
+                    }
+                });
+            },
+            updateAll(self,prev) { 
+
+            }
+        }, created() {
+            $.ajaxSetup({ async: false });
+            var _self = this;
+            $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
+                _self.organs = rlt.data;
+                _self.school = rlt.select;
+            });
+            $.getJSON('/term', { 'do': 'list' }, function (rlt) {
+                _self.terms = rlt.data;
+                _self.term = rlt.select;
+            });
+            $.ajaxSetup({ async: true });
+            _self.refresh();
+        }
+    })
+</script>

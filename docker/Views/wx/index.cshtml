@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "_master.cshtml";
+}
+@section body{
+    <div style="width:100%;height:100%;overflow-x:hidden;">
+        <iframe src="@ViewBag.UCenter" frameborder="0" scrolling="auto" style="width:100%;height:100%;" width="100%" height="100%"></iframe>
+    </div>
+}
+@section script{
+<script type="text/javascript">
+    document.title = '@Html.Raw(ViewBag.OrganName)';
+    jQuery.ajaxSetup({ global: true, async: false });
+    wln(function () {
+        $('.nav:nth-child(1)').addClass('active');
+    })
+</script>
+}
