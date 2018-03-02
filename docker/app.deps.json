@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "3cd1868d56ed8833d5a7a737e88dd58cfa1776cc"
+    "signature": "b4116758d40a92812f1aa7414a9df89d7555ac3d"
   },
   "compilationOptions": {
     "defines": [
@@ -23,7 +23,6 @@
     ".NETCoreApp,Version=v2.0": {
       "app/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "2.0.1",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.1",
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
@@ -2661,7 +2660,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "Wlniao.XCore/2.0.3-bate6": {
+      "Wlniao.XCore/2.0.3-bate8": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.1",
           "Microsoft.AspNetCore.Hosting": "2.0.1",
@@ -2692,7 +2691,7 @@
       },
       "Wlniao.i/1.0.0-beta-80107": {
         "dependencies": {
-          "Wlniao.XCore": "2.0.3-bate6"
+          "Wlniao.XCore": "2.0.3-bate8"
         },
         "runtime": {
           "Wlniao.i.dll": {}
@@ -4404,12 +4403,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "Wlniao.XCore/2.0.3-bate6": {
+    "Wlniao.XCore/2.0.3-bate8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AzCTh5nZ8ja0pxx2ZPsXlcZPFQXRhGkWUc/QCqgD5l6rtNUfXH8I4p0uVzP0zbrefWi0eXGaO/JqLbIiCPBRHA==",
-      "path": "wlniao.xcore/2.0.3-bate6",
-      "hashPath": "wlniao.xcore.2.0.3-bate6.nupkg.sha512"
+      "sha512": "sha512-MNWDWL2FkOKzjO9K3+Eg9YpAJhlfqsoGwCEdV/94jJTakoaxk75rujVSpyxTBkobqN+0346IEPgzTv1MJ+yZyA==",
+      "path": "wlniao.xcore/2.0.3-bate8",
+      "hashPath": "wlniao.xcore.2.0.3-bate8.nupkg.sha512"
     },
     "Wlniao.i/1.0.0-beta-80107": {
       "type": "project",
