@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "12324a4ece94ad9dabafd2c1c91ca936f8c89be1"
+    "signature": "cae38b28d2df310fca0f6798232a0b50261a3385"
   },
   "compilationOptions": {
     "defines": [
@@ -23,10 +23,10 @@
     ".NETCoreApp,Version=v2.0": {
       "app/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Tools": "2.0.1",
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
           "SharpZipLib.NETStandard": "0.86.0.1",
+          "Wlniao.XCore": "2.0.3-bate8",
           "Wlniao.i": "1.0.0-beta1"
         },
         "runtime": {
@@ -926,11 +926,6 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Sqlite.dll": {}
-        }
-      },
-      "Microsoft.EntityFrameworkCore.Tools/2.0.1": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "2.0.1"
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/2.0.0": {
@@ -3324,13 +3319,6 @@
       "sha512": "sha512-TOmLflU7sD3QLLRgPPPadUsouAG2XSKxgpIPnLKIr1GoAYwl7t80HtYMd6402Mkg3MuN3fz1s3lXZLeNj6wfpg==",
       "path": "microsoft.entityframeworkcore.sqlite.core/2.0.1",
       "hashPath": "microsoft.entityframeworkcore.sqlite.core.2.0.1.nupkg.sha512"
-    },
-    "Microsoft.EntityFrameworkCore.Tools/2.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-/z1xawAD0oL5AyFd3vn9E7L6mE2UfEU91KwMDWEp8o0+AOrP4ZocJS5Kot5VYJMfDUeAzDBBZPmJs+r6/YUEiA==",
-      "path": "microsoft.entityframeworkcore.tools/2.0.1",
-      "hashPath": "microsoft.entityframeworkcore.tools.2.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/2.0.0": {
       "type": "package",
