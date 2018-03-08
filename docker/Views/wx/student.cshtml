@@ -71,13 +71,7 @@
         document.title = '我关注的学员';
         $('.nav:nth-child(3)').addClass('active');
         function Select(id) {
-            $.getJSON(location.pathname, { 'do': 'select', 'student': id }, function (rlt) {
-                if (rlt.success) {
-                    location.reload();
-                } else {
-                    wln.alert(rlt.message);
-                }
-            });
+            location.href = 'student.cshtml?student=' + id;
         }
         function Logout() {
             $.getJSON('/wx/ajax', { 'do': 'logout' }, function (rlt) {
