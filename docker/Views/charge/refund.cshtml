@@ -29,8 +29,7 @@
                     <el-tag type="gray" v-if="scope.row.state === 0">未送审</el-tag>
                     <el-tag type="danger" v-if="scope.row.state === 1">未通过</el-tag>
                     <el-tag type="warning" v-if="scope.row.state === 2">待审核</el-tag>
-                    <el-tag type="success" v-if="scope.row.state === 3 && scope.row.state !== 0">已审核</el-tag>
-                    <el-tag type="info" v-if="scope.row.state === 3 && scope.row.state === 0">已使用</el-tag>
+                    <el-tag type="success" v-if="scope.row.state === 3">已审核</el-tag>
                 </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="操作">
