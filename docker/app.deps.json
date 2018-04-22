@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "c94f1b6df4a9e56f5c5c6b498fcba3a8da81c4c7"
+    "signature": "7cd83fc40062313763319be6868944797aefeb9f"
   },
   "compilationOptions": {
     "defines": [
@@ -26,7 +26,7 @@
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
           "SharpZipLib.NETStandard": "0.86.0.1",
-          "iServer.Toolkit": "1.0.0"
+          "iServer.Toolkit": "1.0.3"
         },
         "runtime": {
           "app.dll": {}
@@ -35,9 +35,9 @@
           "app.dll": {}
         }
       },
-      "iServer.Toolkit/1.0.0": {
+      "iServer.Toolkit/1.0.3": {
         "dependencies": {
-          "Wlniao.XCore": "2.0.5"
+          "Wlniao.XCore": "2.0.8"
         },
         "runtime": {
           "lib/netcoreapp2.0/iServer.Toolkit.dll": {}
@@ -2662,7 +2662,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "Wlniao.XCore/2.0.5": {
+      "Wlniao.XCore/2.0.8": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.2",
           "Microsoft.AspNetCore.Hosting": "2.0.2",
@@ -2875,12 +2875,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "iServer.Toolkit/1.0.0": {
+    "iServer.Toolkit/1.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mrSz3jTWreOVEmBxx7/RXk3q1+ZmEw3YP1ieyiDIOgRZ0BrCZHgk94xN4PF0OJvHk3aqC/3y5SkdZzlBeFUAcg==",
-      "path": "iserver.toolkit/1.0.0",
-      "hashPath": "iserver.toolkit.1.0.0.nupkg.sha512"
+      "sha512": "sha512-nyId25eQQfgif/boXTDhyuzA9MqWYeGILBAFZMTk2JqLPlqEwbSIq3UnyW6GnfQ+ZWnB8b3w6ZzycEstgVDzUA==",
+      "path": "iserver.toolkit/1.0.3",
+      "hashPath": "iserver.toolkit.1.0.3.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",
@@ -4394,12 +4394,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "Wlniao.XCore/2.0.5": {
+    "Wlniao.XCore/2.0.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+fvlu3uTXPTzOVDjCxYcGIm0vaDli3E1DvCKRWp6KiQNDHsIU4vz2lCTgA9xJ0r4kcVNc6Gytxn499nn4pBNwQ==",
-      "path": "wlniao.xcore/2.0.5",
-      "hashPath": "wlniao.xcore.2.0.5.nupkg.sha512"
+      "sha512": "sha512-FYYUJ00+OA29DKFUB5AH8P91GiwdeIEUAQsx1LNe/Yp9SZJsJSiBtNZPBGuix0mhUxDbyQ2R9Q0549UBSKU9rw==",
+      "path": "wlniao.xcore/2.0.8",
+      "hashPath": "wlniao.xcore.2.0.8.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",

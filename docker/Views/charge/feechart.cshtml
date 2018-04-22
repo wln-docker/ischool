@@ -30,6 +30,10 @@
         <img class="image" src="/icons/mingxi.svg">
         <div class="bottom">收款明细表</div>
     </el-card>
+    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('stkmx')">
+        <img class="image" src="/icons/stkmx.svg">
+        <div class="bottom">收退款明细表</div>
+    </el-card>
     <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('qfmxb')">
         <img class="image" src="/icons/qianfei.svg">
         <div class="bottom">欠费明细表</div>
@@ -43,18 +47,18 @@
         <div class="bottom">退费明细表</div>
     </el-card>
     @*<el-card class="card" :body-style="{padding:'0px'}" onclick="app.openDoing('qfmxb')">
-        <img class="image" src="/icons/mingxi.svg">
-        <div class="bottom">财务对账单</div>
-    </el-card>*@
+            <img class="image" src="/icons/mingxi.svg">
+            <div class="bottom">财务对账单</div>
+        </el-card>*@
 
 
 
 
     @*<div class="wln-subtitle">图形报表</div>
-    <el-card class="card pic" :body-style="{padding:'0px'}">
-        <img class="image" src="/icons/chart-srhb.svg">
-        <div class="bottom">收入环比图</div>
-    </el-card>*@
+        <el-card class="card pic" :body-style="{padding:'0px'}">
+            <img class="image" src="/icons/chart-srhb.svg">
+            <div class="bottom">收入环比图</div>
+        </el-card>*@
 </div>
 <style>
     .card {width:200px;margin:15px 0px 15px 20px;cursor:pointer;display:inline-block;}
