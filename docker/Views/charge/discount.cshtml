@@ -27,6 +27,7 @@
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
             <el-table-column width="150" align="center" label="优惠项目" property="feescalename"></el-table-column>
+            <el-table-column width="180" align="center" label="@Html.Raw(ViewBag.Label_feenumber)" property="feenumber"></el-table-column>
             <el-table-column width="100" align="center" label="优惠方式" property="mode"></el-table-column>
             <el-table-column width="150" align="right" label="折扣/优惠价" property="quotiety"></el-table-column>
             <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
