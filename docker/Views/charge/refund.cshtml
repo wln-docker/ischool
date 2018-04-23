@@ -21,7 +21,7 @@
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
             <el-table-column width="150" align="center" label="退费项目" property="feescalename"></el-table-column>
             <el-table-column width="100" align="center" label="退费数量" property="count"></el-table-column>
-            <el-table-column width="120" align="right" label="退费金额" property="amount"></el-table-column>
+            <el-table-column width="120" align="center" label="退费金额" property="amount"></el-table-column>
             <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
             <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
             <el-table-column width="90" align="center" label="状态">
@@ -47,41 +47,37 @@
 <template id="app-form">
     <div class="wln">
         <el-form ref="form" label-width="140px">
-            @if (string.IsNullOrEmpty(ViewBag.Student))
-    {
-        <el-form-item>
-            <el-col :span="3" class="label">校园&nbsp;</el-col>
-            <el-col :span="18">
-                <el-select v-model="school" placeholder="请选择" @@change="schoolChange" style="width:300px">
-                    <el-option v-for="item in organs" :label="item.name" :value="item.id">
-                        <span style="float:left">{{item.name}}</span>
-                        <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
-                    </el-option>
-                </el-select>
-            </el-col>
-        </el-form-item>
-        <el-form-item>
-            <el-col :span="3" class="label">学员&nbsp;</el-col>
-            <el-col :span="18">
-                <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要申请退费的学员" style="width:300px;">
-                    <el-option v-for="item in students" :label="item.label" :value="item.id">
-                        <span style="display:inline-block;width:90px;">{{item.label}}</span>
-                        <span style="display:inline-block;width:120px;color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
-                        <span style="color:#8492a6;font-size:12px">{{item.classname}}</span>
-                    </el-option>
-                </el-select>
-            </el-col>
-        </el-form-item>
-}
-else
-{
-        <el-form-item>
-            <el-col :span="3" class="label">退费学员&nbsp;</el-col>
-            <el-col :span="18">
-                <el-input v-model="studentname" style="width:300px;" disabled></el-input>
-            </el-col>
-        </el-form-item>
-}
+            @if (string.IsNullOrEmpty(ViewBag.Student)){
+            <el-form-item>
+                <el-col :span="3" class="label">校园&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="school" placeholder="请选择" @@change="schoolChange" style="width:300px">
+                        <el-option v-for="item in organs" :label="item.name" :value="item.id">
+                            <span style="float:left">{{item.name}}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="3" class="label">学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要申请退费的学员" style="width:300px;">
+                        <el-option v-for="item in students" :label="item.label" :value="item.id">
+                            <span style="display:inline-block;width:90px;">{{item.label}}</span>
+                            <span style="display:inline-block;width:120px;color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
+                            <span style="color:#8492a6;font-size:12px">{{item.classname}}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            }else{
+            <el-form-item>
+                <el-col :span="3" class="label">退费学员&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input v-model="studentname" style="width:300px;" disabled></el-input>
+                </el-col>
+            </el-form-item>}
 
             <el-form-item>
                 <el-col :span="3" class="label">退费项目&nbsp;</el-col>
@@ -129,7 +125,6 @@ else
     </div>
 </template>
 <script type="text/javascript">
-    emptyPager.create = new Date();
     emptyPager.school = '@ViewBag.Organ';
     emptyPager.organs = [];
     emptyPager.student = '@Html.Raw(ViewBag.Student)';
@@ -141,6 +136,7 @@ else
     emptyPager.reasons = '';
     emptyPager.count = '';
     emptyPager.amount = '';
+    emptyPager.create = new Date();
     emptyPager.Loaded = true;
     var appList = Vue.extend({
         template: '#app-list',
@@ -236,9 +232,8 @@ else
             $.getJSON('/organ', { 'do': 'list' }, function (rlt) {
                 _self.organs = rlt.data;
                 _self.school = rlt.select;
+                _self.refresh();
             })</text>}
-
-            this.refresh();
         }
     })
     var appForm = Vue.extend({
@@ -300,6 +295,12 @@ else
                     emptyPager.feescales = rlt;
                 });
             }
+            emptyPager.feescale = '';
+            emptyPager.feescales = [];
+            emptyPager.reasons = '';
+            emptyPager.count = '';
+            emptyPager.amount = '';
+            emptyPager.create = new Date();
         }
     })
     var router = new VueRouter({

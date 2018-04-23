@@ -9,7 +9,7 @@
             </div>
             预缴费用<span>{{subTitle}}</span>
         </div>
-        @if (string.IsNullOrEmpty(ViewBag.Student)){<div class="wln-line" style="padding-top:0px;"></div>
+        @if (string.IsNullOrEmpty(ViewBag.Student)){
         <div>
             <el-select v-model="school" clearable placeholder="请先选择要管理的校园" @@change="schoolChange" style="width:320px;">
                 <el-option v-for="item in organs" :label="item.name" :value="item.id">
