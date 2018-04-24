@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "7cd83fc40062313763319be6868944797aefeb9f"
+    "signature": "973213274518e89d137f1de4176a50108d79b9fd"
   },
   "compilationOptions": {
     "defines": [
@@ -26,6 +26,7 @@
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
           "SharpZipLib.NETStandard": "0.86.0.1",
+          "Wlniao.XCore": "2.1.0",
           "iServer.Toolkit": "1.0.3"
         },
         "runtime": {
@@ -37,7 +38,7 @@
       },
       "iServer.Toolkit/1.0.3": {
         "dependencies": {
-          "Wlniao.XCore": "2.0.8"
+          "Wlniao.XCore": "2.1.0"
         },
         "runtime": {
           "lib/netcoreapp2.0/iServer.Toolkit.dll": {}
@@ -2662,7 +2663,7 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "Wlniao.XCore/2.0.8": {
+      "Wlniao.XCore/2.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.2",
           "Microsoft.AspNetCore.Hosting": "2.0.2",
@@ -4394,12 +4395,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "Wlniao.XCore/2.0.8": {
+    "Wlniao.XCore/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FYYUJ00+OA29DKFUB5AH8P91GiwdeIEUAQsx1LNe/Yp9SZJsJSiBtNZPBGuix0mhUxDbyQ2R9Q0549UBSKU9rw==",
-      "path": "wlniao.xcore/2.0.8",
-      "hashPath": "wlniao.xcore.2.0.8.nupkg.sha512"
+      "sha512": "sha512-0zFCNRN+4UCB7HqXVR6MUB0ELEEnTgTfJc+KillukNPjxARl5hsqMKsnYnAWtZQxdmcHBxAzFiGgKVyKipvzYQ==",
+      "path": "wlniao.xcore/2.1.0",
+      "hashPath": "wlniao.xcore.2.1.0.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",
