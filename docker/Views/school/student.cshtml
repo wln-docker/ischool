@@ -122,8 +122,8 @@
                         <div class="popover-btns">
                             <el-button size="mini" type="primary" @@click="location.href='/feeorder?organ=' + school + '&student=' + scope.row.id">缴费清单</el-button>
                             <el-button size="mini" type="primary" @@click="location.href='/discount?organ=' + school + '&student=' + scope.row.id">优惠管理</el-button>
-                            <el-button size="mini" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">预缴费用</el-button>
-                            <el-tooltip content="将费用退至预缴费用余额" placement="bottom">
+                            <el-button size="mini" type="primary" @@click="location.href='/retainer?organ=' + school + '&student=' + scope.row.id">现金余额</el-button>
+                            <el-tooltip content="将费用退至现金余额" placement="bottom">
                                 <el-button size="mini" type="primary" @@click="location.href='/refund?organ=' + school + '&student=' + scope.row.id">退费</el-button>
                             </el-tooltip>
                             <el-tooltip content="预缴余额退款提现" placement="bottom">

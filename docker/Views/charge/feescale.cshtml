@@ -16,8 +16,9 @@
             </el-select>
         </div>
         <el-table :data="rows" :empty-text="message">
-            <el-table-column width="210" align="center" label="缴费项目名称" property="name"></el-table-column>
             <el-table-column width="180" align="center" label="@Html.Raw(ViewBag.Label_feenumber)" property="feenumber"></el-table-column>
+            <el-table-column width="210" align="center" label="费用名称" property="name"></el-table-column>
+            <el-table-column width="210" align="center" label="所属产品" property="product"></el-table-column>
             <el-table-column width="100" align="right" label="单价" property="price"></el-table-column>
             <el-table-column></el-table-column>
             <el-table-column width="180" align="center" label="操作">
@@ -34,11 +35,14 @@
     <div>
         <div class="wln-title">缴费项目</div>
         <el-form ref="form" v-model="form" label-width="140px">
-            <el-form-item label="项目名称">
-                <el-input v-model="form.name" style="width:275px;"></el-input>
-            </el-form-item>
             <el-form-item label="@Html.Raw(ViewBag.Label_feenumber)">
                 <el-input v-model="form.feenumber" style="width:275px;"></el-input>
+            </el-form-item>
+            <el-form-item label="费用名称">
+                <el-input v-model="form.name" style="width:275px;"></el-input>
+            </el-form-item>
+            <el-form-item label="所属产品">
+                <el-input v-model="form.product" style="width:275px;"></el-input>
             </el-form-item>
             <el-form-item label="单价">
                 <el-input v-model="form.price" style="width:90px;"></el-input>&nbsp;元
@@ -155,9 +159,11 @@
                 form: {
                     id: ''
                     ,
+                    feenumber: ''
+                    ,
                     name: ''
                     ,
-                    feenumber: ''
+                    product: ''
                     ,
                     price: 0
                     ,
@@ -188,8 +194,9 @@
             if (obj.id) {
                 $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
                     if (rlt.id) {
-                        obj.name = rlt.name;
                         obj.feenumber = rlt.feenumber;
+                        obj.name = rlt.name;
+                        obj.product = rlt.product;
                         obj.price = rlt.price;
                         obj.organ = rlt.organ;
                     }

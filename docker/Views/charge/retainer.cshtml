@@ -1,13 +1,13 @@
-﻿<div id="app"><router-view></router-view></div>
+﻿<div id="app" class="wln"><router-view></router-view></div>
 <template id="app-list">
-    <div style="margin:0px 10px;">
+    <div>
         <div class="wln-title">
             <div style="float:right">
                 <el-button size="mini" :plain="true" type="info" onclick="history.back()">返回</el-button>
-                <el-button size="mini" type="primary" @@click="toAdd">预缴充值</el-button>
-                <el-button size="mini" type="warning" @@click="refund">退款提现</el-button>
+                <el-button size="mini" type="primary" @@click="toAdd">充值</el-button>
+                <el-button size="mini" type="warning" @@click="refund">提现</el-button>
             </div>
-            预缴费用<span>{{subTitle}}</span>
+            现金余额<span>{{subTitle}}</span>
         </div>
         @if (string.IsNullOrEmpty(ViewBag.Student)){
         <div>
@@ -17,8 +17,7 @@
                     <span style="float:right;color:#8492a6;font-size:13px">{{item.fullname}}</span>
                 </el-option>
             </el-select>
-        </div>
-        <div class="wln-line"></div>}else{<div class="wln-line" style="padding-top:0px;"></div>}
+        </div>}
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="140" align="center" label="状态">
                 <template scope="scope">
@@ -28,10 +27,11 @@
                 </template>
             </el-table-column>
             <el-table-column width="100" align="center" label="类型" property="type"></el-table-column>
-            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>            }
+            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>}
             <el-table-column width="110" align="center" label="资金用途" property="purpose"></el-table-column>
             <el-table-column width="110" align="right" label="金额" property="amount"></el-table-column>
             <el-table-column width="110" align="right" label="余额" property="balance"></el-table-column>
+            <el-table-column width="80"></el-table-column>
             <el-table-column align="left" label="备注" property="remarks">></el-table-column>
             <el-table-column width="140" align="center" label="缴费时间" property="paytime"></el-table-column>
             <el-table-column width="140" align="center" label="录入时间" property="create"></el-table-column>
@@ -48,10 +48,10 @@
     </div>
 </template>
 <template id="app-form">
-    <div class="wln">
+    <div>
+        <div class="wln-title">充值</div>
         <el-form ref="form" label-width="140px">
-            @if (string.IsNullOrEmpty(ViewBag.Student)){
-            <el-form-item>
+            @if (string.IsNullOrEmpty(ViewBag.Student)){<el-form-item>
                 <el-col :span="3" class="label">校园&nbsp;</el-col>
                 <el-col :span="18">
                     <el-select v-model="school" placeholder="请选择" @@change="schoolChange" style="width:300px">
@@ -63,9 +63,9 @@
                 </el-col>
             </el-form-item>
             <el-form-item>
-                <el-col :span="3" class="label">缴费学员&nbsp;</el-col>
+                <el-col :span="3" class="label">学员&nbsp;</el-col>
                 <el-col :span="18">
-                    <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要缴费的学员" @@change="schoolChange" style="width:300px;">
+                    <el-select v-model="student" :filterable="true" :remote="true" :remote-method="remoteQuery" placeholder="请选择要操作的学员" @@change="schoolChange" style="width:300px;">
                         <el-option v-for="item in students" :label="item.label" :value="item.id">
                             <span style="display:inline-block;width:90px;">{{item.label}}</span>
                             <span style="display:inline-block;width:120px;color:#8492a6;font-size:12px">学号：{{item.studentid}}</span>
@@ -73,24 +73,21 @@
                         </el-option>
                     </el-select>
                 </el-col>
-            </el-form-item>
-            } else {
-            <el-form-item>
-                <el-col :span="3" class="label">缴费学员&nbsp;</el-col>
+            </el-form-item>}else{<el-form-item>
+                <el-col :span="3" class="label">学员&nbsp;</el-col>
                 <el-col :span="18">
                     <el-input v-model="studentname" style="width:300px;" disabled></el-input>
                 </el-col>
-            </el-form-item>
-            }
+            </el-form-item>}
 
             <el-form-item>
-                <el-col :span="3" class="label">缴费金额&nbsp;</el-col>
+                <el-col :span="3" class="label">金额&nbsp;</el-col>
                 <el-col :span="18">
                     <el-input v-model="amount" style="width:90px;"></el-input>&nbsp;元
                 </el-col>
             </el-form-item>
             <el-form-item>
-                <el-col :span="3" class="label">缴费类型&nbsp;</el-col>
+                <el-col :span="3" class="label">类型&nbsp;</el-col>
                 <el-col :span="18">
                     <el-select v-model="type" placeholder="请选择" style="width:210px;">
                         <el-option v-for="item in types" :label="item.label" :value="item.value"></el-option>
@@ -98,7 +95,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item>
-                <el-col :span="3" class="label">资金用途&nbsp;</el-col>
+                <el-col :span="3" class="label">用途&nbsp;</el-col>
                 <el-col :span="18">
                     <el-select v-model="purpose" placeholder="请选择" style="width:210px;">
                         <el-option v-for="item in purposes" :label="item.label" :value="item.value"></el-option>
@@ -122,16 +119,17 @@
     </div>
 </template>
 <template id="app-refund">
-    <div class="wln">
+    <div>
+        <div class="wln-title">提现</div>
         <el-form ref="form" label-width="140px">
             <el-form-item>
-                <el-col :span="3" class="label">退款学员&nbsp;</el-col>
+                <el-col :span="3" class="label">学员&nbsp;</el-col>
                 <el-col :span="18">
                     <el-input v-model="studentname" style="width:300px;" disabled></el-input>
                 </el-col>
             </el-form-item>
             <el-form-item>
-                <el-col :span="3" class="label">退款金额&nbsp;</el-col>
+                <el-col :span="3" class="label">金额&nbsp;</el-col>
                 <el-col :span="18">
                     <el-input v-model="amount" style="width:90px;"></el-input>&nbsp;元
                 </el-col>
@@ -156,7 +154,7 @@
     emptyPager.school = '@ViewBag.Organ';
     emptyPager.organs = [];
     emptyPager.type = 0;
-    emptyPager.types = [{ value: 1, label: '预缴充值' }, { value: 2, label: '预缴定金' }, { value: -1, label: '初始余额' }];
+    emptyPager.types = [{ value: 1, label: '现金充值' }, { value: 2, label: '预缴定金' }, { value: -1, label: '初始余额' }];
     emptyPager.student = '@Html.Raw(ViewBag.Student)';
     emptyPager.studentname = '@Html.Raw(ViewBag.StudentName)';
     emptyPager.students = [];

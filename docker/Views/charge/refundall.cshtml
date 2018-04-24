@@ -13,6 +13,12 @@
             <el-table-column width="150" align="center" label="退费项目" property="feescalename"></el-table-column>
             <el-table-column width="100" align="center" label="退费数量" property="count"></el-table-column>
             <el-table-column width="120" align="center" label="退费金额" property="amount"></el-table-column>
+            <el-table-column width="90" align="center" label="退费方式">
+                <template scope="scope">
+                    <font v-if="scope.row.payway === 1">银行转账</font>
+                    <font v-else>现金余额</font>
+                </template>
+            </el-table-column>
             <el-table-column align="left" label="申请原因" property="reasons"></el-table-column>
             <el-table-column width="140" align="center" label="申请时间" property="create"></el-table-column>
             <el-table-column width="90" align="center" label="状态">

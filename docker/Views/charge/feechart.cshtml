@@ -26,10 +26,10 @@
         <img class="image" src="/icons/huizong.svg">
         <div class="bottom">收款汇总表</div>
     </el-card>
-    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('skmxb')">
+    @*<el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('skmxb')">
         <img class="image" src="/icons/mingxi.svg">
         <div class="bottom">收款明细表</div>
-    </el-card>
+    </el-card>*@
     <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('stkmx')">
         <img class="image" src="/icons/stkmx.svg">
         <div class="bottom">收退款明细表</div>
@@ -38,10 +38,10 @@
         <img class="image" src="/icons/qianfei.svg">
         <div class="bottom">欠费明细表</div>
     </el-card>
-    <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('yjfbb')">
+    @*<el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('yjfbb')">
         <img class="image" src="/icons/chart-yjmx.svg">
         <div class="bottom">预缴费报表</div>
-    </el-card>
+    </el-card>*@
     <el-card class="card" :body-style="{padding:'0px'}" onclick="app.openTable('tfmxb')">
         <img class="image" src="/icons/refund.svg">
         <div class="bottom">退费明细表</div>
@@ -78,6 +78,7 @@
             { text: '今天', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.Today'), new Date('@ViewBag.Today')]) } },
             { text: '本月', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.MonthStart'), new Date('@ViewBag.MonthEnd')]) } },
             { text: '本季度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.QuarterStart'), new Date('@ViewBag.QuarterEnd')]) } },
+            { text: '本年度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.YearStart'), new Date('@ViewBag.YearEnd')]) } },
             { text: '上月', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevMonthStart'), new Date('@ViewBag.PrevMonthEnd')]) } },
             { text: '上季度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevQuarterStart'), new Date('@ViewBag.PrevQuarterEnd')]) } },
             { text: '上年度', onClick(picker) { picker.$emit('pick', [new Date('@ViewBag.PrevYearStart'), new Date('@ViewBag.PrevYearEnd')]) } }]
