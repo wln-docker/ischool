@@ -1,0 +1,167 @@
+﻿<div id="app" class="wln" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
+<style>.el-textarea__inner{padding:0px;}</style>
+<template id="app-list">
+    <div>
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-plus" @@click="router.push(_vpath + '/add?questionary=' + _questionary)" v-if="editer">新增问题</el-button>
+            </div>
+            @Html.Raw(ViewBag.Name)
+        </div>
+        <el-table :data="rows" :empty-text="message" @@filter-change="filterChange">
+            <el-table-column width="70" align="center" label="题号" property="index"></el-table-column>
+            <el-table-column width="120" align="center" label="分类" property="category"></el-table-column>
+            <el-table-column label="名称" property="title"></el-table-column>
+            <el-table-column width="120" align="center" label="类型" property="typename"></el-table-column>
+            <el-table-column width="230" align="right" v-if="editer">
+                <template scope="scope">
+                    <el-button size="mini" icon="el-icon-view" @@click="handleOption(scope.row)" type="success">选项</el-button>
+                    <el-button size="mini" icon="el-icon-edit" @@click="handleEditer(scope.row)" type="primary">编辑</el-button>
+                    <el-button size="mini" icon="el-icon-delete" @@click="handleDelete(scope.row)" type="warning">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</template>
+<template id="app-form">
+    <div>
+        <div class="wln-title">问题设置</div>
+        <el-form ref="form" v-model="form" label-width="80px">
+            <el-form-item label="题号">
+                <el-input v-model="form.index" placeholder="必填" style="width:80px"></el-input>
+                选择类型：
+                <el-select v-model="form.type" placeholder="请选择" style="width:120px">
+                    <el-option v-for="item in types" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+                问题分类：
+                <el-select v-model="form.category" placeholder="请选择" style="width:120px">
+                    <el-option v-for="item in categories" :label="item" :value="item"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="名称">
+                <el-input v-model="form.title" placeholder="必填" style="width:480px"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                <el-button onclick="history.back()">返回</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    var _vpath = '/question';
+    var _questionary = '@ViewBag.questionary'
+    var _categories = @Html.Raw(ViewBag.Categories)
+    emptyPager.editer = false;
+    emptyPager.fullLoading = false;
+    emptyPager.filter_category = -1;
+
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                emptyPager.fullLoading = true;
+                $.getJSON(location.pathname, { 'do': 'pager', questionary: _questionary }, function (rlt) {
+                    emptyPager.message = rlt.message;
+                    emptyPager.rows = rlt.rows;
+                    emptyPager.fullLoading = false;
+                });
+            },
+            filterChange(filters) {
+                if (filters.category && filters.category.length > 0) {
+                    emptyPager.filter_category = filters.state[0];
+                } else {
+                    emptyPager.filter_category = -1;
+                }
+                emptyPager.rows = [];
+                this.refresh();
+            },
+            handleOption(row) {
+                location.href = '/questionoption?question=' + row.id
+            },
+            handleEditer(row) {
+                router.push(_vpath + '/edit?questionary=' + _questionary + '&id=' + row.id)
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            _self = this;
+            _self.refresh();
+            $.getJSON('/auth', { code: 'School_Questionary_Editor' }, function (rlt) {
+                emptyPager.editer = rlt.success;
+            })
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            return {
+                form: {
+                    id: ''
+                    ,
+                    type: 0
+                    ,
+                    index: ''
+                    ,
+                    title: ''
+                    ,
+                    category: _categories.length == 0 ? '' : _categories[0]
+                    ,
+                    questionary: _questionary
+                }
+                , categories: _categories
+                , types: [{ "value": 0, "label": "打分" }, { "value": 1, "label": "单选" }, { "value": 2, "label": "多选" }, { "value": 3, "label": "填写" }]
+            };
+        },
+        methods: {
+            onSubmit: function () {
+                var obj = this.form;
+                $.post(location.pathname + '?do=set', obj, function (rlt) {
+                    app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    if (rlt.success) {
+                        history.back();
+                    }
+                });
+            }
+        }, created() {
+            var obj = this.form;
+            obj.id = this.getParam('id');
+            if (obj.id) {
+                $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
+                    if (rlt.id) {
+                        obj.type = rlt.type;
+                        obj.index = rlt.index;
+                        obj.title = rlt.title;
+                        obj.category = rlt.category;
+                        emptyPager.fullLoading = false;
+                    }
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: _vpath, component: appList }
+            , { path: _vpath + '/add', component: appForm }
+            , { path: _vpath + '/edit', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router, data: emptyPager });
+</script>

@@ -1,0 +1,158 @@
+﻿<div id="app" class="wln" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
+<style>.el-textarea__inner{padding:0px;}</style>
+<template id="app-list">
+    <div>
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+                <el-button size="mini" type="primary" icon="el-icon-plus" @@click="router.push(_vpath + '/add')" v-if="editer">新增问卷</el-button>
+            </div>
+            问卷管理
+        </div>
+        <el-table :data="rows" :empty-text="message" @@filter-change="filterChange">
+            <el-table-column width="270" label="问卷名称" property="name"></el-table-column>
+            <el-table-column label="问题类别" property="categories"></el-table-column>
+            <el-table-column width="260" align="center" label="操作" v-if="editer">
+                <template scope="scope">
+                    <el-button size="mini" icon="el-icon-view" @@click="handleQuestion(scope.row)" type="success">问题选项</el-button>
+                    <el-button size="mini" icon="el-icon-edit" @@click="handleEditer(scope.row)" type="primary">编辑</el-button>
+                    <el-button size="mini" icon="el-icon-delete" @@click="handleDelete(scope.row)" type="warning">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @@size-change="sizeChange" @@current-change="currentChange" layout="total, sizes, prev, pager, next, jumper" :current-page="page" :page-size="size" :total="total"></el-pagination>
+    </div>
+</template>
+<template id="app-form">
+    <div>
+        <div class="wln-title">问卷设置</div>
+        <el-form ref="form" v-model="form" label-width="80px">
+            <el-form-item label="名称">
+                <el-input v-model="form.name" placeholder="必填" style="width:320px"></el-input>
+            </el-form-item>
+            <el-form-item label="概要">
+                <el-input v-model="form.outline" placeholder="问卷填写说明" type="textarea" :rows="2" style="width:320px"></el-input>
+            </el-form-item>
+            <el-form-item label="问题分类">
+                <el-input v-model="form.categories" placeholder="多个请使用空格或“,”分隔" style="width:320px"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                <el-button onclick="history.back()">返回</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script type="text/javascript">
+    var _vpath = '/questionary';
+    emptyPager.editer = false;
+    emptyPager.fullLoading = false;
+    var appList = Vue.extend({
+        template: '#app-list',
+        data: function () {
+            return emptyPager
+        },
+        methods: {
+            refresh() {
+                emptyPager.fullLoading = true;
+                $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.page, rows: emptyPager.size, key: emptyPager.key }, function (rlt) {
+                    emptyPager.message = rlt.message;
+                    emptyPager.total = rlt.total;
+                    emptyPager.page = rlt.page;
+                    emptyPager.size = rlt.size;
+                    emptyPager.rows = rlt.rows;
+                    emptyPager.fullLoading = false;
+                });
+            },
+            filterChange(filters) {
+                emptyPager.total = 0;
+                emptyPager.page = 1;
+                emptyPager.rows = [];
+                this.refresh();
+            },
+            sizeChange(val) {
+                emptyPager.size = val;
+                this.refresh();
+            },
+            currentChange(val) {
+                emptyPager.page = val;
+                this.refresh();
+            },
+            handleQuestion(row) {
+                location.href = '/question?questionary=' + row.id
+            },
+            handleEditer(row) {
+                router.push(_vpath + '/edit?id=' + row.id);
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            _self = this;
+            _self.refresh();
+            $.getJSON('/auth', { code: 'School_Questionary_Editor' }, function (rlt) {
+                emptyPager.editer = rlt.success;
+            })
+        }
+    })
+    var appForm = Vue.extend({
+        template: '#app-form',
+        data: function () {
+            return {
+                form: {
+                    id: ''
+                    ,
+                    name: ''
+                    ,
+                    outline: ''
+                    ,
+                    categories: ''
+                }
+            };
+        },
+        methods: {
+            onSubmit: function () {
+                var obj = this.form;
+                $.post(location.pathname + '?do=set', obj, function (rlt) {
+                    app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    if (rlt.success) {
+                        history.back();
+                    }
+                });
+            }
+        }, created() {
+            var obj = this.form;
+            obj.id = this.getParam('id');
+            if (obj.id) {
+                $.getJSON(location.pathname, { 'do': 'get', id: obj.id }, function (rlt) {
+                    if (rlt.id) {
+                        obj.name = rlt.name;
+                        obj.outline = rlt.outline;
+                        obj.categories = rlt.categories;
+                        emptyPager.fullLoading = false;
+                    }
+                });
+            }
+        }
+    })
+    var router = new VueRouter({
+        mode: 'history', routes: [
+            { path: _vpath, component: appList }
+            , { path: _vpath + '/add', component: appForm }
+            , { path: _vpath + '/edit', component: appForm }
+        ]
+    });
+    var app = new Vue({ el: '#app', router: router, data: emptyPager  });
+</script>
