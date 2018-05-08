@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "7dde5a5389d963007648680c4363e71fb644a5b7"
+    "signature": "02663641cdb3dcc30f276bff93e15597e9303288"
   },
   "compilationOptions": {
     "defines": [
@@ -26,15 +26,27 @@
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
           "SharpZipLib.NETStandard": "0.86.0.1",
-          "Wlniao.WeAPP": "0.1.2",
+          "Wlniao.WeAPP": "0.1.3",
           "Wlniao.XCore": "2.1.2",
-          "iServer.Toolkit": "1.0.3"
+          "iServer.Toolkit": "1.0.4"
         },
         "runtime": {
           "app.dll": {}
         },
         "compile": {
           "app.dll": {}
+        }
+      },
+      "iServer.Toolkit/1.0.4": {
+        "dependencies": {
+          "Wlniao.WeAPP": "0.1.3",
+          "Wlniao.XCore": "2.1.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/iServer.Toolkit.dll": {}
+        },
+        "compile": {
+          "lib/netcoreapp2.0/iServer.Toolkit.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -2653,6 +2665,17 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
+      "Wlniao.WeAPP/0.1.3": {
+        "dependencies": {
+          "Wlniao.XCore": "2.1.2"
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {}
+        },
+        "compile": {
+          "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {}
+        }
+      },
       "Wlniao.XCore/2.1.2": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.2",
@@ -2680,29 +2703,6 @@
         },
         "compile": {
           "lib/netcoreapp2.0/Wlniao.XCore.dll": {}
-        }
-      },
-      "iServer.Toolkit/1.0.3": {
-        "dependencies": {
-          "Wlniao.WeAPP": "0.1.2",
-          "Wlniao.XCore": "2.1.2"
-        },
-        "runtime": {
-          "iServer.Toolkit.dll": {}
-        },
-        "compile": {
-          "iServer.Toolkit.dll": {}
-        }
-      },
-      "Wlniao.WeAPP/0.1.2": {
-        "dependencies": {
-          "Wlniao.XCore": "2.1.2"
-        },
-        "runtime": {
-          "Wlniao.WeAPP.dll": {}
-        },
-        "compile": {
-          "Wlniao.WeAPP.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.0.0": {
@@ -2888,6 +2888,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "iServer.Toolkit/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6b1+vnqa+rDY4bo5ggz1zowlx3tycu+tIXWS7mbQgHQsDQYvmu1bTcx/87FBqA2BBknOJc7EmSjsP9bQ5F44og==",
+      "path": "iserver.toolkit/1.0.4",
+      "hashPath": "iserver.toolkit.1.0.4.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",
@@ -4401,22 +4408,19 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
+    "Wlniao.WeAPP/0.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KnzJoyIwYWj46LB6UUPnAZaB3Onu2/jFpdY8CZCS7dZEAW+PBwxddWE5FbAgQRzHVP3gKD2BVyWY9U5B8ZqFmg==",
+      "path": "wlniao.weapp/0.1.3",
+      "hashPath": "wlniao.weapp.0.1.3.nupkg.sha512"
+    },
     "Wlniao.XCore/2.1.2": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-MXx8EIL1viX3g+d7B9qHDVCXLmPecN7YT90k5nV2yzKjO31W3fTJzP5Rd4LvuX2ekgTpWjvxD8g1iNO56N5DVg==",
       "path": "wlniao.xcore/2.1.2",
       "hashPath": "wlniao.xcore.2.1.2.nupkg.sha512"
-    },
-    "iServer.Toolkit/1.0.3": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Wlniao.WeAPP/0.1.2": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",
