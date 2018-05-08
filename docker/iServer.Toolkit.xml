@@ -1,0 +1,682 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>iServer.Toolkit</name>
+    </assembly>
+    <members>
+        <member name="T:Wlniao.i.Account">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.sid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.account">
+            <summary>
+            登录帐号
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.position">
+            <summary>
+            职位
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.mobile">
+            <summary>
+            手机号码
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.email">
+            <summary>
+            邮箱账号
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.orgemail">
+            <summary>
+            企业邮箱
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.tel">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.jobnumber">
+            <summary>
+            工号
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.wxopenid">
+            <summary>
+            微信绑定Id
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Account.dinguserid">
+            <summary>
+            钉钉绑定Id
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.Account.Get(Wlniao.i.iCommon,System.String,System.String)">
+            <summary>
+            获取一个账号信息
+            </summary>
+            <param name="icommon"></param>
+            <param name="key"></param>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Account.GetByOpenId(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据微信OpenId获取
+            </summary>
+            <param name="icommon"></param>
+            <param name="wxopenid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Account.GetName(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个账号信息
+            </summary>
+            <param name="icommon"></param>
+            <param name="sid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wlniao.i.AppMenu">
+            <summary>
+            菜单
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.code">
+            <summary>
+            菜单编码
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.name">
+            <summary>
+            应用名称
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.icon">
+            <summary>
+            菜单图标
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.link">
+            <summary>
+            菜单链接（支持相对目录）
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.appto">
+            <summary>
+            链接指向的应用
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.parent">
+            <summary>
+            上级菜单编码
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.authority">
+            <summary>
+            需要验证的权限点
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.AppMenu.sort">
+            <summary>
+            菜单排序
+            </summary>
+        </member>
+        <member name="T:Wlniao.i.Authority">
+            <summary>
+            权限点
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Authority.type">
+            <summary>
+            权限类型
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Authority.code">
+            <summary>
+            权限点
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Authority.name">
+            <summary>
+            权限名称
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Authority.description">
+            <summary>
+            权限说明
+            </summary>
+        </member>
+        <member name="T:Wlniao.i.Enum">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Enum.key">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Enum.label">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Enum.description">
+            <summary>
+            字段说明
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.Enum.Get(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个枚举类型
+            </summary>
+            <param name="icommon"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Enum.GetName(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个枚举类型
+            </summary>
+            <param name="icommon"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Enum.GetList(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据类型获取枚举列表
+            </summary>
+            <param name="icommon"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wlniao.i.iCommon">
+            <summary>
+            交互状态
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.iCommon.iApp">
+            <summary>
+            App标识
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Create(System.String,System.Boolean)">
+            <summary>
+            根据host生成一个iCommon对象
+            </summary>
+            <param name="host"></param>
+            <param name="fromcache"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Create(System.String,System.String)">
+            <summary>
+            根据host生成一个iCommon对象
+            </summary>
+            <param name="host"></param>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.SetToken(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="host"></param>
+            <param name="token"></param>
+        </member>
+        <member name="M:Wlniao.i.iCommon.SetToken(System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            
+            </summary>
+            <param name="host_token"></param>
+        </member>
+        <member name="M:Wlniao.i.iCommon.ValidateServerCertificate(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            HTTPS证书验证
+            </summary>
+            <param name="sender"></param>
+            <param name="certificate"></param>
+            <param name="chain"></param>
+            <param name="sslPolicyErrors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Get(System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Get请求Wlniao.i服务器
+            </summary>
+            <param name="controller"></param>
+            <param name="action"></param>
+            <param name="kvs"></param>
+            <returns>服务器返回的泛型实例</returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Get``1(System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Get请求Wlniao.i服务器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="controller"></param>
+            <param name="action"></param>
+            <param name="kvs"></param>
+            <returns>服务器返回的泛型实例</returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Post``1(System.String,System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Get请求Wlniao.i服务器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="controller"></param>
+            <param name="action"></param>
+            <param name="postdata"></param>
+            <param name="kvs"></param>
+            <returns>服务器返回的泛型实例</returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.AppHost(System.String)">
+            <summary>
+            获取App入口地址（已包含ihost）
+            </summary>
+            <param name="appcode">Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.Setting(System.String,System.String)">
+            <summary>
+            获取配置信息
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.GetSetting(System.String,System.String)">
+            <summary>
+            获取配置信息
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.GetLabel(System.String,System.String)">
+            <summary>
+            获取Label值
+            </summary>
+            <param name="key">Key</param>
+            <param name="label">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.WxPush(System.String,System.String,System.String,System.String,System.String,System.String[])">
+            <summary>
+            微信推送
+            </summary>
+            <param name="sid">接收用户</param>
+            <param name="template">模板号</param>
+            <param name="first">第一行内容</param>
+            <param name="remark">备注</param>
+            <param name="url">链接地址</param>
+            <param name="args">内容||颜色</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.WxToken">
+            <summary>
+            获取绑定的公众号Token
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.NewWxMpPay(System.String,System.Double,System.String,System.String,System.String,System.String)">
+            <summary>
+            生成新的支付订单
+            </summary>
+            <param name="orderno">支付单号</param>
+            <param name="amount">订单金额</param>
+            <param name="comment">订单备注</param>
+            <param name="openid">订单金额</param>
+            <param name="clientip">订单备注</param>
+            <param name="noticeurl">服务端通知回调地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.NewWxQrPay(System.String,System.Double,System.String,System.String)">
+            <summary>
+            生成新的支付订单
+            </summary>
+            <param name="orderno">支付单号</param>
+            <param name="amount">订单金额</param>
+            <param name="comment">订单备注</param>
+            <param name="noticeurl">服务端通知回调地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iCommon.QueryWxPay(System.String)">
+            <summary>
+            查询微信支付订单
+            </summary>
+            <param name="orderno">支付单号</param>
+            <returns></returns>
+        </member>
+        <member name="P:Wlniao.i.iCommon.Https">
+            <summary>
+            是否支持Https
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.iCommon.Host">
+            <summary>
+            i主机地址
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.iCommon.wKey">
+            <summary>
+            企业用户标识
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.iCommon.iToken">
+            <summary>
+            交互密钥（每次启动时同步）
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.iCommon.iMessage">
+            <summary>
+            Wlniao.i端消息
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.iCommon.iRegister">
+            <summary>
+            下次注册时间
+            </summary>
+        </member>
+        <member name="T:Wlniao.i.iController">
+            <summary>
+            Wlniao.i基础Controller
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.iController._sid">
+            <summary>
+            当前登录的用户Id
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.iController._wkey">
+            <summary>
+            客户统一数字编号
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.iController._organ">
+            <summary>
+            当前选中的机构
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.iController.icommon">
+            <summary>
+            Wlniao.i接口访问工具
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.iController.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            页面加载前事件
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="M:Wlniao.i.iController.Permission(System.String,System.String)">
+            <summary>
+            检查用户系统权限权限
+            </summary>
+            <param name="Code"></param>
+            <param name="Sid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iController.PermissionOrgan(System.String,System.String,System.String)">
+            <summary>
+            检查机构数据查看权限
+            </summary>
+            <param name="Organ"></param>
+            <param name="Code"></param>
+            <param name="Sid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iController.NoPermission(System.Boolean)">
+            <summary>
+            返回无权限提示
+            </summary>
+            <param name="ajax"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iController.enums">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iController.organ">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.iController.auth">
+            <summary>
+            权限检查 参数 organ:所属范围 code:权限代码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Wlniao.i.Organ">
+            <summary>
+            下属机构
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Organ.id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Organ.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Organ.fullname">
+            <summary>
+            全称
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Organ.type">
+            <summary>
+            机构类型 OrganType
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.Organ.sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.Organ.Get(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个枚举类型
+            </summary>
+            <param name="icommon"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Organ.GetName(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个机构信息
+            </summary>
+            <param name="icommon"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Organ.GetFullName(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取一个机构信息
+            </summary>
+            <param name="icommon"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Organ.GetList(Wlniao.i.iCommon)">
+            <summary>
+            获取机构列表
+            </summary>
+            <param name="icommon"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.Organ.GetList(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据用户权限获取机构列表
+            </summary>
+            <param name="icommon"></param>
+            <param name="sid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wlniao.i.ucController">
+            <summary>
+            应用端用户中心页面
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.ucController._sid">
+            <summary>
+            当前登录的用户Id
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.ucController._wkey">
+            <summary>
+            客户统一数字编号
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.ucController._ucenter">
+            <summary>
+            UCenter地址
+            </summary>
+        </member>
+        <member name="F:Wlniao.i.ucController.icommon">
+            <summary>
+            Wlniao.i接口访问工具
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.ucController.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            页面加载前事件
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:Wlniao.i.User">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.sid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.mobile">
+            <summary>
+            手机号码（用户名）
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.avatar">
+            <summary>
+            用户头像
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.wxopenid">
+            <summary>
+            微信绑定Id
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.create">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Wlniao.i.User.loginlast">
+            <summary>
+            最后登录时间
+            </summary>
+        </member>
+        <member name="M:Wlniao.i.User.Get(Wlniao.i.iCommon,System.String,System.String)">
+            <summary>
+            获取一个用户信息
+            </summary>
+            <param name="icommon"></param>
+            <param name="key"></param>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetByMobile(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据手机号获取
+            </summary>
+            <param name="icommon"></param>
+            <param name="mobile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetByOpenId(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据微信OpenId获取
+            </summary>
+            <param name="icommon"></param>
+            <param name="wxopenid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetBySession(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据SessionKey获取
+            </summary>
+            <param name="icommon"></param>
+            <param name="sessionkey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetName(Wlniao.i.iCommon,System.String)">
+            <summary>
+            获取用户姓名
+            </summary>
+            <param name="icommon"></param>
+            <param name="sid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetSidByMobile(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据手机号获取用户Sid
+            </summary>
+            <param name="icommon"></param>
+            <param name="mobile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.GetWxOpenId(Wlniao.i.iCommon,System.String)">
+            <summary>
+            根据获取用户微信Openid
+            </summary>
+            <param name="icommon"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.Login(Wlniao.i.iCommon,System.String,System.String,System.String)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="icommon"></param>
+            <param name="mobile"></param>
+            <param name="pwdcode"></param>
+            <param name="wxopenid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.i.User.SendRandpwd(Wlniao.i.iCommon,System.String)">
+            <summary>
+            发送随机密码
+            </summary>
+            <param name="icommon"></param>
+            <param name="mobile"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

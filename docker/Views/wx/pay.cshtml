@@ -36,17 +36,17 @@
             ReuestPay();
         });
         function ReuestPay() {
-            var wxpay = eval('(@Html.Raw(ViewBag.JsApi))');
+            var wxpay = @Html.Raw(ViewBag.JsApi);
             if (wxpay.package) {
                 WeixinJSBridge.invoke('getBrandWCPayRequest', wxpay, function (res) {
                     if (res.err_msg == "get_brand_wcpay_request:ok") {
                         setInterval(CheckAndBack, 300);
+                    } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+                        alert("请检查支付授权目录是否正确")
+                    } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                        CheckAndBack();
                     } else {
-                        if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                            CheckAndBack();
-                        } else {
-                            CheckAndBack();
-                        }
+                        CheckAndBack();
                     }
                 });
             } else {

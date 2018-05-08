@@ -1,0 +1,1442 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wlniao.WeAPP</name>
+    </assembly>
+    <members>
+        <member name="T:Wlniao.WeAPP.Client">
+            <summary>
+            微信小程序开放接口客户端
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxAppId">
+            <summary>
+            小程序/公众号Id
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxAppSecret">
+            <summary>
+            小程序/公众号密钥
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxPayId">
+            <summary>
+            微信支付商户号
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxPaySecret">
+            <summary>
+            微信支付密钥（服务商模式为服务商密钥）
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxSvrId">
+            <summary>
+            微信服务商公众号Id
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.CfgWxSvrPayId">
+            <summary>
+            微信服务商商户号
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.WxAppId">
+            <summary>
+            小程序ID
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Client.WxAppSecret">
+            <summary>
+            小程序密钥
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Client.handler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.GetWxaCode(Wlniao.WeAPP.Request.GetWxaCodeRequest)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.GetWxaCodeAsync(Wlniao.WeAPP.Request.GetWxaCodeRequest)">
+            <summary>
+            生成小程序码 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.UnifiedOrder(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            小程序支付统一下单
+            </summary>
+            <param name="trade_no"></param>
+            <param name="total_fee"></param>
+            <param name="body"></param>
+            <param name="spbill_create_ip"></param>
+            <param name="notify_url"></param>
+            <param name="trade_type"></param>
+            <param name="openid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.UnifiedOrder(Wlniao.WeAPP.Request.UnifiedOrderRequest)">
+            <summary>
+            小程序支付统一下单
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.UnifiedOrderAsync(Wlniao.WeAPP.Request.UnifiedOrderRequest)">
+            <summary>
+            小程序支付统一下单 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.SendRedpack(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            发送现金红包
+            </summary>
+            <param name="billno"></param>
+            <param name="amount"></param>
+            <param name="openid"></param>
+            <param name="act_name"></param>
+            <param name="send_name"></param>
+            <param name="wishing"></param>
+            <param name="remark"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.SendRedpack(Wlniao.WeAPP.Request.SendRedpackRequest)">
+            <summary>
+            发送现金红包
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.SendRedpackAsync(Wlniao.WeAPP.Request.SendRedpackRequest)">
+            <summary>
+            发送现金红包 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.Transfers(System.String,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            企业付款到零钱
+            </summary>
+            <param name="trade_no"></param>
+            <param name="amount"></param>
+            <param name="openid"></param>
+            <param name="desc"></param>
+            <param name="check_name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.Transfers(Wlniao.WeAPP.Request.TransfersRequest)">
+            <summary>
+            企业付款到零钱
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.TransfersAsync(Wlniao.WeAPP.Request.TransfersRequest)">
+            <summary>
+            企业付款到零钱 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryOrder(Wlniao.WeAPP.Request.QueryOrderRequest)">
+            <summary>
+            微信支付订单查询
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryOrder(System.String)">
+            <summary>
+            微信支付订单查询
+            </summary>
+            <param name="out_trade_no"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryOrderAsync(Wlniao.WeAPP.Request.QueryOrderRequest)">
+            <summary>
+            微信支付订单查询 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryRedpack(Wlniao.WeAPP.Request.QueryRedpackRequest)">
+            <summary>
+            微信现金红包查询
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryRedpack(System.String)">
+            <summary>
+            微信现金红包查询
+            </summary>
+            <param name="mch_billno"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.QueryRedpackAsync(Wlniao.WeAPP.Request.QueryRedpackRequest)">
+            <summary>
+            微信现金红包查询 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.JsCode2Session(Wlniao.WeAPP.Request.JsCode2SessionRequest)">
+            <summary>
+            code 换取 session_key。
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Client.JsCode2SessionAsync(Wlniao.WeAPP.Request.JsCode2SessionRequest)">
+            <summary>
+            code 换取 session_key 的异步形式。
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wlniao.WeAPP.Context">
+            <summary>
+            请求线程
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.AppId">
+            <summary>
+            小程序ID
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.AppSecret">
+            <summary>
+            小程序密钥
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.AccessToken">
+            <summary>
+            接口调用凭据
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.Method">
+            <summary>
+            HTTP请求方式
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.Operation">
+            <summary>
+            要调用的API操作
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.RequestHost">
+            <summary>
+            请求的地址
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.RequestPath">
+            <summary>
+            要调用的路径
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.Request">
+            <summary>
+            要发送的请求内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.Response">
+            <summary>
+            API的输出内容
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Context.HttpTask">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Context.Certificate">
+            <summary>
+            请求使用的证书
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Context.StatusCode">
+            <summary>
+            输出的状态
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Context.HttpRequestHeaders">
+            <summary>
+            请求的Headers参数
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Context.HttpResponseHeaders">
+            <summary>
+            输出的Headers参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.HttpRequestBody">
+            <summary>
+            请求的内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.HttpRequestString">
+            <summary>
+            请求的内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.HttpResponseBody">
+            <summary>
+            输出的内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.HttpResponseString">
+            <summary>
+            输出的内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Context.Retry">
+            <summary>
+            请求重试次数
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Context.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Error">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Error.errcode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Error.errmsg">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.ApiHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.ApiHandler.HandleBefore(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="M:Wlniao.WeAPP.ApiHandler.HandleAfter(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="T:Wlniao.WeAPP.Handler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Handler.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.Handler.HandleBefore(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="M:Wlniao.WeAPP.Handler.HandleAfter(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="T:Wlniao.WeAPP.RetryHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.RetryHandler.MaxRetryTimes">
+            <summary>
+            重试次数
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.RetryHandler.#ctor(Wlniao.Handler.PipelineHandler)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.RetryHandler.HandleBefore(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="M:Wlniao.WeAPP.RetryHandler.HandleAfter(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="T:Wlniao.WeAPP.WeAPPHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.WeAPPHandler.#ctor(Wlniao.Handler.PipelineHandler)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Wlniao.WeAPP.WeAPPHandler.HandleBefore(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="M:Wlniao.WeAPP.WeAPPHandler.HandleAfter(Wlniao.Handler.IContext)">
+            <summary>
+            
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.GetWxaCodeRequest">
+            <summary>
+            获取微信小程序码的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.path">
+            <summary>
+            默认进入的页面 不能为空，最大长度 128 字节
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.width">
+            <summary>
+            二维码的宽度 默认430
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.auto_color">
+            <summary>
+            自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.line_color">
+            <summary>
+            默认进入的页面 不能为空，最大长度 128 字节
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.GetWxaCodeRequest.Color">
+            <summary>
+            RGB颜色
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.Color.r">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.Color.g">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.GetWxaCodeRequest.Color.b">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.JsCode2SessionRequest">
+            <summary>
+            code 换取 session_key
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.JsCode2SessionRequest.appid">
+            <summary>
+            小程序唯一标识
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.JsCode2SessionRequest.secret">
+            <summary>
+            小程序的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.JsCode2SessionRequest.js_code">
+            <summary>
+            登录时获取的 code
+            </summary>
+        </member>
+        <member name="F:Wlniao.WeAPP.Request.JsCode2SessionRequest.grant_type">
+            <summary>
+            填写为 authorization_code
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.QueryOrderRequest">
+            <summary>
+            微信支付订单查询的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.appid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.secret">
+            <summary>
+            小程序或服务商的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.sub_appid">
+            <summary>
+            小程序的APPID（服务商模式下需要）
+            </summary>
+            <remarks>当前调起支付的小程序APPID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.sub_mch_id">
+            <summary>
+            子商户号（服务商模式下需要）
+            </summary>
+            <remarks>微信支付分配的子商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.transaction_id">
+            <summary>
+            微信订单号
+            </summary>
+            <remarks>微信的订单号，优先使用。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.out_trade_no">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryOrderRequest.sign_type">
+            <summary>
+            签名类型
+            </summary>
+            <remarks>签名类型，默认为MD5，支持HMAC-SHA256和MD5</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.QueryRedpackRequest">
+            <summary>
+            现金红包查询的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryRedpackRequest.appid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryRedpackRequest.secret">
+            <summary>
+            小程序或服务商的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryRedpackRequest.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryRedpackRequest.mch_billno">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户订单号（每个订单号必须唯一） 组成：mch_id+yyyymmdd+10位一天内不能重复的数字。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.QueryRedpackRequest.bill_type">
+            <summary>
+            订单类型
+            </summary>
+            <remarks>MCHT:通过商户订单号获取红包信息。</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.SendRedpackRequest">
+            <summary>
+            发送现金红包的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.wxappid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.secret">
+            <summary>
+            小程序或服务商的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.msgappid">
+            <summary>
+            触达用户的APPID（服务商模式下需要）
+            </summary>
+            <remarks>当前调起支付的小程序APPID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.sub_mch_id">
+            <summary>
+            子商户号（服务商模式下需要）
+            </summary>
+            <remarks>微信支付分配的子商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.mch_billno">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.send_name">
+            <summary>
+            发送者名称
+            </summary>
+            <remarks>红包发送者名称</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.act_name">
+            <summary>
+            活动名称
+            </summary>
+            <remarks>活动名称</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.wishing">
+            <summary>
+            红包祝福语
+            </summary>
+            <remarks>红包祝福语</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.remark">
+            <summary>
+            备注
+            </summary>
+            <remarks>备注信息</remarks>
+        </member>
+        <member name="F:Wlniao.WeAPP.Request.SendRedpackRequest.total_num">
+            <summary>
+            红包个数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.total_amount">
+            <summary>
+            红包金额
+            </summary>
+            <remarks>红包金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.re_openid">
+            <summary>
+            用户OpenId
+            </summary>
+            <remarks>接受红包的用户 用户在wxappid下的openid，服务商模式下可填入msgappid下的openid。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.client_ip">
+            <summary>
+            终端IP
+            </summary>
+            <remarks>调用接口的机器Ip地址</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.scene_id">
+            <summary>
+            场景ID
+            </summary>
+            <remarks>发放红包使用场景，红包金额大于200时必传</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.SendRedpackRequest.consume_mch_id">
+            <summary>
+            扣钱方mchid
+            </summary>
+            <remarks>常规模式下无效，服务商模式下选填，服务商模式下不填默认扣子商户的钱</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.TransfersRequest">
+            <summary>
+            企业付款到零钱的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.mch_appid">
+            <summary>
+            小程序/公众号ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.secret">
+            <summary>
+            小程序或服务商的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.mchid">
+            <summary>
+            商户号
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.device_info">
+            <summary>
+            设备号
+            </summary>
+            <remarks>微信支付分配的终端设备号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.partner_trade_no">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.amount">
+            <summary>
+            付款金额
+            </summary>
+            <remarks>企业付款金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.desc">
+            <summary>
+            企业付款描述信息
+            </summary>
+            <remarks>企业付款操作说明信息。必填。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.openid">
+            <summary>
+            用户OpenId
+            </summary>
+            <remarks>商户appid下，某用户的openid。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.spbill_create_ip">
+            <summary>
+            终端IP
+            </summary>
+            <remarks>该IP同在商户平台设置的IP白名单中的IP没有关联，该IP可传用户端或者服务端的IP</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.check_name">
+            <summary>
+            校验用户姓名选项
+            </summary>
+            <remarks>NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.TransfersRequest.re_user_name">
+            <summary>
+            收款用户姓名
+            </summary>
+            <remarks>收款用户真实姓名。如果check_name设置为FORCE_CHECK，则必填用户真实姓名</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Request.UnifiedOrderRequest">
+            <summary>
+            小程序支付统一下单的请求参数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.appid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.secret">
+            <summary>
+            小程序或服务商的 app secret
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.sub_appid">
+            <summary>
+            小程序的APPID（服务商模式下需要）
+            </summary>
+            <remarks>当前调起支付的小程序APPID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.sub_mch_id">
+            <summary>
+            子商户号（服务商模式下需要）
+            </summary>
+            <remarks>微信支付分配的子商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.device_info">
+            <summary>
+            设备号
+            </summary>
+            <remarks>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.sign_type">
+            <summary>
+            签名类型
+            </summary>
+            <remarks>签名类型，默认为MD5，支持HMAC-SHA256和MD5</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.body">
+            <summary>
+            商品描述
+            </summary>
+            <remarks>商品简单描述，该字段请按照规范传递</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.out_trade_no">
+            <summary>
+            商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.fee_type">
+            <summary>
+            标价币种
+            </summary>
+            <remarks>符合ISO 4217标准的三位字母代码，默认人民币：CNY</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.total_fee">
+            <summary>
+            标价金额
+            </summary>
+            <remarks>订单总金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.spbill_create_ip">
+            <summary>
+            终端IP
+            </summary>
+            <remarks>APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.time_start">
+            <summary>
+            交易起始时间
+            </summary>
+            <remarks>订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.time_expire">
+            <summary>
+            交易结束时间
+            </summary>
+            <remarks>订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。订单失效时间是针对订单号而言的，由于在请求支付的时候有一个必传参数prepay_id只有两小时的有效期，所以在重入时间超过2小时的时候需要重新请求下单接口获取新的prepay_id</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.notify_url">
+            <summary>
+            通知地址 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.trade_type">
+            <summary>
+            交易类型 调用接口提交的交易类型，取值如下：JSAPI（默认），NATIVE，APP，MICROPAY
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.product_id">
+            <summary>
+            商品ID trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.limit_pay">
+            <summary>
+            指定支付方式
+            </summary>
+            <remarks>上传此参数no_credit--可限制用户不能使用信用卡支付</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Request.UnifiedOrderRequest.openid">
+            <summary>
+            用户标识
+            </summary>
+            <remarks>trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识。</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.GetWxaCodeResponse">
+            <summary>
+            获取微信小程序码的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.GetWxaCodeResponse.image">
+            <summary>
+            二维码数据
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.JsCode2SessionResponse">
+            <summary>
+            code 换取 session_key
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.JsCode2SessionResponse.session_key">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.JsCode2SessionResponse.openid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.JsCode2SessionResponse.unionid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.QueryOrderResponse">
+            <summary>
+            微信支付订单查询的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.return_code">
+            <summary>
+            返回状态码
+            </summary>
+            <remarks>SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.return_msg">
+            <summary>
+            返回信息 
+            </summary>
+            <remarks>返回信息，如非空，为错误原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.appid">
+            <summary>
+            小程序ID
+            </summary>
+            <remarks>微信分配的小程序ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.mch_id">
+            <summary>
+            商户号
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.nonce_str">
+            <summary>
+            随机字符串
+            </summary>
+            <remarks>微信返回的随机字符串</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.sign">
+            <summary>
+            签名 
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.result_code">
+            <summary>
+            业务结果
+            </summary>
+            <remarks>SUCCESS/FAIL</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.err_code">
+            <summary>
+            错误代码
+            </summary>
+            <remarks>错误码</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.err_code_des">
+            <summary>
+            错误代码描述 
+            </summary>
+            <remarks>结果信息描述</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.device_info">
+            <summary>
+            设备号
+            </summary>
+            <remarks>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.openid">
+            <summary>
+            用户标识
+            </summary>
+            <remarks>trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.is_subscribe">
+            <summary>
+            是否关注公众账号 
+            </summary>
+            <remarks>用户是否关注公众账号，Y-关注，N-未关注，仅在公众账号类型支付有效</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.trade_type">
+            <summary>
+            交易类型
+            </summary>
+            <remarks>调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP，MICROPAY</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.trade_state">
+            <summary>
+            交易状态
+            SUCCESS—支付成功 REFUND—转入退款 NOTPAY—未支付 CLOSED—已关闭 REVOKED—已撤销（刷卡支付） USERPAYING--用户支付中 PAYERROR--支付失败(其他原因，如银行返回失败)
+            </summary>
+            <remarks>微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.bank_type">
+            <summary>
+            付款银行 
+            </summary>
+            <remarks>银行类型，采用字符串类型的银行标识 </remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.fee_type">
+            <summary>
+            标价币种
+            </summary>
+            <remarks>符合ISO 4217标准的三位字母代码，默认人民币：CNY</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.total_fee">
+            <summary>
+            标价金额
+            </summary>
+            <remarks>订单总金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.settlement_total_fee">
+            <summary>
+            应结订单金额
+            </summary>
+            <remarks>当订单使用了免充值型优惠券后返回该参数，应结订单金额=订单金额-免充值优惠券金额。 </remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.cash_fee">
+            <summary>
+            现金支付金额 
+            </summary>
+            <remarks>现金支付金额订单现金支付金额。 </remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.transaction_id">
+            <summary>
+            微信订单号
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.out_trade_no">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.time_end">
+            <summary>
+            支付完成时间 
+            </summary>
+            <remarks>订单支付时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.trade_state_desc">
+            <summary>
+            交易状态描述
+            </summary>
+            <remarks>对当前查询订单状态的描述和下一步操作的指引</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryOrderResponse.PayTime">
+            <summary>
+            支付时间UNIXTIME
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.QueryRedpackResponse">
+            <summary>
+            现金红包查询的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.return_code">
+            <summary>
+            返回状态码
+            </summary>
+            <remarks>SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.return_msg">
+            <summary>
+            返回信息 
+            </summary>
+            <remarks>返回信息，如非空，为错误原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.result_code">
+            <summary>
+            业务结果
+            </summary>
+            <remarks>SUCCESS/FAIL</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.err_code">
+            <summary>
+            错误代码
+            </summary>
+            <remarks>错误码</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.err_code_des">
+            <summary>
+            错误代码描述 
+            </summary>
+            <remarks>结果信息描述</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.status">
+            <summary>
+            红包状态 
+            </summary>
+            <remarks>SENDING:发放中 SENT:已发放待领取 FAILED：发放失败 RECEIVED:已领取 RFUND_ING:退款中 REFUND:已退款</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.reason">
+            <summary>
+            失败原因 
+            </summary>
+            <remarks>发送失败原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.mch_id">
+            <summary>
+            商户号
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.mch_billno">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户订单号（每个订单号必须唯一） 组成：mch_id+yyyymmdd+10位一天内不能重复的数字。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.detail_id">
+            <summary>
+            红包单号 
+            </summary>
+            <remarks>使用API发放现金红包时返回的红包单号 </remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.send_type">
+            <summary>
+            发放类型
+            </summary>
+            <remarks>API:通过API接口发放 UPLOAD:通过上传文件方式发放 ACTIVITY:通过活动方式发放</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.hb_type">
+            <summary>
+            红包类型
+            </summary>
+            <remarks>GROUP:裂变红包 NORMAL:普通红包</remarks>
+        </member>
+        <member name="F:Wlniao.WeAPP.Response.QueryRedpackResponse.total_num">
+            <summary>
+            红包个数
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.total_amount">
+            <summary>
+            红包金额
+            </summary>
+            <remarks>红包金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.send_time">
+            <summary>
+            红包发送时间  
+            </summary>
+            <remarks>红包发送时间，格式为yyyy-MM-dd HH:mm:ss</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.refund_time">
+            <summary>
+            红包的退款时间  
+            </summary>
+            <remarks>红包的退款时间（如果其未领取的退款） ，格式为yyyy-MM-dd HH:mm:ss</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.refund_amount">
+            <summary>
+            红包金额
+            </summary>
+            <remarks>红包金额，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.rcv_time">
+            <summary>
+            领取红包的时间  
+            </summary>
+            <remarks>领取红包的时间，格式为yyyy-MM-dd HH:mm:ss</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.amount">
+            <summary>
+            领取金额 
+            </summary>
+            <remarks>领取金额 ，单位为分</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.openid">
+            <summary>
+            领取红包的openid
+            </summary>
+            <remarks>领取红包的openid。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.act_name">
+            <summary>
+            活动名称
+            </summary>
+            <remarks>活动名称</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.wishing">
+            <summary>
+            红包祝福语
+            </summary>
+            <remarks>红包祝福语</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.remark">
+            <summary>
+            备注
+            </summary>
+            <remarks>备注信息</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.SendTime">
+            <summary>
+            红包发送时间 UNIXTIME
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.RefundTime">
+            <summary>
+            红包的退款时间 UNIXTIME
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.QueryRedpackResponse.ReceivedTime">
+            <summary>
+            领取红包的时间 UNIXTIME
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.SendRedpackResponse">
+            <summary>
+            发送现金红包的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.return_code">
+            <summary>
+            返回状态码
+            </summary>
+            <remarks>SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.return_msg">
+            <summary>
+            返回信息 
+            </summary>
+            <remarks>返回信息，如非空，为错误原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.wxappid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.re_openid">
+            <summary>
+            用户OpenId
+            </summary>
+            <remarks>接受收红包的用户用户在wxappid下的openid</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.result_code">
+            <summary>
+            业务结果
+            </summary>
+            <remarks>SUCCESS/FAIL</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.err_code">
+            <summary>
+            错误代码
+            </summary>
+            <remarks>错误码</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.err_code_des">
+            <summary>
+            错误代码描述 
+            </summary>
+            <remarks>结果信息描述</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.mch_billno">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户订单号（每个订单号必须唯一） 组成：mch_id+yyyymmdd+10位一天内不能重复的数字。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.send_listid">
+            <summary>
+            微信单号
+            </summary>
+            <remarks>红包订单的微信单号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.SendRedpackResponse.total_amount">
+            <summary>
+            红包金额
+            </summary>
+            <remarks>红包金额，单位为分</remarks>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.TransfersResponse">
+            <summary>
+            企业付款到零钱的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.return_code">
+            <summary>
+            返回状态码
+            </summary>
+            <remarks>SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.return_msg">
+            <summary>
+            返回信息 
+            </summary>
+            <remarks>返回信息，如非空，为错误原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.mch_appid">
+            <summary>
+            小程序/公众号ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.mchid">
+            <summary>
+            商户号
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.device_info">
+            <summary>
+            设备号
+            </summary>
+            <remarks>微信支付分配的终端设备号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.result_code">
+            <summary>
+            业务结果
+            </summary>
+            <remarks>SUCCESS/FAIL</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.err_code">
+            <summary>
+            错误代码
+            </summary>
+            <remarks>错误码</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.err_code_des">
+            <summary>
+            错误代码描述 
+            </summary>
+            <remarks>结果信息描述</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.partner_trade_no">
+            <summary>
+            商户订单号
+            </summary>
+            <remarks>商户订单号，需保持历史全局唯一性(只能是字母或者数字，不能包含有符号)。</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.payment_no">
+            <summary>
+            微信订单号
+            </summary>
+            <remarks>企业付款成功，返回的微信订单号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.payment_time">
+            <summary>
+            微信支付成功时间
+            </summary>
+            <remarks>企业付款成功时间 ，格式为yyyy-MM-dd HH:mm:ss</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.TransfersResponse.PaymentTime">
+            <summary>
+            支付完成时间UNIXTIME
+            </summary>
+        </member>
+        <member name="T:Wlniao.WeAPP.Response.UnifiedOrderResponse">
+            <summary>
+            小程序支付统一下单的输出内容
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.return_code">
+            <summary>
+            返回状态码
+            </summary>
+            <remarks>SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.return_msg">
+            <summary>
+            返回信息 
+            </summary>
+            <remarks>返回信息，如非空，为错误原因</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.appid">
+            <summary>
+            小程序/服务商ID
+            </summary>
+            <remarks>微信分配的小程序ID或服务商公众账号ID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.sub_appid">
+            <summary>
+            小程序的APPID（服务商模式下需要）
+            </summary>
+            <remarks>当前调起支付的小程序APPID</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.mch_id">
+            <summary>
+            商户号（服务商模式下为服务商商户号）
+            </summary>
+            <remarks>微信支付分配的商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.sub_mch_id">
+            <summary>
+            子商户号（服务商模式下需要）
+            </summary>
+            <remarks>微信支付分配的子商户号</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.nonce_str">
+            <summary>
+            随机字符串
+            </summary>
+            <remarks>微信返回的随机字符串</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.sign">
+            <summary>
+            签名 
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.result_code">
+            <summary>
+            业务结果
+            </summary>
+            <remarks>SUCCESS/FAIL</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.err_code">
+            <summary>
+            错误代码
+            </summary>
+            <remarks>错误码</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.err_code_des">
+            <summary>
+            错误代码描述 
+            </summary>
+            <remarks>结果信息描述</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.trade_type">
+            <summary>
+            交易类型
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.prepay_id">
+            <summary>
+            预支付交易会话标识
+            </summary>
+            <remarks>微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.code_url">
+            <summary>
+            二维码链接
+            </summary>
+            <remarks>trade_type为NATIVE时有返回，用于生成二维码，展示给用户进行扫码支付</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.timeStamp">
+            <summary>
+            时间戳
+            </summary>
+            <remarks>时间戳从1970年1月1日00:00:00至今的秒数,即当前的时间</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.signType">
+            <summary>
+            签名方式
+            </summary>
+            <remarks>签名类型，默认为MD5，支持HMAC-SHA256和MD5。注意此处需与统一下单的签名类型一致</remarks>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.paySign">
+            <summary>
+            小程序调起支付数据签名
+            </summary>
+        </member>
+        <member name="P:Wlniao.WeAPP.Response.UnifiedOrderResponse.PayRequet">
+            <summary>
+            小程序支付调起参数
+            </summary>
+        </member>
+    </members>
+</doc>

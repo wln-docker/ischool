@@ -81,7 +81,7 @@
                     if (_qr3 != rlt.message) {
                         _qr3 = rlt.message;
                         $('#qr3 canvas').remove();
-                        $('#qr3').qrcode({ width: 150, height: 150, correctLevel: 0, text: rlt.message });
+                        $('#qr3').qrcode({ width: 150, height: 150, correctLevel: 0, text: rlt.data });
                         $('#qr3').next().show();
                     }
                 } else {
