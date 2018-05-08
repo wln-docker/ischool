@@ -16,7 +16,7 @@
             <el-table-column width="120" align="center" label="类型" property="typename"></el-table-column>
             <el-table-column width="230" align="right" v-if="editer">
                 <template scope="scope">
-                    <el-button size="mini" icon="el-icon-view" @@click="handleOption(scope.row)" type="success">选项</el-button>
+                    <el-button size="mini" icon="el-icon-view" @@click="handleOption(scope.row)" type="success" :disabled="scope.row.type == 3">选项</el-button>
                     <el-button size="mini" icon="el-icon-edit" @@click="handleEditer(scope.row)" type="primary">编辑</el-button>
                     <el-button size="mini" icon="el-icon-delete" @@click="handleDelete(scope.row)" type="warning">删除</el-button>
                 </template>

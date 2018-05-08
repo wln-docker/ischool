@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/wx/_master.cshtml";
+}
+@section head{
+    <style type="text/css">
+        body {
+            background-color: #f0f0f0;
+            font-family: Microsoft Yahei;
+        }
+    </style>
+}
+@section body{
+    <div style="text-align:center;padding-top:128px;color:#9E9E9E;">@Html.Raw(ViewBag.TipsMsg)</div>
+}
+@section script{
+    <script type="text/javascript">
+        document.title = '问卷调查单';
+        history.replaceState('', '', location.pathname)
+    </script>
+}
