@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "02663641cdb3dcc30f276bff93e15597e9303288"
+    "signature": "8d5d0f54e90c71b445712da0afb90bf720498526"
   },
   "compilationOptions": {
     "defines": [
@@ -25,9 +25,9 @@
         "dependencies": {
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.1",
-          "SharpZipLib.NETStandard": "0.86.0.1",
+          "SharpZipLib.NETStandard": "1.0.7",
           "Wlniao.WeAPP": "0.1.3",
-          "Wlniao.XCore": "2.1.2",
+          "Wlniao.XCore": "2.1.4-bate1",
           "iServer.Toolkit": "1.0.4"
         },
         "runtime": {
@@ -40,7 +40,7 @@
       "iServer.Toolkit/1.0.4": {
         "dependencies": {
           "Wlniao.WeAPP": "0.1.3",
-          "Wlniao.XCore": "2.1.2"
+          "Wlniao.XCore": "2.1.4-bate1"
         },
         "runtime": {
           "lib/netcoreapp2.0/iServer.Toolkit.dll": {}
@@ -1288,26 +1288,7 @@
           "lib/netstandard2.0/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.NETCore.Jit/1.0.2": {},
-      "Microsoft.NETCore.Portable.Compatibility/1.0.1": {
-        "dependencies": {
-          "Microsoft.NETCore.Runtime.CoreCLR": "1.0.2"
-        },
-        "runtime": {
-          "lib/netstandard1.0/System.ServiceModel.dll": {}
-        },
-        "compile": {
-          "ref/netstandard1.0/System.ServiceModel.dll": {}
-        }
-      },
-      "Microsoft.NETCore.Runtime.CoreCLR/1.0.2": {
-        "dependencies": {
-          "Microsoft.NETCore.Jit": "1.0.2",
-          "Microsoft.NETCore.Windows.ApiSets": "1.0.1"
-        }
-      },
       "Microsoft.NETCore.Targets/1.1.0": {},
-      "Microsoft.NETCore.Windows.ApiSets/1.0.1": {},
       "Microsoft.Win32.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -1590,16 +1571,15 @@
           }
         }
       },
-      "SharpZipLib.NETStandard/0.86.0.1": {
+      "SharpZipLib.NETStandard/1.0.7": {
         "dependencies": {
-          "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
           "NETStandard.Library": "2.0.0"
         },
         "runtime": {
-          "lib/netstandard1.3/SharpZipLib.NETStandard.dll": {}
+          "lib/netstandard1.3/ICSharpCode.SharpZipLib.dll": {}
         },
         "compile": {
-          "lib/netstandard1.3/SharpZipLib.NETStandard.dll": {}
+          "lib/netstandard1.3/ICSharpCode.SharpZipLib.dll": {}
         }
       },
       "SQLitePCLRaw.bundle_green/1.1.7": {
@@ -2667,7 +2647,7 @@
       },
       "Wlniao.WeAPP/0.1.3": {
         "dependencies": {
-          "Wlniao.XCore": "2.1.2"
+          "Wlniao.XCore": "2.1.4-bate1"
         },
         "runtime": {
           "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {}
@@ -2676,7 +2656,7 @@
           "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {}
         }
       },
-      "Wlniao.XCore/2.1.2": {
+      "Wlniao.XCore/2.1.4-bate1": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.0.2",
           "Microsoft.AspNetCore.Hosting": "2.0.2",
@@ -2892,7 +2872,7 @@
     "iServer.Toolkit/1.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6b1+vnqa+rDY4bo5ggz1zowlx3tycu+tIXWS7mbQgHQsDQYvmu1bTcx/87FBqA2BBknOJc7EmSjsP9bQ5F44og==",
+      "sha512": "sha512-V+9UpibHtEy2TRI7hZjhFQeRqOo37zSISRiFbSh4lqzYKfRgtJRk2b60lcwsTQciwzdhKiMM5TEKQvZaNGMC9Q==",
       "path": "iserver.toolkit/1.0.4",
       "hashPath": "iserver.toolkit.1.0.4.nupkg.sha512"
     },
@@ -3554,40 +3534,12 @@
       "path": "microsoft.net.http.headers/2.0.2",
       "hashPath": "microsoft.net.http.headers.2.0.2.nupkg.sha512"
     },
-    "Microsoft.NETCore.Jit/1.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Ok2vWofa6X8WD9vc4pfLHwvJz1/B6t3gOAoZcjrjrQf7lQOlNIuZIZtLn3wnWX28DuQGpPJkRlBxFj7Z5txNqw==",
-      "path": "microsoft.netcore.jit/1.0.2",
-      "hashPath": "microsoft.netcore.jit.1.0.2.nupkg.sha512"
-    },
-    "Microsoft.NETCore.Portable.Compatibility/1.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Vd+lvLcGwvkedxtKn0U8s9uR4p0Lm+0U2QvDsLaw7g4S1W4KfPDbaW+ROhhLCSOx/gMYC72/b+z+o4fqS/oxVg==",
-      "path": "microsoft.netcore.portable.compatibility/1.0.1",
-      "hashPath": "microsoft.netcore.portable.compatibility.1.0.1.nupkg.sha512"
-    },
-    "Microsoft.NETCore.Runtime.CoreCLR/1.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-A0x1xtTjYJWZr2DRzgfCOXgB0JkQg8twnmtTJ79wFje+IihlLbXtx6Z2AxyVokBM5ruwTedR6YdCmHk39QJdtQ==",
-      "path": "microsoft.netcore.runtime.coreclr/1.0.2",
-      "hashPath": "microsoft.netcore.runtime.coreclr.1.0.2.nupkg.sha512"
-    },
     "Microsoft.NETCore.Targets/1.1.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg==",
       "path": "microsoft.netcore.targets/1.1.0",
       "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
-    },
-    "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-SaToCvvsGMxTgtLv/BrFQ5IFMPRE1zpWbnqbpwykJa8W5XiX82CXI6K2o7yf5xS7EP6t/JzFLV0SIDuWpvBZVw==",
-      "path": "microsoft.netcore.windows.apisets/1.0.1",
-      "hashPath": "microsoft.netcore.windows.apisets.1.0.1.nupkg.sha512"
     },
     "Microsoft.Win32.Primitives/4.3.0": {
       "type": "package",
@@ -3771,12 +3723,12 @@
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.2",
       "hashPath": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512"
     },
-    "SharpZipLib.NETStandard/0.86.0.1": {
+    "SharpZipLib.NETStandard/1.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UswJqRfvjMzqe02iCnfAe4nkCrCSpV2WrTyMlkytEM8cBIAyarggVv75WGR1OxxwIQdEDJafj8HjD93Mr/Yq1w==",
-      "path": "sharpziplib.netstandard/0.86.0.1",
-      "hashPath": "sharpziplib.netstandard.0.86.0.1.nupkg.sha512"
+      "sha512": "sha512-mYKPizF2CY32RQB8FITYy0e30gVgItFA63SFquruaxq+votwL1T+yOfssK10v4enBcxklr8ks48hS1emw5TTXg==",
+      "path": "sharpziplib.netstandard/1.0.7",
+      "hashPath": "sharpziplib.netstandard.1.0.7.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_green/1.1.7": {
       "type": "package",
@@ -4411,16 +4363,16 @@
     "Wlniao.WeAPP/0.1.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KnzJoyIwYWj46LB6UUPnAZaB3Onu2/jFpdY8CZCS7dZEAW+PBwxddWE5FbAgQRzHVP3gKD2BVyWY9U5B8ZqFmg==",
+      "sha512": "sha512-aJVYyNS/OJWERZR3iD8gWDvZJbnAFW7ijE+PfZNBbcgPeN1VJxigs2mmoFtnc1+o+yYFzeaPW/tFUJaHjvviTQ==",
       "path": "wlniao.weapp/0.1.3",
       "hashPath": "wlniao.weapp.0.1.3.nupkg.sha512"
     },
-    "Wlniao.XCore/2.1.2": {
+    "Wlniao.XCore/2.1.4-bate1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MXx8EIL1viX3g+d7B9qHDVCXLmPecN7YT90k5nV2yzKjO31W3fTJzP5Rd4LvuX2ekgTpWjvxD8g1iNO56N5DVg==",
-      "path": "wlniao.xcore/2.1.2",
-      "hashPath": "wlniao.xcore.2.1.2.nupkg.sha512"
+      "sha512": "sha512-r0TLENEr2X7/wVzjyn7+vPWXzbmgfcu/5JWb3NjdFiyt61ku1IeX9Xxbtl8pPYuf/7fIDV2Keh0OOmqFDtki2w==",
+      "path": "wlniao.xcore/2.1.4-bate1",
+      "hashPath": "wlniao.xcore.2.1.4-bate1.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",
