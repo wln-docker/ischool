@@ -2872,7 +2872,7 @@
     "iServer.Toolkit/1.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-V+9UpibHtEy2TRI7hZjhFQeRqOo37zSISRiFbSh4lqzYKfRgtJRk2b60lcwsTQciwzdhKiMM5TEKQvZaNGMC9Q==",
+      "sha512": "sha512-6b1+vnqa+rDY4bo5ggz1zowlx3tycu+tIXWS7mbQgHQsDQYvmu1bTcx/87FBqA2BBknOJc7EmSjsP9bQ5F44og==",
       "path": "iserver.toolkit/1.0.4",
       "hashPath": "iserver.toolkit.1.0.4.nupkg.sha512"
     },
@@ -4363,14 +4363,14 @@
     "Wlniao.WeAPP/0.1.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aJVYyNS/OJWERZR3iD8gWDvZJbnAFW7ijE+PfZNBbcgPeN1VJxigs2mmoFtnc1+o+yYFzeaPW/tFUJaHjvviTQ==",
+      "sha512": "sha512-KnzJoyIwYWj46LB6UUPnAZaB3Onu2/jFpdY8CZCS7dZEAW+PBwxddWE5FbAgQRzHVP3gKD2BVyWY9U5B8ZqFmg==",
       "path": "wlniao.weapp/0.1.3",
       "hashPath": "wlniao.weapp.0.1.3.nupkg.sha512"
     },
     "Wlniao.XCore/2.1.4-bate1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-r0TLENEr2X7/wVzjyn7+vPWXzbmgfcu/5JWb3NjdFiyt61ku1IeX9Xxbtl8pPYuf/7fIDV2Keh0OOmqFDtki2w==",
+      "sha512": "sha512-YC3ii1MHhop0p0osQDqQvSm88tu2WYW5dQo4I+0r3cR64oCNZSp4PLkiKkaQ93zAs2UpAQI6xGF0lDLJoU3e0g==",
       "path": "wlniao.xcore/2.1.4-bate1",
       "hashPath": "wlniao.xcore.2.1.4-bate1.nupkg.sha512"
     },
