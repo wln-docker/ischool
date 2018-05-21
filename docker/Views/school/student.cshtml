@@ -134,6 +134,7 @@
                             <el-tooltip content="上锁后将禁止编辑和删除学员资料" placement="bottom">
                                 <el-button size="mini" icon="el-icon-time" @@click="handleLocked(scope.row)" type="warning" v-if="verify" :disabled="scope.row.islock>0">{{scope.row.islock>0?'已锁':'上锁'}}</el-button>
                             </el-tooltip>
+                            <el-button size="mini" icon="el-icon-time" @@click="handleStop(scope.row)" type="warning" v-if="scope.row.state == 1">休学</el-button>
                             <el-button size="mini" icon="el-icon-time" @@click="handleOut(scope.row)" type="warning" v-if="scope.row.state == 1">转出</el-button>
                             <el-button size="mini" icon="el-icon-time" @@click="handleEnd(scope.row)" type="warning" v-if="scope.row.state == 1">毕业</el-button>
                             <el-tooltip content="直接删除学员信息（谨慎操作）" placement="bottom">
@@ -398,6 +399,21 @@
                     });
                 }).catch(() => {
                     iTips('锁定操作已取消');
+                });
+            },
+            handleStop(row) {
+                this.$confirm('学员休学后重新入学即可恢复, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'stop', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('操作已取消');
                 });
             },
             handleOut(row) {
