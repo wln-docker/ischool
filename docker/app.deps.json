@@ -4370,7 +4370,7 @@
     "Wlniao.XCore/2.1.4-bate1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YC3ii1MHhop0p0osQDqQvSm88tu2WYW5dQo4I+0r3cR64oCNZSp4PLkiKkaQ93zAs2UpAQI6xGF0lDLJoU3e0g==",
+      "sha512": "sha512-r0TLENEr2X7/wVzjyn7+vPWXzbmgfcu/5JWb3NjdFiyt61ku1IeX9Xxbtl8pPYuf/7fIDV2Keh0OOmqFDtki2w==",
       "path": "wlniao.xcore/2.1.4-bate1",
       "hashPath": "wlniao.xcore.2.1.4-bate1.nupkg.sha512"
     },
