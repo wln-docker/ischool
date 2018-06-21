@@ -37,8 +37,8 @@
                     <font style="color:#409EFF;" v-if="scope.row.state===0">未送审</font>
                     <font style="color:#F56C6C;" v-else-if="scope.row.state===1">未通过</font>
                     <font style="color:#E6A23C;" v-else-if="scope.row.state===2">待审核</font>
-                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state !== 0">已审核</font>
-                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.state === 0">已使用</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.times !== 0">已审核</font>
+                    <font style="color:#67C23A;" v-else-if="scope.row.state === 3 && scope.row.times === 0">已使用</font>
                     <font style="color:#909399;" v-else>其它</font>
                 </template>
             </el-table-column>
