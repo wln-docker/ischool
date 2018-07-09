@@ -41,6 +41,11 @@ input{outline:none;}
     padding-top: 10px;
     margin-left: -6px;
 }
+.card .card_next .text {
+    color: #9c9c9c;
+    font-size: 13px;
+    line-height: 30px;
+}
 .card_cont.card1{ display:block;transform:scale(1,1) translate(0,0) !important ;  
 -ms-transform:scale(1,1) translate(0,0) !important ; 
 -moz-transform:scale(1,1) translate(0,0) !important ; 

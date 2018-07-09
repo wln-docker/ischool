@@ -14,8 +14,56 @@
 @section script{
     <script src="/wx/survey.js"></script>
     <script type="text/javascript">
-        var json = @Html.Raw(ViewBag.Json)
         document.title = '@Html.Raw(ViewBag.Questionary)';
+        var ts = 0;
+        var obj = {};
+        var json = @Html.Raw(ViewBag.Json);
+        function GetValue(question) {
+            let val = ''
+            let type = json['type_' + question]
+            if (type == 0 || type == 1) {
+                let ids = []
+                let array = $("input[name='group_" + question + "']:checked")
+                for (let i = 0; i < array.length; i++) {
+                    ids.push(array[i].id)
+                }
+                val = ids.join()
+            } else if (type == 2) {
+                val = document.getElementById(question).value
+            } else {
+                val = ''
+            }
+            return val
+        }
+        function SetValue() {
+            obj.questions = json.questions.join()
+            json.questions.forEach(function (question, index, array) {
+                obj[question] = GetValue(question);
+            })
+        }
+        function Submit() {
+            if (new Date().getTime() - ts < 10000) {
+                return app.$message({ type: 'info', message: '请求正在处理中，请稍候' })
+            }
+            SetValue()
+            wln.loading('提交中...')
+            ts = new Date().getTime()
+            $.ajax({
+                url: location.pathname + '?do=save&surveyid=@ViewBag.SurveyId&submitid=@ViewBag.SubmitId', method: "POST", dataType: "json", contentType: "application/json", data: JSON.stringify(obj), async: true, success: function (rlt) {
+                    ts = 0;
+                    wln.closeDialog()
+                    if (rlt.success) {
+                        setTimeout(function () {
+                            wln.alert(rlt.message, function () {
+                                location.href = 'surveys';
+                            })
+                        },100)
+                    } else {
+                        wln.alert(rlt.message)
+                    }
+                }
+            })
+        }
         $(function () {
             $("#answer").answerSheet({});
         })

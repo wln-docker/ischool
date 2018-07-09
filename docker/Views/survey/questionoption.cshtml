@@ -112,8 +112,8 @@
                     question: _question
                 }
             };
-        },
-        methods: {
+        }
+        , methods: {
             onSubmit: function () {
                 var obj = this.form;
                 $.post(location.pathname + '?do=set', obj, function (rlt) {
