@@ -15,10 +15,10 @@ input{outline:none;}
 .wrapper{width:92%; margin:0 auto;}
 .card_wrap{width:100%; height:510px; position:relative; overflow:hidden; display:none}
 .card_cont{width:100%; height:480px; box-sizing:border-box; margin:0 auto; position:absolute; background:url(survey_bg.png) no-repeat center top; background-size:100% auto; padding:8px 20px 18px; transition:all ease .5s; -webkit-transition:all ease .5s; -moz-transition:all ease .5s; -ms-transition:all ease .5s; transform:scale(0,0); -moz-transform:scale(0,0);-ms-transform:scale(0,0); -o-transform:scale(0,0); -webkit-transform:scale(0,0); bottom:0; display:none;}
-.card{width:320px; height:470px; position:relative; margin:0 auto; padding:0 18px; }
-.card .card_bottom{width:100%;position:absolute;bottom:0px;left:0;height:26px;box-sizing:border-box;padding:0 28px}
-.card .card_bottom a{color:#c733c5;cursor:pointer;line-height:26px;}
-.card .card_bottom span{float:right;color:#909090;line-height: 26px;}.card .card_bottom span b{color:#666; font-weight:inherit}
+.card{width:320px; height:467px; position:relative; margin:0 auto; padding:0 18px; }
+.card .card_bottom{width:100%;position:absolute;bottom:0px;left:0;height:26px;line-height:26px;box-sizing:border-box;padding:0 28px}
+.card .card_bottom a{color:#c733c5;cursor:pointer;height:26px;line-height:26px;}
+.card .card_bottom span{float:right;color:#909090;height:26px;line-height:26px;}.card .card_bottom span b{color:#666; font-weight:inherit}
 .card .card_input {
     width: 270px;
     height: 290px;
