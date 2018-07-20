@@ -94,7 +94,7 @@
         </div>
         <div>
             <div style="float:right;font-size:20px;line-height:40px;">
-                调查进度：{{submit}}/{{total}}，回收率：{{total == 0 ? '0' : (submit / total * 100.00).toFixed(2)}}%
+                调查进度：{{submit}}/{{total}}，回收率：{{total == 0 ? '0' : (submit * 100.00 / total).toFixed(2)}}%
             </div>
             <el-cascader v-model="classesSelect" :options="classes" placeholder="选择统计范围" :change-on-select="selected.length < 2" :clearable="selected.length == 0" style="width:320px"></el-cascader>
             <el-button type="primary" @@click="filterChange">统计调查结果</el-button>
