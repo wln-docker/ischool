@@ -1,5 +1,33 @@
 ﻿<div id="app" class="wln" v-loading.fullscreen.lock="fullLoading"><router-view></router-view></div>
-<style>.el-textarea__inner{padding:0px;}</style>
+<style>
+    .el-textarea__inner {
+        padding: 0px;
+    }
+    .options{
+        clear:both;
+    }
+    .em-question {
+        width: 24px;
+        text-align: center;
+        display: inline-block;
+    }
+    .progress {
+        float: right;
+        width: 180px;
+        display: inline-block;
+        text-align: left;
+    }
+        .progress > div {
+            width: 128px;
+            font-size: 10px;
+            display: inline-block;
+        }
+        .progress > em {
+            font-size: 12px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+</style>
 <template id="app-list">
     <div>
         <div class="wln-title">
@@ -19,12 +47,14 @@
                 </template>
             </el-table-column>
             <el-table-column width="90" align="center" label="调查进度">
-                <template scope="scope">{{scope.row.submit}}/{{scope.row.total}}</template>
+                <template scope="scope">
+                    {{scope.row.submit}}/{{scope.row.total}}
+                </template>
             </el-table-column>
             <el-table-column></el-table-column>
             <el-table-column width="160" align="right" v-if="editer">
                 <template scope="scope">
-                    <el-button size="mini" icon="el-icon-view" @@click="handleEditer(scope.row)" type="primary">调查结果</el-button>
+                    <el-button size="mini" icon="el-icon-view" @@click="handleViewer(scope.row)" type="primary">调查结果</el-button>
                     <el-button size="mini" icon="el-icon-delete" @@click="handleDelete(scope.row)" type="warning">删除</el-button>
                 </template>
             </el-table-column>
@@ -52,6 +82,31 @@
                 <el-button onclick="history.back()">返回</el-button>
             </el-form-item>
         </el-form>
+    </div>
+</template>
+<template id="app-view">
+    <div>
+        <div class="wln-title">
+            <div style="float:right">
+                <el-button size="mini" type="info" :plain="true" onclick="history.back()">返回</el-button>
+            </div>
+            {{title}}<span>{{questionary}}</span>
+        </div>
+        <div>
+            <el-cascader v-model="classesSelect" :options="classes" placeholder="选择统计范围" :change-on-select="selected.length < 2" :clearable="selected.length == 0" style="width:320px"></el-cascader>
+            <el-button type="primary" @@click="filterChange">统计调查结果</el-button>
+        </div>
+        <div class="wln-line"></div>
+        <div>
+            <el-collapse v-model="expands">
+                <el-collapse-item v-for="item in details" :title="item.title" :name="item.id">
+                    <div class="options" v-for="option in item.options">
+                        <span class="progress"><div><el-progress :percentage="80" :text-inside="true" :stroke-width="15" status="success"></el-progress></div><em>3人</em></span>
+                        <em class="em-question">{{option.flag}}</em>{{option.title}}
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
@@ -90,6 +145,9 @@
             currentChange(val) {
                 emptyPager.page = val;
                 this.refresh();
+            },
+            handleViewer(row) {
+                router.push(_vpath + '/viewer?id=' + row.id)
             },
             handleDelete(row) {
                 this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
@@ -169,10 +227,87 @@
             }
         }
     })
+    var appView = Vue.extend({
+        template: '#app-view',
+        data: function () {
+            return {
+                id: '',
+                title: '调查结果',
+                details: [],
+                questionary: '',
+                expands: [],
+                classes: [],
+                selected: [],
+                classesSelect: [],
+                message: ''
+            }
+        },
+        methods: {
+            refresh() {
+                let t = this
+                t.details = [];
+                console.log(t.classesSelect)
+                emptyPager.fullLoading = true;
+                $.getJSON(location.pathname, { 'do': 'details', id: t.id, organ: t.classesSelect.length > 0 ? t.classesSelect[0] : '', classes: t.classesSelect.length > 1 ? t.classesSelect[1] : '' }, function (rlt) {
+                    if (rlt.message) {
+                        t.message = rlt.message;
+                    } else {
+                        t.total = rlt.total;
+                        t.submit = rlt.submit;
+                        t.details = rlt.details;
+                        t.expands = [];
+                        for (var i = 0; i < rlt.details.length; i++) {
+                            t.expands.push(rlt.details[i].id)
+                        }
+                    }
+                    emptyPager.fullLoading = false;
+                });
+            },
+            filterChange(filters) {
+                this.refresh();
+            },
+            handleViewer(row) {
+                router.push(_vpath + '/viewer?id=' + row.id)
+            },
+            handleDelete(row) {
+                this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'del', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        iTips(rlt.message, rlt.success);
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            }
+        }, created() {
+            let t = this
+            emptyPager.fullLoading = true;
+            t.id = Vue.prototype.getParam('id')
+            $.getJSON(location.pathname, { 'do': 'classes', id: t.id }, function (rlt) {
+                if (rlt.success) {
+                    t.classes = rlt.classes
+                    t.selected = rlt.selected
+                    t.classesSelect = rlt.selected
+                    t.questionary = rlt.questionary
+                    t.title = rlt.title
+                    t.refresh();
+                } else {
+                    emptyPager.fullLoading = false;
+                    iTips(rlt.message, rlt.success);
+                }
+            })
+        }
+    })
     var router = new VueRouter({
         mode: 'history', routes: [
             { path: _vpath, component: appList }
             , { path: _vpath + '/add', component: appForm }
+            , { path: _vpath + '/viewer', component: appView }
         ]
     });
     var app = new Vue({ el: '#app', router: router, data: emptyPager  });
