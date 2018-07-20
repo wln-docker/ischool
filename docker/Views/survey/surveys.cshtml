@@ -93,6 +93,9 @@
             {{title}}<span>{{questionary}}</span>
         </div>
         <div>
+            <div style="float:right;font-size:20px;line-height:40px;">
+                调查进度：{{submit}}/{{total}}，回收率：{{total == 0 ? '0' : (submit / total * 100.00).toFixed(2)}}%
+            </div>
             <el-cascader v-model="classesSelect" :options="classes" placeholder="选择统计范围" :change-on-select="selected.length < 2" :clearable="selected.length == 0" style="width:320px"></el-cascader>
             <el-button type="primary" @@click="filterChange">统计调查结果</el-button>
         </div>
@@ -101,7 +104,7 @@
             <el-collapse v-model="expands">
                 <el-collapse-item v-for="item in details" :title="item.title" :name="item.id">
                     <div class="options" v-for="option in item.options">
-                        <span class="progress"><div><el-progress :percentage="80" :text-inside="true" :stroke-width="15" status="success"></el-progress></div><em>3人</em></span>
+                        <div class="progress"><div><el-progress :percentage="option.percentage" :text-inside="true" :stroke-width="15" status="success"></el-progress></div><em>{{option.count}}人</em></div>
                         <em class="em-question">{{option.flag}}</em>{{option.title}}
                     </div>
                 </el-collapse-item>
@@ -233,6 +236,8 @@
             return {
                 id: '',
                 title: '调查结果',
+                total: 0,
+                submit: 0,
                 details: [],
                 questionary: '',
                 expands: [],
