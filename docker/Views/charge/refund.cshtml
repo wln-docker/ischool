@@ -20,6 +20,7 @@
         <el-table :data="rows" :empty-text="message">
             <el-table-column width="150" align="center" label="学员姓名" property="studentname"></el-table-column>
             <el-table-column width="150" align="center" label="退费项目" property="feescalename"></el-table-column>
+            <el-table-column width="100" align="center" label="退费单价" property="price"></el-table-column>
             <el-table-column width="100" align="center" label="退费数量" property="count"></el-table-column>
             <el-table-column width="120" align="center" label="退费金额" property="amount"></el-table-column>
             <el-table-column width="90" align="center" label="退费方式">
@@ -100,9 +101,15 @@ else
                 </el-col>
             </el-form-item>
             <el-form-item>
+                <el-col :span="3" class="label">退费单价&nbsp;</el-col>
+                <el-col :span="18">
+                    <el-input type="text" :rows="2" v-model="price" placeholder="必填" style="width:80px;"></el-input>&nbsp;<font color="#999999">退费单价必须大于零</font>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
                 <el-col :span="3" class="label">退费数量&nbsp;</el-col>
                 <el-col :span="18">
-                    <el-input type="text" :rows="2" v-model="count" placeholder="可不填" style="width:80px;"></el-input>&nbsp;<font color="#999999">支持小数，如：0.15</font>
+                    <el-input type="text" :rows="2" v-model="count" placeholder="必填" style="width:80px;"></el-input>&nbsp;<font color="#999999">支持小数，如：0.15</font>
                 </el-col>
             </el-form-item>
             <el-form-item>
@@ -151,6 +158,7 @@ else
     emptyPager.feescale = '';
     emptyPager.feescales = [];
     emptyPager.reasons = '';
+    emptyPager.price = '';
     emptyPager.count = '';
     emptyPager.amount = '';
     emptyPager.payway = 0;
@@ -282,7 +290,7 @@ else
                 if (emptyPager.Loaded) {
                     emptyPager.Loaded = false;
                     $.post(location.pathname + '?do=set', {
-                        organ: emptyPager.school, student: emptyPager.student, feescale: emptyPager.feescale, payway: emptyPager.payway
+                        organ: emptyPager.school, student: emptyPager.student, feescale: emptyPager.feescale, payway: emptyPager.payway, price: emptyPager.price
                         , count: emptyPager.count, amount: emptyPager.amount, reasons: emptyPager.reasons, create: emptyPager.create.pattern("yyyy-MM-dd")
                     }, function (rlt) {
                         emptyPager.Loaded = true;
@@ -317,6 +325,7 @@ else
             emptyPager.feescale = '';
             emptyPager.feescales = [];
             emptyPager.reasons = '';
+            emptyPager.price = '';
             emptyPager.count = '';
             emptyPager.amount = '';
             emptyPager.payway = 1;

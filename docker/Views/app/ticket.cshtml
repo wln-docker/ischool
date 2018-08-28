@@ -40,8 +40,26 @@
         </div>
     </div>
     <div id="btns" style="position:fixed;top:35px;top:60px;right:90px;">
-        <button type="button" onclick="history.back()" style="width:60px;padding:6px 12px;cursor:pointer;margin-right:6px;">返回</button>
-        <button type="button" onclick="weprint('wedoc')" style="width:60px;padding:6px 12px;cursor:pointer;">打印</button>
+        <div>
+            <button type="button" onclick="history.back()" style="width:60px;padding:6px 12px;cursor:pointer;margin-right:6px;">返回</button>
+            <button type="button" onclick="weprint('wedoc')" style="width:60px;padding:6px 12px;cursor:pointer;">打印</button>
+        </div>
+        <div>
+            @if (ViewBag.IsSuper){<button type="button" onclick="Del()" style="width:131px;padding:6px 12px;cursor:pointer;margin-top:6px;">强制删除</button>}
+        </div>
     </div>
+    <script>
+        function Del() {
+            if (confirm('此操作将删除该记录且不可恢复, 是否继续?')) {
+                $.getJSON(location.pathname, { 'do': 'delete', id: '@ViewBag.Id' }, function (rlt) {
+                    if (rlt.message) {
+                        alert(rlt.message)
+                    } else {
+                        history.back()
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
