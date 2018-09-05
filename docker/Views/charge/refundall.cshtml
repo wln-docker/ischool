@@ -36,6 +36,7 @@
                     <el-button size="small" @@click="handleDelete(scope.row)" v-if="scope.row.state < 2">删除</el-button>
                     <el-button size="small" @@click="handleVerify(scope.row)" type="success" v-if="scope.row.state === 2">审核</el-button>
                     <el-button size="small" @@click="handleReback(scope.row)" type="danger" v-if="scope.row.state === 2">驳回</el-button>
+                    @if (ViewBag.IsSuper){<el-button size="small" @@click="handleDelSuper(scope.row)" type="danger" v-if="scope.row.state == 3">强制删除</el-button>}
                 </template>
             </el-table-column>
         </el-table>
@@ -108,6 +109,21 @@
                 }).then(() => {
                     var _self = this;
                     $.getJSON(location.pathname, { 'do': 'delete', id: row.id }, function (rlt) {
+                        _self.refresh();
+                        app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
+                    });
+                }).catch(() => {
+                    iTips('删除操作已取消');
+                });
+            },
+            handleDelSuper(row) {
+                this.$confirm('数据一经删除将不可恢复, 确定要强制删除吗?', '提示', {
+                    confirmButtonText: '强制删除',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var _self = this;
+                    $.getJSON(location.pathname, { 'do': 'delsuper', id: row.id }, function (rlt) {
                         _self.refresh();
                         app.$message({ type: rlt.success ? 'success' : 'error', message: rlt.message });
                     });
