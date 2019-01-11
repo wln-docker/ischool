@@ -52,7 +52,7 @@
                 </template>
             </el-table-column>
             <el-table-column></el-table-column>
-            <el-table-column width="160" align="right" v-if="editer">
+            <el-table-column align="right" v-if="editer">
                 <template scope="scope">
                     <el-button size="mini" icon="el-icon-edit-outline" @@click="handleSwitch(scope.row)" type="danger" v-if="scope.row.state > 0">进行中</el-button>
                     <el-button size="mini" icon="el-icon-edit-outline" @@click="handleSwitch(scope.row)" type="info" v-else>未开启</el-button>
