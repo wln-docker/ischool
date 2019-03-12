@@ -112,7 +112,7 @@
             </el-table-column>
             <el-table-column width="150" align="center" label="@Html.Raw(ViewBag.Label_studentid)" property="studentid"></el-table-column>
             <el-table-column width="120" align="center" label="姓名" property="name"></el-table-column>
-            <el-table-column width="120" align="center" label="班级" property="classname"></el-table-column>
+            <el-table-column width="120" align="center" label="班级" property="classname" column-key="classes" :filters="classesFilter" :filter-multiple="false"></el-table-column>
             <el-table-column width="70" align="center" label="性别" property="sex" column-key="sex" :filters="[{value:1,text:'男孩'},{value:2,text:'女孩'},{value:0,text:'未选择'}]" :filter-multiple="false"></el-table-column>
             <el-table-column></el-table-column>
             <el-table-column width="210" align="center" label="操作">
@@ -251,7 +251,9 @@
     emptyPager.multipleSelection = [];
     emptyPager.classes = [];
     emptyPager.classesSelect = [];
+    emptyPager.classesFilter = [];
     emptyPager.entertime = [];
+    emptyPager.filter_classes = '';
     emptyPager.filter_state = -1;
     emptyPager.filter_sex = -1;
 
@@ -264,7 +266,7 @@
             refresh() {
                 if (emptyPager.school) {
                     emptyPager.fullLoading = true;
-                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, school: emptyPager.school, key: emptyPager.key, state: emptyPager.filter_state, sex: emptyPager.filter_sex }, function (rlt) {
+                    $.getJSON(location.pathname, { 'do': 'pager', page: emptyPager.index, rows: emptyPager.size, school: emptyPager.school, key: emptyPager.key, classes: emptyPager.filter_classes, state: emptyPager.filter_state, sex: emptyPager.filter_sex }, function (rlt) {
                         emptyPager.message = rlt.message;
                         emptyPager.total = rlt.total;
                         emptyPager.index = rlt.index;
@@ -288,6 +290,11 @@
                     emptyPager.filter_state = filters.state[0];
                 } else {
                     emptyPager.filter_state = -1;
+                }
+                if (filters.classes && filters.classes.length > 0) {
+                    emptyPager.filter_classes = filters.classes[0];
+                } else {
+                    emptyPager.filter_classes = '';
                 }
                 if (filters.sex && filters.sex.length > 0) {
                     emptyPager.filter_sex = filters.sex[0];
@@ -349,6 +356,14 @@
                 })
                 $.getJSON('/ajax/classes', { 'organ': val }, function (rlt) {
                     emptyPager.classes = rlt.classes;
+                    emptyPager.classesFilter = [];
+                    if (rlt.classes.length > 0) {
+                        emptyPager.classesFilter = rlt.classes;
+                        for (var i = 0; i < rlt.classes[0].children.length; i++) {
+                            let item = rlt.classes[0].children[i];
+                            emptyPager.classesFilter.push({ value: item.value, text: item.label });
+                        }
+                    }
                 })
                 this.refresh();
             },
@@ -469,6 +484,14 @@
                     })
                     $.getJSON('/ajax/classes', { 'organ': rlt.select }, function (rlt) {
                         emptyPager.classes = rlt.classes;
+                        emptyPager.classesFilter = [];
+                        if (rlt.classes.length > 0) {
+                            emptyPager.classesFilter = rlt.classes;
+                            for (var i = 0; i < rlt.classes[0].children.length; i++) {
+                                let item = rlt.classes[0].children[i];
+                                emptyPager.classesFilter.push({ value: item.value, text: item.label });
+                            }
+                        }
                     })
                 }
                 _self.refresh();
