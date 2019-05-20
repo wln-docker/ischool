@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "bc837fd790a6f15a672e0ef4326a84f6643e6e34"
+    "signature": "928bc69b06ce21d294df876f1a4e21e626943ccc"
   },
   "compilationOptions": {
     "defines": [
@@ -27,7 +27,7 @@
           "Microsoft.NETCore.App": "2.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "2.1.4",
           "SharpZipLib.NETStandard": "1.0.7",
-          "Wlniao.XCore": "2.1.13",
+          "Wlniao.XCore": "2.1.18",
           "iServer.Toolkit": "1.0.5"
         },
         "runtime": {
@@ -40,7 +40,7 @@
       "iServer.Toolkit/1.0.5": {
         "dependencies": {
           "Wlniao.WeAPP": "0.2.4",
-          "Wlniao.XCore": "2.1.13"
+          "Wlniao.XCore": "2.1.18"
         },
         "runtime": {
           "lib/netcoreapp2.0/iServer.Toolkit.dll": {
@@ -2858,7 +2858,7 @@
       },
       "Wlniao.WeAPP/0.2.4": {
         "dependencies": {
-          "Wlniao.XCore": "2.1.13"
+          "Wlniao.XCore": "2.1.18"
         },
         "runtime": {
           "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {
@@ -2870,7 +2870,7 @@
           "lib/netcoreapp2.0/Wlniao.WeAPP.dll": {}
         }
       },
-      "Wlniao.XCore/2.1.13": {
+      "Wlniao.XCore/2.1.18": {
         "dependencies": {
           "Microsoft.AspNetCore": "2.1.2",
           "Microsoft.AspNetCore.Hosting": "2.1.1",
@@ -2893,8 +2893,8 @@
         },
         "runtime": {
           "lib/netcoreapp2.0/Wlniao.XCore.dll": {
-            "assemblyVersion": "2.1.13.0",
-            "fileVersion": "2.1.13.0"
+            "assemblyVersion": "2.1.18.0",
+            "fileVersion": "2.1.18.0"
           }
         },
         "compile": {
@@ -4502,12 +4502,12 @@
       "path": "wlniao.weapp/0.2.4",
       "hashPath": "wlniao.weapp.0.2.4.nupkg.sha512"
     },
-    "Wlniao.XCore/2.1.13": {
+    "Wlniao.XCore/2.1.18": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AdTXgzqgu8QrX1bd7qA+Q6JOAxtuuulzUomOTOc0XvwY5Ro9sNz8YuwpnIxyEhVdq6Km0z69+eyd+Sn9A8fILA==",
-      "path": "wlniao.xcore/2.1.13",
-      "hashPath": "wlniao.xcore.2.1.13.nupkg.sha512"
+      "sha512": "sha512-Yug2WsEfcVk/if8uuUYwtbTzbvVppjz9twriihqp+sh1LDwLOng81GorH3cDgKF8VGQMnHS2V+hMLD5Quec2yQ==",
+      "path": "wlniao.xcore/2.1.18",
+      "hashPath": "wlniao.xcore.2.1.18.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.0.0": {
       "type": "package",
